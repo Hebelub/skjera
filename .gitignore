@@ -1,4 +1,6 @@
-.idea
+workspace.xml
+usage.statistics.xml
+shelf
 bin
 cmake-build-*
 obj
@@ -6,3 +8,4 @@ venv
 *.db
 *.pyc
 *.swp
+
