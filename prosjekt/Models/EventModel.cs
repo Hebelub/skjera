@@ -38,11 +38,13 @@ public class EventModel
     public string Title { get; set; } = string.Empty;
     
     
+    
     [MaxLength(1500)]
     [DisplayName ("Description")]
     public string Description { get; set; } = string.Empty;
     
     
+
     [MaxLength(2000)]
     [DisplayName ("Info")]
     public string Info { get; set; } = string.Empty;
@@ -57,9 +59,10 @@ public class EventModel
     [DisplayName ("EndTime")]
     public DateTime? EndTime { get; set; }
 
+
     
-    
-    [Microsoft.Build.Framework.Required]
+    public int OrganizerId { get; set; }
+    [Required]
     [DisplayName ("Organizer")]
     public OrganizationModel Organizer { get; set; }
     
@@ -69,10 +72,6 @@ public class EventModel
     public DateTime? LastTimeEdited { get; set; }
 
     
-    
-    // TODO: public GeoCoordinate? Location { get; set; } = { ... }
-
-
 
     public bool IsEdited { get => LastTimeEdited != null; }
     

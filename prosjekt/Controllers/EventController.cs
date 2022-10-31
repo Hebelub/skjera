@@ -19,22 +19,48 @@ namespace prosjekt.Controllers
             _context = context;
         }
 
-        // GET: Event
+        // GET: Event/
         public async Task<IActionResult> Index()
         {
-              return View(await _context.EventModels.ToListAsync());
+            ViewData["Title"] = "All Events";
+            
+            return View(await _context.EventModels.ToListAsync());
         }
+        
+        // GET: Event/Organization
+        public async Task<IActionResult> Organization(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var organization = await _context.OrganizationModels
+                .FirstOrDefaultAsync(m => m.Id == id);
 
+            if (organization == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Title"] = "Events Of Organization: " + organization.Name;
+
+            return View("Index", await _context.EventModels
+                .Where(e => e.OrganizerId == id)
+                .ToListAsync());
+        }
+        
         // GET: Event/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.EventModels == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var eventModel = await _context.EventModels
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (eventModel == null)
             {
                 return NotFound();
@@ -54,30 +80,33 @@ namespace prosjekt.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Create([Bind("Title,Description,Info,StartTime,EndTime")] EventModel eventModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(eventModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(eventModel);
             }
-            return View(eventModel);
+            
+            _context.Add(eventModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Event/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.EventModels == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var eventModel = await _context.EventModels.FindAsync(id);
+            
             if (eventModel == null)
             {
                 return NotFound();
             }
+            
             return View(eventModel);
         }
 
@@ -86,46 +115,45 @@ namespace prosjekt.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
         {
             if (id != eventModel.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(eventModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventModelExists(eventModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(eventModel);
             }
-            return View(eventModel);
+
+            try
+            {
+                _context.Update(eventModel);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EventModelExists(eventModel.Id))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Event/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.EventModels == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var eventModel = await _context.EventModels
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (eventModel == null)
             {
                 return NotFound();
@@ -139,14 +167,15 @@ namespace prosjekt.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.EventModels == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.EventModels'  is null.");
-            }
             var eventModel = await _context.EventModels.FindAsync(id);
+
             if (eventModel != null)
             {
+                var organizationId = eventModel.OrganizerId;
                 _context.EventModels.Remove(eventModel);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Organization), new { id=organizationId });
             }
             
             await _context.SaveChangesAsync();
@@ -155,7 +184,7 @@ namespace prosjekt.Controllers
 
         private bool EventModelExists(int id)
         {
-          return _context.EventModels.Any(e => e.Id == id);
+            return _context.EventModels.Any(e => e.Id == id);
         }
     }
 }

@@ -23,15 +23,15 @@ public class OrganizationModel
     [MaxLength(40)]
     [DisplayName ("Name")]
     public string Name { get; set; } = string.Empty;
-
-
-    // TODO: public Image Logo { get; set; } = { ... }
+    
+    
 
     /// <summary>
-    /// What should the users know about this Organization?
+    /// What should users know about this Organization?
     /// </summary>
     [Required]
     [MaxLength(1400)]
     [DisplayName ("Description")]
     public string Description { get; set; } = string.Empty;
+
 }

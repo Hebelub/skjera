@@ -11,7 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
     }
     
-    public DbSet<OrganizationModel> OrganizationModel { get; set; }
+    public DbSet<OrganizationModel> OrganizationModels { get; set; }
     
     public DbSet<EventModel> EventModels { get; set; }
     

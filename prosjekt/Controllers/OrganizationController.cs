@@ -22,25 +22,18 @@ namespace prosjekt.Controllers
         // GET: Organization
         public async Task<IActionResult> Index()
         {
-              return View(await _context.OrganizationModel.ToListAsync());
+            return View(await _context.OrganizationModels.ToListAsync());
         }
 
         // GET: Organization/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.OrganizationModel == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            var organizationModel = await _context.OrganizationModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (organizationModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(organizationModel);
+            
+            return RedirectToAction("Organization", "Event", new { area = "", id=id });
         }
 
         // GET: Organization/Create
@@ -54,30 +47,33 @@ namespace prosjekt.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] OrganizationModel organizationModel)
+        public async Task<IActionResult> Create([Bind("Name,Description")] OrganizationModel organizationModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(organizationModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(organizationModel);
             }
-            return View(organizationModel);
+            
+            _context.Add(organizationModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Organization/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.OrganizationModel == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            var organizationModel = await _context.OrganizationModel.FindAsync(id);
+            
+            var organizationModel = await _context.OrganizationModels.FindAsync(id);
+            
             if (organizationModel == null)
             {
                 return NotFound();
             }
+            
             return View(organizationModel);
         }
 
@@ -86,51 +82,48 @@ namespace prosjekt.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] OrganizationModel organizationModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Description")] OrganizationModel organizationModel)
         {
             if (id != organizationModel.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (! ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(organizationModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrganizationModelExists(organizationModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(organizationModel);
             }
-            return View(organizationModel);
+            
+            try
+            {
+                _context.Update(organizationModel);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrganizationModelExists(organizationModel.Id))
+                    return NotFound();
+                throw;
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Organization/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.OrganizationModel == null)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            var organizationModel = await _context.OrganizationModel
+            
+            var organizationModel = await _context.OrganizationModels
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (organizationModel == null)
             {
                 return NotFound();
             }
-
+            
             return View(organizationModel);
         }
 
@@ -139,14 +132,11 @@ namespace prosjekt.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.OrganizationModel == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.OrganizationModel'  is null.");
-            }
-            var organizationModel = await _context.OrganizationModel.FindAsync(id);
+            var organizationModel = await _context.OrganizationModels.FindAsync(id);
+      
             if (organizationModel != null)
             {
-                _context.OrganizationModel.Remove(organizationModel);
+                _context.OrganizationModels.Remove(organizationModel);
             }
             
             await _context.SaveChangesAsync();
@@ -155,7 +145,7 @@ namespace prosjekt.Controllers
 
         private bool OrganizationModelExists(int id)
         {
-          return _context.OrganizationModel.Any(e => e.Id == id);
+            return _context.OrganizationModels.Any(e => e.Id == id);
         }
     }
 }
