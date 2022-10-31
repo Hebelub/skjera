@@ -1,4 +1,8 @@
-﻿namespace prosjekt.Models;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.CodeAnalysis;
+
+namespace prosjekt.Models;
 
 public class EventModel
 {
@@ -6,22 +10,81 @@ public class EventModel
     {
     }
 
+    public EventModel(OrganizationModel organizer, DateTime timeCreated, DateTime? lastTimeEdited, 
+        string title, string description, string info)
+    {
+        Organizer = organizer;
+        TimeCreated = timeCreated;
+        LastTimeEdited = lastTimeEdited;
+        Title = title;
+        Description = description;
+        Info = info;
+    }
 
-    /// <summary>
-    /// The DateTime when this event was posted
-    /// </summary>
-    private DateTime TimeCreated { get; set; } = DateTime.Now;
+    
+    
+    public int Id { get; set; }
+    
+    
+    
+    [DisplayName ("TimeCreated")]
+    public DateTime TimeCreated { get; } = DateTime.Now;
 
-    /// <summary>
-    /// This is null if the event has never been altered
-    /// It is DateTime of the time it was last edited 
-    /// </summary>
-    private DateTime? LastTimeEdited { get; set; }
 
-    private bool IsEdited { get => LastTimeEdited != null; }
+    
+    [Required]
+    [MaxLength(40)]
+    [DisplayName ("Title")]
+    public string Title { get; set; } = string.Empty;
+    
+    
+    [MaxLength(1500)]
+    [DisplayName ("Description")]
+    public string Description { get; set; } = string.Empty;
+    
+    
+    [MaxLength(2000)]
+    [DisplayName ("Info")]
+    public string Info { get; set; } = string.Empty;
 
-    /// <summary>
-    /// The organization who organizes this Event
-    /// </summary>
-    private OrganizationModel organizer { get; set; }
+    
+    
+    [DisplayName ("StartTime")]
+    public DateTime? StartTime { get; set; }
+    
+    
+    
+    [DisplayName ("EndTime")]
+    public DateTime? EndTime { get; set; }
+
+    
+    
+    [Microsoft.Build.Framework.Required]
+    [DisplayName ("Organizer")]
+    public OrganizationModel Organizer { get; set; }
+    
+    
+    
+    [DisplayName ("LastTimeEdited")]
+    public DateTime? LastTimeEdited { get; set; }
+
+    
+    
+    // TODO: public GeoCoordinate? Location { get; set; } = { ... }
+
+
+
+    public bool IsEdited { get => LastTimeEdited != null; }
+    
+    
+    
+    public List<ApplicationUser> Attending = new(); 
+    
+    
+    
+    public int NumAttending
+    {
+        get => Attending.Count;
+    }
+
 }
