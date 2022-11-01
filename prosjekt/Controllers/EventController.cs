@@ -27,7 +27,7 @@ namespace prosjekt.Controllers
             return View(await _context.EventModels.ToListAsync());
         }
         
-        // GET: Event/Organization
+        // GET: Event/Organization/5
         public async Task<IActionResult> Organization(int? id)
         {
             if (id == null)

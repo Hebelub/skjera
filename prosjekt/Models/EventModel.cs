@@ -17,7 +17,6 @@ public class EventModel
         TimeCreated = timeCreated;
         LastTimeEdited = lastTimeEdited;
         Title = title;
-        Description = description;
         Info = info;
     }
 
@@ -36,19 +35,13 @@ public class EventModel
     [MaxLength(40)]
     [DisplayName ("Title")]
     public string Title { get; set; } = string.Empty;
-    
-    
-    
-    [MaxLength(1500)]
-    [DisplayName ("Description")]
-    public string Description { get; set; } = string.Empty;
-    
-    
+
+
 
     [MaxLength(2000)]
     [DisplayName ("Info")]
     public string Info { get; set; } = string.Empty;
-
+    
     
     
     [DisplayName ("StartTime")]
