@@ -55,8 +55,6 @@ public class EventModel
 
     
     public int OrganizerId { get; set; }
-    [Required]
-    [DisplayName ("Organizer")]
     public OrganizationModel Organizer { get; set; }
     
     

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using prosjekt.Data;
 using prosjekt.Models;
 
@@ -14,10 +16,12 @@ namespace prosjekt.Controllers
     public class OrganizationController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrganizationController(ApplicationDbContext context)
+        public OrganizationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Organization
@@ -27,14 +31,14 @@ namespace prosjekt.Controllers
         }
 
         // GET: Organization/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            
-            return RedirectToAction("Organization", "Event", new { area = "", id=id });
+
+            return RedirectToAction("Organization", "Event", new { area = "", id });
         }
 
         // GET: Organization/Create
@@ -56,8 +60,24 @@ namespace prosjekt.Controllers
             {
                 return View(organizationModel);
             }
+
+            var user = await _userManager.GetUserAsync(User);
+            
+            // The user who created this has all the access-rights
+            var userOrganizationAccess = new UserOrganizationAccess(user, organizationModel)
+            {
+                CanDeleteOrganization = true,
+                CanCreateEvents = true,
+                CanAddUsers = true,
+                CanEditEvents = true,
+                CanEditOrganization = true,
+                CanDeleteEvents = true,
+                CanChangeUserRights = true
+            };
             
             _context.Add(organizationModel);
+            _context.Add(userOrganizationAccess);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -67,6 +87,11 @@ namespace prosjekt.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (!OrganizationAccess(id ?? 0).CanEditOrganization)
             {
                 return NotFound();
             }
@@ -93,8 +118,13 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
+            
+            if (!OrganizationAccess(organizationModel.Id).CanEditOrganization)
+            {
+                return NotFound();
+            }
 
-            if (! ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(organizationModel);
             }
@@ -121,7 +151,12 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-            
+
+            if (!OrganizationAccess(id ?? 0).CanDeleteOrganization)
+            {
+                return NotFound();
+            }
+
             var organizationModel = await _context.OrganizationModels
                 .FirstOrDefaultAsync(m => m.Id == id);
             
@@ -140,7 +175,12 @@ namespace prosjekt.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var organizationModel = await _context.OrganizationModels.FindAsync(id);
-      
+
+            if (!OrganizationAccess(id).CanDeleteOrganization)
+            {
+                return NotFound();
+            }
+            
             if (organizationModel != null)
             {
                 _context.OrganizationModels.Remove(organizationModel);
@@ -154,5 +194,11 @@ namespace prosjekt.Controllers
         {
             return _context.OrganizationModels.Any(e => e.Id == id);
         }
+
+        private UserOrganizationAccess OrganizationAccess(int organizationId)
+        {
+            return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizationId).Result;
+        }
+        
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace prosjekt.Controllers
     public class EventController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EventController(ApplicationDbContext context)
+        public EventController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Event/
@@ -29,13 +32,8 @@ namespace prosjekt.Controllers
         }
         
         // GET: Event/Organization/5
-        public async Task<IActionResult> Organization(int? id)
+        public async Task<IActionResult> Organization(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
             var organization = await _context.OrganizationModels
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -45,6 +43,7 @@ namespace prosjekt.Controllers
             }
 
             ViewData["Title"] = "Events Of Organization: " + organization.Name;
+            ViewData["OrganizationId"] = id;
 
             return View("Index", await _context.EventModels
                 .Where(e => e.OrganizerId == id)
@@ -70,11 +69,28 @@ namespace prosjekt.Controllers
             return View(eventModel);
         }
 
-        // GET: Event/Create
+        // GET: Event/Create/5
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
-            return View();
+            var organization = await _context.OrganizationModels.FirstOrDefaultAsync(o => o.Id == id);
+
+            if (organization == null)
+            {
+                return NotFound();
+            }
+
+            if (!OrganizationAccess(id).CanCreateEvents)
+            {
+                return NotFound();
+            }
+
+            // Creating the model with the correct organization as the parent
+            var model = new EventModel();
+
+            model.Organizer = organization;
+            
+            return View(model);
         }
 
         // POST: Event/Create
@@ -83,16 +99,38 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Description,Info,StartTime,EndTime")] EventModel eventModel)
+        public async Task<IActionResult> Create([Bind("Title,Info,StartTime,EndTime")] EventModel eventModel, int id)
         {
+            var organization = await _context.OrganizationModels.FirstOrDefaultAsync(o => o.Id == id);
+
+            if (organization == null)
+            {
+                return NotFound();
+            }
+
+            if (!OrganizationAccess(id).CanCreateEvents)
+            {
+                return NotFound();
+            }
+
+            eventModel.Organizer = organization;
+            
+            ModelState.Clear();
+            
             if (!ModelState.IsValid)
             {
                 return View(eventModel);
             }
+
+            if (!OrganizationAccess(id).CanCreateEvents)
+            {
+                return NotFound();
+            }
             
             _context.Add(eventModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            
+            return RedirectToAction(nameof(Organization), new { id=id });
         }
 
         // GET: Event/Edit/5
@@ -100,6 +138,11 @@ namespace prosjekt.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
+            {
+                return NotFound();
+            }
+            
+            if (!EventAccess(id ?? 0).CanEditEvents)
             {
                 return NotFound();
             }
@@ -126,6 +169,11 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
+            
+            if (!EventAccess(eventModel.Id).CanEditEvents)
+            {
+                return NotFound();
+            }
 
             if (!ModelState.IsValid)
             {
@@ -145,7 +193,7 @@ namespace prosjekt.Controllers
                 }
                 throw;
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Organization), new { id=eventModel.OrganizerId });
         }
 
         // GET: Event/Delete/5
@@ -153,6 +201,11 @@ namespace prosjekt.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
+            {
+                return NotFound();
+            }
+            
+            if (!EventAccess(id ?? 0).CanDeleteEvents)
             {
                 return NotFound();
             }
@@ -176,6 +229,11 @@ namespace prosjekt.Controllers
         {
             var eventModel = await _context.EventModels.FindAsync(id);
 
+            if (!EventAccess(id).CanDeleteEvents)
+            {
+                return NotFound();
+            }
+
             if (eventModel != null)
             {
                 var organizationId = eventModel.OrganizerId;
@@ -192,6 +250,17 @@ namespace prosjekt.Controllers
         private bool EventModelExists(int id)
         {
             return _context.EventModels.Any(e => e.Id == id);
+        }
+        
+        private UserOrganizationAccess OrganizationAccess(int organizationId)
+        {
+            return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizationId).Result;
+        }
+        
+        private UserOrganizationAccess EventAccess(int eventId)
+        {
+            var organizerId = _context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId;
+            return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizerId ?? 0).Result;
         }
     }
 }
