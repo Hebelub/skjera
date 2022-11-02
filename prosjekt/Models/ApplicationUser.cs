@@ -26,7 +26,7 @@ public class ApplicationUser : IdentityUser
         return access ?? new UserOrganizationAccess();
     } 
     
-    public async Task<IEnumerable<UserOrganizationAccess>> AllOrganizationAccessRightsAsync()
+    public async Task<List<UserOrganizationAccess>> AllOrganizationAccessRightsAsync()
     {
         return await _context.UserOrganizationAccess.Where(access => access.User == this).ToListAsync();
     }
