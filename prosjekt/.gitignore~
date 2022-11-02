@@ -6,5 +6,5 @@ venv
 *.db
 *.pyc
 *.swp
-*app.db-shm
-*app.db-wal
+/*app.db-shm
+/*app.db-wal
