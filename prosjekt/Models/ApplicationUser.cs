@@ -28,6 +28,6 @@ public class ApplicationUser : IdentityUser
     
     public async Task<List<UserOrganizationAccess>> AllOrganizationAccessRightsAsync()
     {
-        return await _context.UserOrganizationAccess.Where(access => access.User == this).ToListAsync();
+        return await _context.UserOrganizationAccess.Where(access => access.User == this).Include(access => access.Organization).ToListAsync();
     }
 }
