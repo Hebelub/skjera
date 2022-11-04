@@ -181,7 +181,7 @@ namespace prosjekt.Controllers
             
             if (!EventAccess(eventModel.Id).CanEditEvents)
             {
-                return NotFound();
+                //return NotFound();
             }
 
             // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
@@ -191,6 +191,9 @@ namespace prosjekt.Controllers
                 ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Start time cannot be later than end time");
                 return View(eventModel);
             }
+            
+            //Barnabas:  Clear
+            ModelState.Clear();
             
             if (!ModelState.IsValid)
             {
