@@ -1,0 +1,7 @@
+﻿/*Barnabas: Validation class Error
+*/
+span.text-danger.field-validation-error{
+    color: #D63301;
+    background-color: #FFCCBA;
+    /*background-image: url('https://i.imgur.com/GnyDvKN.png');*/
+}

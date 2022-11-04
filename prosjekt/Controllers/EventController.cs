@@ -117,10 +117,19 @@ namespace prosjekt.Controllers
             
             ModelState.Clear();
             
+            // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
+            // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
+            if (DateTime.Compare(eventModel.StartTime, eventModel.EndTime) >  0)
+            {
+                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Start time cannot be later than end time");
+                return View(eventModel);
+            }
+            
             if (!ModelState.IsValid)
             {
                 return View(eventModel);
             }
+            
 
             if (!OrganizationAccess(id).CanCreateEvents)
             {
@@ -175,6 +184,14 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
 
+            // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
+            // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
+            if (DateTime.Compare(eventModel.StartTime, eventModel.EndTime) >  0)
+            {
+                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Start time cannot be later than end time");
+                return View(eventModel);
+            }
+            
             if (!ModelState.IsValid)
             {
                 return View(eventModel);
@@ -193,6 +210,7 @@ namespace prosjekt.Controllers
                 }
                 throw;
             }
+
             return RedirectToAction(nameof(Organization), new { id=eventModel.OrganizerId });
         }
 
