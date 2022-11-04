@@ -16,3 +16,6 @@ html {
 body {
   margin-bottom: 60px;
 }
+@text-center {
+  text-align: left;
+}
