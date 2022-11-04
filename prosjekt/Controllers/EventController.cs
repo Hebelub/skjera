@@ -119,10 +119,9 @@ namespace prosjekt.Controllers
             
             // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
             // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
-            if (DateTime.Compare(eventModel.StartTime, eventModel.EndTime) >  0)
+            if (eventModel.StartTime != null && eventModel.EndTime != null && DateTime.Compare(eventModel.StartTime!.Value, eventModel.EndTime!.Value) >= 0)
             {
-                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Start time cannot be later than end time");
-                return View(eventModel);
+                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Select end time to be after start time");
             }
             
             if (!ModelState.IsValid)
@@ -186,9 +185,10 @@ namespace prosjekt.Controllers
 
             // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
             // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
-            if (DateTime.Compare(eventModel.StartTime, eventModel.EndTime) >  0)
+            
+            if (eventModel.StartTime != null && eventModel.EndTime != null && DateTime.Compare(eventModel.StartTime!.Value, eventModel.EndTime!.Value) >= 0)
             {
-                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Start time cannot be later than end time");
+                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Select end time to be after start time");
                 return View(eventModel);
             }
             
