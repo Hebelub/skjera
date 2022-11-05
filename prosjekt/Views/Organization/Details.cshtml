@@ -1,8 +1,15 @@
 @model prosjekt.Models.OrganizationModel
 
+@using prosjekt.Data
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext DbContext
+
+
 @{
-    ViewData["Title"] = "Details";
+    var eventsOfOrganization = await DbContext.EventModels.Where(e => e.OrganizerId == Model.Id).ToListAsync(); 
 }
+
 
 <h1>Details</h1>
 
@@ -25,6 +32,13 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit Organization</a> |
+    <a asp-action="Delete" asp-route-id="@Model.Id">Delete Organization</a> |
+    <a asp-action="Index">Back To Organizations</a>
 </div>
+<br/>
+<h3>Our events</h3>
+<div>
+    <partial name="_EventList" model="eventsOfOrganization"/>
+</div>
+<a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id">Create New Event</a>

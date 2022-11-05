@@ -31,14 +31,22 @@ namespace prosjekt.Controllers
         }
 
         // GET: Organization/Details/5
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            return RedirectToAction("Organization", "Event", new { area = "", id });
+            var organization = await _context.OrganizationModels.FindAsync(id);
+
+            if (organization == null)
+            {
+                return NotFound();
+            }
+
+            return View(organization);
+            // return RedirectToAction("Organization", "Event", new { area = "", id });
         }
 
         // GET: Organization/Create

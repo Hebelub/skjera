@@ -101,7 +101,7 @@ namespace prosjekt.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("Title,Info,StartTime,EndTime")] EventModel eventModel, int id)
         {
-            var organization = await _context.OrganizationModels.FirstOrDefaultAsync(o => o.Id == id);
+            var organization = await _context.OrganizationModels.FindAsync(id);
 
             if (organization == null)
             {
@@ -138,7 +138,7 @@ namespace prosjekt.Controllers
             _context.Add(eventModel);
             await _context.SaveChangesAsync();
             
-            return RedirectToAction(nameof(Organization), new { id=id });
+            return RedirectToAction(nameof(Details), "Organization", organization);
         }
 
         // GET: Event/Edit/5
