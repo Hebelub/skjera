@@ -14,7 +14,7 @@
 
 @{
     var user = await UserManager.GetUserAsync(User);
-    var userAccess = await user.AccessToOrganizationAsync(Model.Id);
+    var userAccess = user?.AccessToOrganizationAsync(Model.Id).Result ?? new UserOrganizationAccess();
 }
 
 

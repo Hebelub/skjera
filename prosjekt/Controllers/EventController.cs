@@ -30,26 +30,7 @@ namespace prosjekt.Controllers
             
             return View(await _context.EventModels.ToListAsync());
         }
-        
-        // GET: Event/Organization/5
-        public async Task<IActionResult> Organization(int id)
-        {
-            var organization = await _context.OrganizationModels
-                .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (organization == null)
-            {
-                return NotFound();
-            }
-
-            ViewData["Title"] = "Events Of Organization: " + organization.Name;
-            ViewData["OrganizationId"] = id;
-
-            return View("Index", await _context.EventModels
-                .Where(e => e.OrganizerId == id)
-                .ToListAsync());
-        }
-        
         // GET: Event/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -90,10 +71,11 @@ namespace prosjekt.Controllers
 
             model.Organizer = organization;
             
+            ViewData["OrganizationId"] = id;
             return View(model);
         }
 
-        // POST: Event/Create
+        // POST: Event/Create/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -138,7 +120,7 @@ namespace prosjekt.Controllers
             _context.Add(eventModel);
             await _context.SaveChangesAsync();
             
-            return RedirectToAction(nameof(Details), "Organization", organization);
+            return RedirectToAction(nameof(Details), "Organization", new { id });
         }
 
         // GET: Event/Edit/5
@@ -156,7 +138,7 @@ namespace prosjekt.Controllers
             }
 
             var eventModel = await _context.EventModels.FindAsync(id);
-            
+
             if (eventModel == null)
             {
                 return NotFound();
@@ -214,7 +196,7 @@ namespace prosjekt.Controllers
                 throw;
             }
 
-            return RedirectToAction(nameof(Organization), new { id=eventModel.OrganizerId });
+            return RedirectToAction(nameof(Details), "Organization", new { id=eventModel.OrganizerId });
         }
 
         // GET: Event/Delete/5
@@ -261,11 +243,11 @@ namespace prosjekt.Controllers
                 _context.EventModels.Remove(eventModel);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Organization), new { id=organizationId });
+                return RedirectToAction(nameof(Details), "Organization", new { id=organizationId });
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), "Organization", new { eventModel?.OrganizerId });
         }
 
         private bool EventModelExists(int id)

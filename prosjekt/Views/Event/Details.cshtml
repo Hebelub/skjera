@@ -3,10 +3,10 @@
 
 @model EventModel
 
-@inject UserManager<ApplicationUser> _userManager;
+@inject UserManager<ApplicationUser> UserManager;
 @{
-    var user = await _userManager.GetUserAsync(User);
-    var userAccess = await user.AccessToOrganizationAsync(Model.OrganizerId);
+    var user = await UserManager.GetUserAsync(User);
+    var userAccess = user?.AccessToOrganizationAsync(Model.OrganizerId).Result ?? new UserOrganizationAccess();
 }
 
 <h1>Details</h1>
