@@ -3,12 +3,20 @@
 @using prosjekt.Data
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.EntityFrameworkCore
-@inject ApplicationDbContext DbContext
+@using Microsoft.AspNetCore.Identity
 
+@inject ApplicationDbContext DbContext
+@inject UserManager<ApplicationUser> UserManager;
 
 @{
     var eventsOfOrganization = await DbContext.EventModels.Where(e => e.OrganizerId == Model.Id).ToListAsync(); 
 }
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var userAccess = await user.AccessToOrganizationAsync(Model.Id);
+}
+
 
 
 <h1>Details</h1>
@@ -32,8 +40,17 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit Organization</a> |
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete Organization</a> |
+    
+    @if (userAccess.CanEditOrganization)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit Organization</a> 
+        <span> | </span>
+    }
+    @if (userAccess.CanDeleteOrganization)
+    {
+        <a asp-action="Delete" asp-route-id="@Model.Id">Delete Organization</a>
+        <span> | </span>
+    }
     <a asp-action="Index">Back To Organizations</a>
 </div>
 <br/>
@@ -41,4 +58,8 @@
 <div>
     <partial name="_EventList" model="eventsOfOrganization"/>
 </div>
-<a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id">Create New Event</a>
+
+@if (userAccess.CanCreateEvents)
+{
+    <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id">Create New Event</a>
+}

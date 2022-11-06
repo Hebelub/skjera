@@ -1,6 +1,16 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Identity
+
 @model EventModel
 
+@inject UserManager<ApplicationUser> _userManager;
+@{
+    var user = await _userManager.GetUserAsync(User);
+    var userAccess = await user.AccessToOrganizationAsync(Model.OrganizerId);
+}
+
 <h1>Details</h1>
+
 
 <div>
     <h4>EventModel</h4>
@@ -39,7 +49,15 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (userAccess.CanEditEvents)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <span>|</span>
+    }
+    @if (userAccess.CanDeleteEvents)
+    {
+        <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+        <span>|</span>
+    }
+    <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId">Back to Organizer</a>
 </div>
