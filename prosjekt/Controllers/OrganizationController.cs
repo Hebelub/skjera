@@ -122,12 +122,9 @@ namespace prosjekt.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Description")] OrganizationModel organizationModel)
         {
-            if (id != organizationModel.Id)
-            {
-                return NotFound();
-            }
+            organizationModel.Id = id;
             
-            if (!OrganizationAccess(organizationModel.Id).CanEditOrganization)
+            if (!OrganizationAccess(id).CanEditOrganization)
             {
                 return NotFound();
             }
