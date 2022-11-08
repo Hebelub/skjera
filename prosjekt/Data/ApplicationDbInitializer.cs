@@ -77,8 +77,25 @@ public class ApplicationDbInitializer
                 "Info 6 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             )
         };
-
+        
         db.EventModels.AddRange(events);
+
+        //Barnabas: 
+        var accessRights = new[]
+        {
+            new UserOrganizationAccess(user, organizations[1])
+            {
+                CanDeleteOrganization = true,
+                CanEditOrganization = true,
+                CanCreateEvents = true,
+                CanDeleteEvents = true,
+                CanChangeUserRights = true,
+                CanAddUsers = true,
+                CanEditEvents = true
+            }
+        };
+        db.UserOrganizationAccess.AddRange(accessRights);
+
 
         // Finally save changes to the database
         db.SaveChanges();
