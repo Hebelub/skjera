@@ -1,4 +1,12 @@
-﻿@{
+﻿@using prosjekt.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext DbContext;
+
+    <link rel="stylesheet" href="~/css/EventCalendarWidget.css" asp-append-version="true"/>
+
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -24,6 +32,29 @@
 @* </div> *@
 @* *@
 
+@{
+    // create a function that returns a list of events
+    string EventToJsEvent(EventModel e)
+    {
+        if (e.StartTime == null)
+        {
+            return null;
+        }
+        return $"{{eventName: '{e.Title}', date: '{e.StartTime!.Value.Date}', celanar: '{e.Organizer.Name}', color: 'red'}}";
+    }
+}
+
+    @{
+        var events = await DbContext.EventModels.Include((o) => o.Organizer).ToListAsync();
+        var jsEvents = new List<string>();
+        
+        foreach (var e in events)
+        {
+            jsEvents.Add(EventToJsEvent(e));
+        }
+        
+
+        }
 
 
 <div id="calendar"></div>
