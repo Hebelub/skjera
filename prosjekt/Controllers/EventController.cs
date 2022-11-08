@@ -155,14 +155,25 @@ namespace prosjekt.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
         {
-            if (id != eventModel.Id)
+            // This is some quickfix code
+            var eventInDb = await _context.EventModels.FindAsync(id);
+            if (eventInDb == null)
             {
                 return NotFound();
             }
-            
-            if (!EventAccess(eventModel.Id).CanEditEvents)
+            var organizerId = eventInDb.OrganizerId;
+            var organizer = await _context.OrganizationModels.FindAsync(organizerId);
+            if (organizer == null)
             {
-                //return NotFound();
+                return NotFound();
+            }
+            eventModel.Organizer = organizer;
+            // End of quickfix code
+
+
+            if (!EventAccess(id).CanEditEvents)
+            {
+                return NotFound();
             }
 
             // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
@@ -174,9 +185,11 @@ namespace prosjekt.Controllers
                 return View(eventModel);
             }
             
-            //Barnabas:  Clear
+            eventModel.Id = id;
+            eventModel.Organizer = organizer;
+
             ModelState.Clear();
-            
+
             if (!ModelState.IsValid)
             {
                 return View(eventModel);
@@ -196,9 +209,9 @@ namespace prosjekt.Controllers
                 throw;
             }
 
-            return RedirectToAction(nameof(Details), "Organization", new { id=eventModel.OrganizerId });
+            return RedirectToAction(nameof(Details), "Organization", new { id=organizerId });
         }
-
+    
         // GET: Event/Delete/5
         [Authorize]
         public async Task<IActionResult> Delete(int? id)

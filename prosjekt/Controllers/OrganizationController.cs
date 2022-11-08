@@ -124,6 +124,7 @@ namespace prosjekt.Controllers
         {
             organizationModel.Id = id;
             
+            
             if (!OrganizationAccess(id).CanEditOrganization)
             {
                 return NotFound();
