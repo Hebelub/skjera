@@ -153,40 +153,22 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
         {
-            // This is some quickfix code
-            var eventInDb = await _context.EventModels.FindAsync(id);
-            if (eventInDb == null)
-            {
-                return NotFound();
-            }
-            var organizerId = eventInDb.OrganizerId;
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)
             {
                 return NotFound();
             }
+
+            eventModel.Id = id;
             eventModel.Organizer = organizer;
-            // End of quickfix code
-
-
-            if (!EventAccess(id).CanEditEvents)
-            {
-                return NotFound();
-            }
-
-            // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
-            // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
             
             if (eventModel.StartTime != null && eventModel.EndTime != null && DateTime.Compare(eventModel.StartTime!.Value, eventModel.EndTime!.Value) >= 0)
             {
                 ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Select end time to be after start time");
                 return View(eventModel);
             }
-            
-            eventModel.Id = id;
-            eventModel.Organizer = organizer;
 
             ModelState.Clear();
 
@@ -197,7 +179,7 @@ namespace prosjekt.Controllers
 
             try
             {
-                _context.Update(eventModel);
+                _context.EventModels.Update(eventModel);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
