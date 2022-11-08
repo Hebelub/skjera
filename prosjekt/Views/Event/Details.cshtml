@@ -6,7 +6,7 @@
 @inject UserManager<ApplicationUser> UserManager;
 @{
     var user = await UserManager.GetUserAsync(User);
-    var accessRight = user?.AccessToOrganizationAsync(Model.OrganizerId).Result ?? AccessRight.NoAccess;
+    var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.OrganizerId).Result ?? new UserOrganization();
 }
 
 <h1>Details</h1>
@@ -49,12 +49,12 @@
     </dl>
 </div>
 <div>
-    @if (accessRight.CanEditEvents)
+    @if (userOrganizationRelation.AccessRight.CanEditEvents)
     {
         <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-eventModel="@Model">Edit</a>
         <span>|</span>
     }
-    @if (accessRight.CanDeleteEvents)
+    @if (userOrganizationRelation.AccessRight.CanDeleteEvents)
     {
         <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
         <span>|</span>

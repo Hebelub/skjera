@@ -18,13 +18,13 @@ public class ApplicationUser : IdentityUser
         _context = context;
     }
 
-    public async Task<AccessRight> AccessToOrganizationAsync(int organizationId)
+    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId)
     {
         var organizationRelation = await _context.UserOrganization
             .Include(o => o.AccessRight)
             .FirstOrDefaultAsync(access => access.User == this && access.OrganizationId == organizationId);
 
-        return organizationRelation?.AccessRight ?? AccessRight.NoAccess;
+        return organizationRelation ?? new UserOrganization();
     } 
     
     public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()

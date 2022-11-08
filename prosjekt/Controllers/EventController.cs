@@ -252,13 +252,13 @@ namespace prosjekt.Controllers
         
         private AccessRight OrganizationAccess(int organizationId)
         {
-            return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizationId).Result;
+            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
         
         private AccessRight EventAccess(int eventId)
         {
             var organizerId = _context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId;
-            return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizerId ?? 0).Result;
+            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizerId ?? 0).Result.AccessRight;
         }
     }
 }

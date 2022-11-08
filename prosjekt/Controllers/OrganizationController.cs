@@ -194,7 +194,7 @@ namespace prosjekt.Controllers
 
         private AccessRight OrganizationAccess(int organizationId)
         {
-            return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizationId).Result;
+            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
         
     }

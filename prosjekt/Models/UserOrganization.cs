@@ -12,6 +12,13 @@ public class UserOrganization
         Organization = organization;
         AccessRight = accessRight;
     }
+    
+    public UserOrganization(OrganizationModel? organization)
+    {
+        Organization = organization;
+    }
+    
+    
 
     public int Id { get; set; }
 
@@ -20,10 +27,11 @@ public class UserOrganization
     
     public int OrganizationId { get; set; }
     public OrganizationModel Organization { get; set; }
-    
-    
-    
-    
+
+
+    private bool IsFollowing { get; set; }
+
+
     private AccessRight? _accessRight;
     public int AccessRightId { get; set; }
     public AccessRight AccessRight
