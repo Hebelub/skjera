@@ -250,12 +250,12 @@ namespace prosjekt.Controllers
             return _context.EventModels.Any(e => e.Id == id);
         }
         
-        private UserOrganizationAccess OrganizationAccess(int organizationId)
+        private AccessRight OrganizationAccess(int organizationId)
         {
             return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizationId).Result;
         }
         
-        private UserOrganizationAccess EventAccess(int eventId)
+        private AccessRight EventAccess(int eventId)
         {
             var organizerId = _context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId;
             return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizerId ?? 0).Result;

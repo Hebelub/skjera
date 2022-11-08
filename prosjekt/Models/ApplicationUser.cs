@@ -18,16 +18,21 @@ public class ApplicationUser : IdentityUser
         _context = context;
     }
 
-    public async Task<UserOrganizationAccess> AccessToOrganizationAsync(int organizationId)
+    public async Task<AccessRight> AccessToOrganizationAsync(int organizationId)
     {
-        var access = await _context.UserOrganizationAccess
+        var organizationRelation = await _context.UserOrganization
+            .Include(o => o.AccessRight)
             .FirstOrDefaultAsync(access => access.User == this && access.OrganizationId == organizationId);
 
-        return access ?? new UserOrganizationAccess();
+        return organizationRelation?.AccessRight ?? AccessRight.NoAccess;
     } 
     
-    public async Task<List<UserOrganizationAccess>> AllOrganizationAccessRightsAsync()
+    public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()
     {
-        return await _context.UserOrganizationAccess.Where(access => access.User == this).Include(access => access.Organization).ToListAsync();
+        return await _context.UserOrganization
+            .Where(relation => relation.User == this)
+            .Include(relation => relation.Organization)
+            .Include(relation => relation.AccessRight)
+            .ToListAsync();
     }
 }

@@ -10,11 +10,9 @@
 
 @{
     var eventsOfOrganization = await DbContext.EventModels.Where(e => e.OrganizerId == Model.Id).ToListAsync(); 
-}
 
-@{
     var user = await UserManager.GetUserAsync(User);
-    var userAccess = user?.AccessToOrganizationAsync(Model.Id).Result ?? new UserOrganizationAccess();
+    var accessRight = user?.AccessToOrganizationAsync(Model.Id).Result ?? AccessRight.NoAccess;
 }
 
 
@@ -41,12 +39,12 @@
 </div>
 <div>
     
-    @if (userAccess.CanEditOrganization)
+    @if (accessRight.CanEditOrganization)
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit Organization</a> 
         <span> | </span>
     }
-    @if (userAccess.CanDeleteOrganization)
+    @if (accessRight.CanDeleteOrganization)
     {
         <a asp-action="Delete" asp-route-id="@Model.Id">Delete Organization</a>
         <span> | </span>
@@ -59,7 +57,7 @@
     <partial name="_EventList" model="eventsOfOrganization"/>
 </div>
 
-@if (userAccess.CanCreateEvents)
+@if (accessRight.CanCreateEvents)
 {
     <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id">Create New Event</a>
 }

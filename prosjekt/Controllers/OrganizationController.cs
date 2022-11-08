@@ -72,16 +72,7 @@ namespace prosjekt.Controllers
             var user = await _userManager.GetUserAsync(User);
             
             // The user who created this has all the access-rights
-            var userOrganizationAccess = new UserOrganizationAccess(user, organizationModel)
-            {
-                CanDeleteOrganization = true,
-                CanCreateEvents = true,
-                CanAddUsers = true,
-                CanEditEvents = true,
-                CanEditOrganization = true,
-                CanDeleteEvents = true,
-                CanChangeUserRights = true
-            };
+            var userOrganizationAccess = new UserOrganization(user, organizationModel, AccessRight.FullAccess);
             
             _context.Add(organizationModel);
             _context.Add(userOrganizationAccess);
@@ -201,7 +192,7 @@ namespace prosjekt.Controllers
             return _context.OrganizationModels.Any(e => e.Id == id);
         }
 
-        private UserOrganizationAccess OrganizationAccess(int organizationId)
+        private AccessRight OrganizationAccess(int organizationId)
         {
             return _userManager.GetUserAsync(User).Result.AccessToOrganizationAsync(organizationId).Result;
         }

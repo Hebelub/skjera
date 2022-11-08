@@ -83,18 +83,9 @@ public class ApplicationDbInitializer
         //Barnabas: 
         var accessRights = new[]
         {
-            new UserOrganizationAccess(user, organizations[1])
-            {
-                CanDeleteOrganization = true,
-                CanEditOrganization = true,
-                CanCreateEvents = true,
-                CanDeleteEvents = true,
-                CanChangeUserRights = true,
-                CanAddUsers = true,
-                CanEditEvents = true
-            }
+            new UserOrganization(user, organizations[1], AccessRight.FullAccess)
         };
-        db.UserOrganizationAccess.AddRange(accessRights);
+        db.UserOrganization.AddRange(accessRights);
 
 
         // Finally save changes to the database
