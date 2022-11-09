@@ -1,0 +1,28 @@
+@using Microsoft.CodeAnalysis.VisualBasic.Syntax
+@model EventModel
+
+<div class="Event_card" id="Event">
+     <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmm" class="center" id="profile_pic">
+     <div class="header">
+         <h2 class="text-center"> @Model.Organizer.Name </h2>
+         
+         <h1 class="text-center">
+         <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a>
+         </h1>
+     </div>
+    @if (Model.StartTime.HasValue)
+    {
+        @Model.StartTime
+        @if (Model.EndTime.HasValue)
+        {
+            <p> until </p>
+            @Model.EndTime
+        }
+    }
+     
+     
+     
+     
+
+
+</div>

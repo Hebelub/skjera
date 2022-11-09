@@ -42,69 +42,16 @@
 @if (organizationsWithAdminRights.Count > 0)
 {
     <h1>Foreninger du har Admintilgang til</h1>
-    <table class="table">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
+
     @foreach (var item in organizationsWithAdminRights)
     {
-        {
-            
-        }
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
+        <partial name="_OrganizationPartial" model="item"/>
     }
-    </tbody>
-</table>
 }
-
 
 
 <h1>Linje/Student-foreninger</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
 @foreach (var item in organizationsWithoutAdminRights) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
+    <partial name="_OrganizationPartial" model="item"/>
 }
-    </tbody>
-</table>

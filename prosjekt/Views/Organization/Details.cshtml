@@ -9,7 +9,10 @@
 @inject UserManager<ApplicationUser> UserManager;
 
 @{
-    var eventsOfOrganization = await DbContext.EventModels.Where(e => e.OrganizerId == Model.Id).ToListAsync(); 
+    var eventsOfOrganization = await DbContext.EventModels
+        .Where(e => e.OrganizerId == Model.Id)
+        .Include(e => e.Organizer)
+        .ToListAsync(); 
 
     var user = await UserManager.GetUserAsync(User);
     var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.Id).Result ?? new UserOrganization();

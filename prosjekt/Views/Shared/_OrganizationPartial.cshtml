@@ -1,0 +1,17 @@
+@model OrganizationModel
+
+
+
+<div class="card">
+    <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmm" class="profile_picture">
+    <div class="header">
+        <h1 class="text-center">@Model.Name</h1>
+    </div>
+
+    <div class="text-center" id="toscroll">
+        <p> @Model.Description </p>
+    </div>
+    
+    <a asp-action="Details" asp-route-id="@Model.Id" class="text-center">Details</a>
+    
+</div>

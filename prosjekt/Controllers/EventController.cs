@@ -28,7 +28,9 @@ namespace prosjekt.Controllers
         {
             ViewData["Title"] = "All Events";
             
-            return View(await _context.EventModels.ToListAsync());
+            return View(await _context.EventModels
+                .Include(e => e.Organizer)
+                .ToListAsync());
         }
 
         // GET: Event/Details/5

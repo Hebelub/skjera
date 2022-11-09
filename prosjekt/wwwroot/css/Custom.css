@@ -1,0 +1,33 @@
+.profile_picture{
+    border-radius: 10%;
+    
+    width: 200px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card{
+    width: 400px;
+    height: auto;
+    margin: auto;
+ 
+    background: #e5e6e7;
+}
+
+.Event_card
+{
+    width: 400px;
+    height: auto;
+    margin: auto;
+    
+    background: #e5e6e7;
+}
+
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+    width: 60%;
+}
