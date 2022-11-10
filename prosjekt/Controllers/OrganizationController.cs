@@ -186,6 +186,31 @@ namespace prosjekt.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
+        // POST: Organization/Edit/5
+        public async Task<IActionResult> Follow(int id, bool follow)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userOrganization = await user.GetRelationToOrganizationAsync(id);
+            userOrganization.IsFollowing = follow;
+
+            if (_context.UserOrganization.Any(e => e.OrganizationId == id && e.User == user))
+            {
+                _context.UserOrganization.Update(userOrganization);
+            }
+            else
+            {
+                await _context.UserOrganization.AddAsync(userOrganization);
+            }
+
+            
+            await _context.SaveChangesAsync();
+            return View(nameof(Index), await _context.OrganizationModels.ToListAsync());
+        }
 
         private bool OrganizationModelExists(int id)
         {
@@ -196,6 +221,5 @@ namespace prosjekt.Controllers
         {
             return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
-        
     }
 }

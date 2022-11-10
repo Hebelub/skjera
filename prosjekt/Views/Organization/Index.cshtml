@@ -4,32 +4,32 @@
 @model IEnumerable<OrganizationModel>
 @{
     var user = await UserManager.GetUserAsync(User);
-    var listUserAccessRights = user?.GetOrganizationRelationsAsync().Result ?? new List<UserOrganization>();
+    var listUserOrganizationRelations = user?.GetOrganizationRelationsAsync().Result ?? new List<UserOrganization>();
 
 
-    bool UserAccess(OrganizationModel organization)
+    UserOrganization GetUserOrganizationRelation(OrganizationModel organization)
     {
-        foreach (var access in listUserAccessRights)
+        foreach (var userOrganization in listUserOrganizationRelations)
         {
-            if (access.Organization == organization)
+            if (userOrganization.Organization == organization)
             {
-                return true;
+                return userOrganization;
             }
         }
-        return false;
+        return new UserOrganization(user, organization);
     }
 
-    List<OrganizationModel> organizationsWithAdminRights = new();
-    List<OrganizationModel> organizationsWithoutAdminRights = new();
+    List<UserOrganization> userOrganizationRelations = new();
+    bool organizationWithAccessExist = false;
+    bool organizationYouFollowExist = false;
+
     foreach (var organization in Model)
     {
-        if (UserAccess(organization))
+        var userOrganizationRelation = GetUserOrganizationRelation(organization);
+        userOrganizationRelations.Add(userOrganizationRelation);
+        if (userOrganizationRelation.AccessRight.HasAnyAccess)
         {
-            organizationsWithAdminRights.Add(organization);
-        }
-        else
-        {
-            organizationsWithoutAdminRights.Add(organization);
+            organizationWithAccessExist = true;
         }
     }
 }
@@ -39,19 +39,25 @@
 </p>
 
 
-@if (organizationsWithAdminRights.Count > 0)
+@if (organizationWithAccessExist)
 {
     <h1>Foreninger du har Admintilgang til</h1>
 
-    @foreach (var item in organizationsWithAdminRights)
+    @foreach (var relation in userOrganizationRelations)
     {
-        <partial name="_OrganizationPartial" model="item"/>
+        if (relation.AccessRight.HasAnyAccess)
+        {
+            <partial name="_OrganizationPartial" model="relation"/>
+        }
     }
 }
 
 
 <h1>Linje/Student-foreninger</h1>
-
-@foreach (var item in organizationsWithoutAdminRights) {
-    <partial name="_OrganizationPartial" model="item"/>
+@foreach (var relation in userOrganizationRelations)
+{
+    if (!relation.AccessRight.HasAnyAccess)
+    {
+        <partial name="_OrganizationPartial" model="relation"/>
+    }
 }

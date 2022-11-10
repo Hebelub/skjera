@@ -6,38 +6,37 @@ public class AccessRight
     
     public static AccessRight NoAccess
     {
-        get
+        get => new AccessRight()
         {
-            return new AccessRight()
-            {
-                CanDeleteOrganization = false,
-                CanEditOrganization = false,
-                CanCreateEvents = false,
-                CanEditEvents = false,
-                CanDeleteEvents = false,
-                CanChangeUserRights = false,
-                CanAddUsers = false
-            };
-        }
+            CanDeleteOrganization = false,
+            CanEditOrganization = false,
+            CanCreateEvents = false,
+            CanEditEvents = false,
+            CanDeleteEvents = false,
+            CanChangeUserRights = false,
+            CanAddUsers = false
+        };
     }
     
     public static AccessRight FullAccess
     {
-        get
+        get => new AccessRight()
         {
-            return new AccessRight()
-            {
-                CanDeleteOrganization = true,
-                CanEditOrganization = true,
-                CanCreateEvents = true,
-                CanEditEvents = true,
-                CanDeleteEvents = true,
-                CanChangeUserRights = true,
-                CanAddUsers = true
-            };
-        }
+            CanDeleteOrganization = true,
+            CanEditOrganization = true,
+            CanCreateEvents = true,
+            CanEditEvents = true,
+            CanDeleteEvents = true,
+            CanChangeUserRights = true,
+            CanAddUsers = true
+        };
     }
     
+    public bool HasAnyAccess
+    {
+        get => CanDeleteOrganization || CanEditOrganization || CanCreateEvents || CanEditEvents || CanDeleteEvents ||
+               CanChangeUserRights || CanAddUsers;
+    }
 
     public bool CanDeleteOrganization { get; set; }
     public bool CanEditOrganization { get; set; }

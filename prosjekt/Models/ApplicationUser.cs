@@ -24,7 +24,20 @@ public class ApplicationUser : IdentityUser
             .Include(o => o.AccessRight)
             .FirstOrDefaultAsync(access => access.User == this && access.OrganizationId == organizationId);
 
-        return organizationRelation ?? new UserOrganization();
+        if (organizationRelation != null && organizationRelation.Id != 0)
+        {
+            return organizationRelation;
+        }
+
+        var organization = await _context.OrganizationModels.FindAsync(organizationId);
+
+        if (organization == null)
+        {   
+            throw new Exception("Organization not found");
+        }
+
+        var a = new UserOrganization(this, organization, AccessRight.NoAccess);
+        return a;
     } 
     
     public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()

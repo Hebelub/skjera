@@ -1,4 +1,6 @@
-﻿namespace prosjekt.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace prosjekt.Models;
 
 public class UserOrganization
 {
@@ -6,19 +8,18 @@ public class UserOrganization
     {
     }
     
-    public UserOrganization(ApplicationUser user, OrganizationModel organization, AccessRight? accessRight)
+    public UserOrganization(ApplicationUser user, OrganizationModel organization, AccessRight accessRight)
     {
         User = user;
         Organization = organization;
         AccessRight = accessRight;
     }
     
-    public UserOrganization(OrganizationModel? organization)
+    public UserOrganization(ApplicationUser user, OrganizationModel organization)
     {
+        User = user;
         Organization = organization;
     }
-    
-    
 
     public int Id { get; set; }
 
@@ -29,7 +30,7 @@ public class UserOrganization
     public OrganizationModel Organization { get; set; }
 
 
-    private bool IsFollowing { get; set; }
+    public bool IsFollowing { get; set; }
 
 
     private AccessRight? _accessRight;
