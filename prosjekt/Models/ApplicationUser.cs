@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using prosjekt.Data;
 
@@ -7,15 +8,17 @@ namespace prosjekt.Models;
 public class ApplicationUser : IdentityUser
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public ApplicationUser()
     {
         
     }
     
-    public ApplicationUser(ApplicationDbContext context)
+    public ApplicationUser(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId)
@@ -35,9 +38,8 @@ public class ApplicationUser : IdentityUser
         {   
             throw new Exception("Organization not found");
         }
-
-        var a = new UserOrganization(this, organization, AccessRight.NoAccess);
-        return a;
+        
+        return new UserOrganization(this, organization, AccessRight.NoAccess);
     } 
     
     public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()

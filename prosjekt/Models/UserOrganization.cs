@@ -39,6 +39,11 @@ public class UserOrganization
     {
         get
         {
+            var roles = await _userManager.GetRolesAsync(User);
+            if (roles.Contains("Admin"))
+            {
+                return AccessRight.FullAccess;
+            }
             Console.WriteLine("Getting AccessRight: " + _accessRight);
             return _accessRight ?? AccessRight.NoAccess;
         }
