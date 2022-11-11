@@ -44,11 +44,16 @@ public class EventModel
     
     
     //[Required(ErrorMessage = "Start time should not be greater than End time.")]
+    [DisplayName ("Date")]
+    public DateTime? Date { get; set; }
+    
     [DisplayName ("StartTime")]
     public DateTime? StartTime { get; set; }
         
     [DisplayName ("EndTime")]
     public DateTime? EndTime { get; set; }
+    
+    
 
     
     public int OrganizerId { get; set; }
