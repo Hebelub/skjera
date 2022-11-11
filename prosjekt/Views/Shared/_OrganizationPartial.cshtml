@@ -9,7 +9,8 @@
     </div>
 
     <div class="text-center" id="toscroll">
-        <p> @Model.Organization.Description </p>
+        @Html.Raw(Model.Organization.Description)
+        
     </div>
     
     <a asp-action="Details" asp-route-id="@Model.Organization.Id" class="text-center">Details</a>
