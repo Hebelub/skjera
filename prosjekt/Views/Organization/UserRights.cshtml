@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using prosjekt.Data
+@model OrganizationModel
+
+
+@inject UserManager<ApplicationUser> UserManager;
+@inject ApplicationDbContext ApplicationDbContext;
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    var organizationRelations = await ApplicationDbContext.UserOrganization
+        .Where(uo => uo.User == user && uo.OrganizationId == Model.Id)
+        .Include(uo => uo.AccessRight)
+        .Include(uo => uo.User)
+        .ToListAsync();
+}
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Users With Rights</h2>
+
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+    </tr>
+</thead>
+
+@foreach (var userOrganization in organizationRelations)
+{
+    if (userOrganization.AccessRight.HasAnyAccess)
+    {
+        <tr>
+            <th>
+                <p>@userOrganization.User.UserName</p>
+            </th>
+
+            @if (userOrganization.AccessRight.CanDeleteOrganization)
+            {
+                <a asp-action="Details" asp-route-id="@Model.Id">Details</a>
+                <span> | </span>
+            }
+        </tr>
+    }
+}

@@ -187,6 +187,18 @@ namespace prosjekt.Controllers
             return RedirectToAction(nameof(Index));
         }
         
+        // GET: Organization/Access/5
+        public async Task<IActionResult> UserRights(int id)
+        {
+            var organization = await _context.OrganizationModels.FindAsync(id);
+            if (organization == null)
+            {
+                return NotFound();
+            }
+            
+            return View(organization);
+        }
+        
         // POST: Organization/Edit/5
         public async Task<IActionResult> Follow(int id, bool follow)
         {
