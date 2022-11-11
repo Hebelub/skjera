@@ -26,7 +26,7 @@
             @Html.DisplayNameFor(model => model.Info)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Info)
+            @Html.Raw(Model.Info)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StartTime)
