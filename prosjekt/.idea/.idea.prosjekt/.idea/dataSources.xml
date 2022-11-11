@@ -13,6 +13,7 @@
         </library>
       </libraries>
     </data-source>
+<<<<<<< Updated upstream
     <data-source source="LOCAL" name="app [2]" uuid="02f8eadb-4fdb-48af-916a-16f74205fa0b">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
@@ -30,6 +31,13 @@
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/app.db</jdbc-url>
+=======
+    <data-source source="LOCAL" name="app [2]" uuid="122fbba9-575d-4f1d-8597-ddec1773bad6">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Aziz8\skjera\prosjekt\app.db</jdbc-url>
+>>>>>>> Stashed changes
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

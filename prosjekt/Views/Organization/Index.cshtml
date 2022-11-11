@@ -41,7 +41,7 @@
 
 @if (organizationWithAccessExist)
 {
-    <h1>Foreninger du har Admintilgang til</h1>
+    <h1>Organizations you have admin rights to</h1>
 
     @foreach (var relation in userOrganizationRelations)
     {
@@ -53,7 +53,7 @@
 }
 
 
-<h1>Linje/Student-foreninger</h1>
+<h1>Student Organizations</h1>
 @foreach (var relation in userOrganizationRelations)
 {
     if (!relation.AccessRight.HasAnyAccess)
