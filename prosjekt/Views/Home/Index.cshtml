@@ -1,10 +1,9 @@
 ﻿@using prosjekt.Data
 @using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext DbContext;
+@model IEnumerable<EventModel>
 
     <link rel="stylesheet" href="~/css/EventCalendarWidget.css" asp-append-version="true"/>
-
-
 
 @{
     ViewData["Title"] = "Home Page";
@@ -57,3 +56,11 @@
 <div id="calendar"></div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
 
+<div id="Events_this_week">
+    @foreach (var item in Model) {q
+           if (item.StartTime > DateTime.Today && item.StartTime < DateTime.Now + TimeSpan.FromDays(7))
+           {
+               <partial name="_EventPartial" model="item"/>
+           }
+    }
+</div>
