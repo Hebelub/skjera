@@ -19,11 +19,11 @@
     {
         @if (Model.IsFollowing)
         {
-            <a asp-action="Follow" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="false">Following</a><br />
+            <a asp-action="Follow" class="btn btn-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="false">Following</a><br />
         }
         else
         {
-            <a asp-action="Follow" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="true">Follow</a><br />
+            <a asp-action="Follow" class="btn btn-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="true">Follow</a><br />
         }
     }
     
