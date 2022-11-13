@@ -39,7 +39,6 @@ public class UserOrganization
     {
         get
         {
-            Console.WriteLine("Getting AccessRight: " + _accessRight);
             return _accessRight ?? AccessRight.NoAccess;
         }
         set

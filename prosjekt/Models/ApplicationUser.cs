@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using prosjekt.Data;
 
@@ -35,9 +36,8 @@ public class ApplicationUser : IdentityUser
         {   
             throw new Exception("Organization not found");
         }
-
-        var a = new UserOrganization(this, organization, AccessRight.NoAccess);
-        return a;
+        
+        return new UserOrganization(this, organization, AccessRight.NoAccess);
     } 
     
     public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()

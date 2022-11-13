@@ -65,6 +65,9 @@ namespace prosjekt.Controllers
 
             if (!OrganizationAccess(id).CanCreateEvents)
             {
+                return Forbid();
+            }
+            {
                 return NotFound();
             }
 
@@ -83,7 +86,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,StartTime,EndTime")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,EndTime")] EventModel eventModel, int id)
         {
             var organization = await _context.OrganizationModels.FindAsync(id);
 
@@ -155,7 +158,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
         {
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)
@@ -254,13 +257,16 @@ namespace prosjekt.Controllers
         
         private AccessRight OrganizationAccess(int organizationId)
         {
+            if (User.IsInRole("Admin"))
+            {
+                return AccessRight.FullAccess;
+            }
             return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
         
         private AccessRight EventAccess(int eventId)
         {
-            var organizerId = _context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId;
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizerId ?? 0).Result.AccessRight;
+            return OrganizationAccess(_context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId ?? 0);
         }
     }
 }
