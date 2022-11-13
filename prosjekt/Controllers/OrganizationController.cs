@@ -219,7 +219,9 @@ namespace prosjekt.Controllers
 
         private AccessRight OrganizationAccess(int organizationId)
         {
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
+            return User.IsInRole("Admin") 
+                ? AccessRight.FullAccess
+                : _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
     }
 }

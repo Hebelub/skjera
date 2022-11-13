@@ -8,17 +8,15 @@ namespace prosjekt.Models;
 public class ApplicationUser : IdentityUser
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
 
     public ApplicationUser()
     {
         
     }
     
-    public ApplicationUser(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+    public ApplicationUser(ApplicationDbContext context)
     {
         _context = context;
-        _userManager = userManager;
     }
 
     public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId)

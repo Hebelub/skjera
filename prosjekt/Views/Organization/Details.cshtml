@@ -16,6 +16,9 @@
 
     var user = await UserManager.GetUserAsync(User);
     var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.Id).Result ?? new UserOrganization();
+    var userAccessRight = User.IsInRole("Admin") 
+        ? AccessRight.FullAccess 
+        : userOrganizationRelation.AccessRight;
 }
 
 
@@ -42,12 +45,12 @@
 </div>
 <div>
     
-    @if (userOrganizationRelation.AccessRight.CanEditOrganization)
+    @if (userAccessRight.CanEditOrganization)
     {
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning" >Edit Organization</a> 
         <span> | </span>
     }
-    @if (userOrganizationRelation.AccessRight.CanDeleteOrganization)
+    @if (userAccessRight.CanDeleteOrganization)
     {
         <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Organization</a>
         <span> | </span>
@@ -60,7 +63,7 @@
     <partial name="_EventList" model="eventsOfOrganization"/>
 </div>
 
-@if (userOrganizationRelation.AccessRight.CanCreateEvents)
+@if (userAccessRight.CanCreateEvents)
 {
     <a asp-controller="Event"  asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary" >Create New Event</a>
 }

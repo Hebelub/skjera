@@ -4,8 +4,9 @@
 @model IEnumerable<OrganizationModel>
 @{
     var user = await UserManager.GetUserAsync(User);
-    var listUserOrganizationRelations = user?.GetOrganizationRelationsAsync().Result ?? new List<UserOrganization>();
-
+    List<UserOrganization> listUserOrganizationRelations = user == null
+        ? new List<UserOrganization>()
+        : user.GetOrganizationRelationsAsync().Result;
 
     UserOrganization GetUserOrganizationRelation(OrganizationModel organization)
     {
@@ -21,15 +22,19 @@
 
     List<UserOrganization> userOrganizationRelations = new();
     bool organizationWithAccessExist = false;
-    bool organizationYouFollowExist = false;
+    bool organizationWithoutAccessExist = false;
 
     foreach (var organization in Model)
     {
         var userOrganizationRelation = GetUserOrganizationRelation(organization);
         userOrganizationRelations.Add(userOrganizationRelation);
-        if (userOrganizationRelation.AccessRight.HasAnyAccess)
+        if (userOrganizationRelation.AccessRight.HasAnyAccess || User.IsInRole("Admin"))
         {
             organizationWithAccessExist = true;
+        }
+        else
+        {
+            organizationWithoutAccessExist = true;
         }
     }
 }
@@ -45,19 +50,22 @@
 
     @foreach (var relation in userOrganizationRelations)
     {
-        if (relation.AccessRight.HasAnyAccess)
-        {
+        if (relation.AccessRight.HasAnyAccess || User.IsInRole("Admin"))
+        {   
             <partial name="_OrganizationPartial" model="relation"/>
         }
     }
 }
 
 
-<h1>Student Organizations</h1>
-@foreach (var relation in userOrganizationRelations)
+@if (organizationWithoutAccessExist)
 {
-    if (!relation.AccessRight.HasAnyAccess)
+    <h1>Student Organizations</h1>
+    @foreach (var relation in userOrganizationRelations)
     {
-        <partial name="_OrganizationPartial" model="relation"/>
+        if (!relation.AccessRight.HasAnyAccess && !User.IsInRole("Admin"))
+        {
+            <partial name="_OrganizationPartial" model="relation"/>
+        }
     }
 }
