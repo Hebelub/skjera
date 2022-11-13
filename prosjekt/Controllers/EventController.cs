@@ -83,7 +83,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,StartTime,EndTime")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,EndTime")] EventModel eventModel, int id)
         {
             var organization = await _context.OrganizationModels.FindAsync(id);
 
@@ -155,7 +155,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
         {
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)

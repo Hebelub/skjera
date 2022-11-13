@@ -26,7 +26,7 @@
             @Html.DisplayNameFor(model => model.Info)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Info)
+            @Html.Raw(Model.Info)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StartTime)
@@ -51,13 +51,13 @@
 <div>
     @if (userOrganizationRelation.AccessRight.CanEditEvents)
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-eventModel="@Model">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-eventModel="@Model"  class="btn btn-warning">Edit</a>
         <span>|</span>
     }
     @if (userOrganizationRelation.AccessRight.CanDeleteEvents)
     {
-        <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
         <span>|</span>
     }
-    <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId">Back to Organizer</a>
+    <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId"  class="btn btn-secondary">Back to Organizer</a>
 </div>
