@@ -56,9 +56,9 @@
         <span> | </span>
     }
     
-    @if (userOrganizationRelation.AccessRight.CanDeleteOrganization)
+    @if (userAccessRight.CanDeleteOrganization)
     {
-        <a asp-action="UserRights" asp-route-id="@Model.Id">Users With Rights</a>
+        <a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.Id">Users With Rights</a>
         <span> | </span>
     }
     <a asp-action="Index"  class="btn btn-secondary" >Back To Organizations</a>

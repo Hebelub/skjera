@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using prosjekt.Data
+@model UserOrganization
+
+
+@{
+    var userRight = User.IsInRole("Admin") 
+        ? AccessRight.FullAccess
+        : Model.AccessRight;
+}
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Manage rights for @Model.Organization.Name</h2>
+
+<span>Can Add Users: </span><a>@Model.AccessRight.CanAddUsers</a>
+<span>Can Change UserRights: </span><a>@Model.AccessRight.CanChangeUserRights</a>
+<span>Can Delete Events: </span><a>@Model.AccessRight.CanDeleteEvents</a>
+<span>Can Delete Organization: </span><a>@Model.AccessRight.CanDeleteOrganization</a>
+<span>Can Edit Organization: </span><a>@Model.AccessRight.CanEditOrganization</a>
+<span>Can Create Events: </span><a>@Model.AccessRight.CanCreateEvents</a>
+<span>Can Can Edit Events: </span><a>@Model.AccessRight.CanEditEvents</a>
+
+

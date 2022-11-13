@@ -42,12 +42,16 @@
             <th>
                 <p>@userOrganization.User.UserName</p>
             </th>
+            
+            <th>
 
-            @if (userOrganization.AccessRight.CanDeleteOrganization)
-            {
-                <a asp-action="Details" asp-route-id="@Model.Id">Details</a>
+                <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id">Manage</a>
                 <span> | </span>
-            }
+            </th>
+
+            
         </tr>
+        
+        <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">Back</a>
     }
 }
