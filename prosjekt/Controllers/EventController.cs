@@ -67,9 +67,6 @@ namespace prosjekt.Controllers
             {
                 return Forbid();
             }
-            {
-                return NotFound();
-            }
 
             // Creating the model with the correct organization as the parent
             var model = new EventModel();
