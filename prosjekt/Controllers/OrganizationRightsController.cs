@@ -34,12 +34,27 @@ public class OrganizationRightsController : Controller
     public async Task<IActionResult> Manage(int id)
     {
         var userOrganizationRelation = await _context.UserOrganization
-            .FindAsync(id);
+            .Include(uo => uo.Organization)
+            .Include(uo => uo.User)
+            .FirstOrDefaultAsync(uo => uo.Id == id);
+
         if (userOrganizationRelation == null)
         {
             return NotFound();
         }
-            
+
         return View(userOrganizationRelation);
+    }
+    
+    public async Task<IActionResult> Add(int id)
+    {
+        var organization = await _context.OrganizationModels.FindAsync(id);
+
+        if (organization == null)
+        {
+            return NotFound();
+        }
+        
+        return View(organization);
     }
 }

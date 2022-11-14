@@ -21,9 +21,10 @@
     Layout = "_Layout";
 }
 
-<h2>Users With Rights</h2>
+<h2>Users With Rights for @Model.Name</h2>
 
-<thead>
+<table>
+    <thead>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -32,26 +33,41 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
     </tr>
-</thead>
+    </thead>
 
-@foreach (var userOrganization in organizationRelations)
-{
-    if (userOrganization.AccessRight.HasAnyAccess)
-    {
-        <tr>
-            <th>
-                <p>@userOrganization.User.UserName</p>
-            </th>
-            
-            <th>
-
-                <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id">Manage</a>
-                <span> | </span>
-            </th>
-
-            
-        </tr>
-        
-        <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">Back</a>
+    @{
+        var numUsersWithAccess = 0;
     }
+
+    @foreach (var userOrganization in organizationRelations)
+    {
+        if (userOrganization.AccessRight.HasAnyAccess)
+        {
+            numUsersWithAccess++;
+            <tbody>
+                <tr>
+                    <td>
+                        <p>@userOrganization.User.UserName</p>
+                    </td>
+
+                    <td>
+                        <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id">Manage</a>
+                    </td>
+                </tr>
+            </tbody>
+
+            <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">Back</a>
+        }
+    }
+</table>
+
+
+@* There should be a maximum of 3 users who have access simultaneously *@
+@if (numUsersWithAccess < 3)
+{
+    <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id">Add Another User</a>
+}
+else
+{
+    <span>Max 3 users with userrights at a time</span>
 }

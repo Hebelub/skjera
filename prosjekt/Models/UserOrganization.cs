@@ -37,15 +37,8 @@ public class UserOrganization
     public int AccessRightId { get; set; }
     public AccessRight AccessRight
     {
-        get
-        {
-            return _accessRight ?? AccessRight.NoAccess;
-        }
-        set
-        {
-            Console.WriteLine("Setting AccessRight value: " + value);
-            _accessRight = value;
-        }
+        get => _accessRight ?? AccessRight.NoAccess;
+        set => _accessRight = value;
     }
 
 }

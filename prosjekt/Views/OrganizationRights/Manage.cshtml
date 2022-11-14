@@ -5,24 +5,97 @@
 
 
 @{
-    var userRight = User.IsInRole("Admin") 
+    var userRight = User.IsInRole("Admin")
         ? AccessRight.FullAccess
         : Model.AccessRight;
 }
 
-@{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
-}
+<h2>Manage rights for @Model.User.UserName at @Model.Organization.Name</h2>
 
-<h2>Manage rights for @Model.Organization.Name</h2>
+<a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.OrganizationId">Back</a>
 
-<span>Can Add Users: </span><a>@Model.AccessRight.CanAddUsers</a>
-<span>Can Change UserRights: </span><a>@Model.AccessRight.CanChangeUserRights</a>
-<span>Can Delete Events: </span><a>@Model.AccessRight.CanDeleteEvents</a>
-<span>Can Delete Organization: </span><a>@Model.AccessRight.CanDeleteOrganization</a>
-<span>Can Edit Organization: </span><a>@Model.AccessRight.CanEditOrganization</a>
-<span>Can Create Events: </span><a>@Model.AccessRight.CanCreateEvents</a>
-<span>Can Can Edit Events: </span><a>@Model.AccessRight.CanEditEvents</a>
+<table>
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccessRight)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <span>Can Add Users: </span>
+        </td>
+        <td>
+            <a>@Model.AccessRight.CanAddUsers</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>Can Change UserRights: </span>
+        </td>
 
+        <td>
+            <a>@Model.AccessRight.CanChangeUserRights</a>
+        </td>
 
+    </tr>
+    <tr>
+        <td>
+            <span>Can Delete Events: </span>
+        </td>
+
+        <td>
+            <a>@Model.AccessRight.CanDeleteEvents</a>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            <span>Can Delete Organization: </span>
+        </td>
+
+        <td>
+            <a>@Model.AccessRight.CanDeleteOrganization</a>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            <span>Can Edit Organization: </span>
+        </td>
+
+        <td>
+            <a>@Model.AccessRight.CanEditOrganization</a>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <span>Can Create Events: </span>
+        </td>
+
+        <td>
+            <a>@Model.AccessRight.CanCreateEvents</a>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <span>Can Can Edit Events: </span>
+        </td>
+
+        <td>
+            <a>@Model.AccessRight.CanEditEvents</a>
+        </td>
+
+    </tr>
+
+    </tbody>
+</table>
