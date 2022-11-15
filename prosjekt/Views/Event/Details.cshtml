@@ -7,8 +7,8 @@
 @{
     var user = await UserManager.GetUserAsync(User);
     var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.OrganizerId).Result ?? new UserOrganization();
-    var userAccessRight = User.IsInRole("Admin") 
-        ? AccessRight.FullAccess 
+    var userAccessRight = User.IsInRole("Admin")
+        ? AccessRight.FullAccess
         : userOrganizationRelation.AccessRight;
 }
 

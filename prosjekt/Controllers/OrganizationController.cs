@@ -186,7 +186,7 @@ namespace prosjekt.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
+
         // POST: Organization/Edit/5
         public async Task<IActionResult> Follow(int id, bool follow)
         {

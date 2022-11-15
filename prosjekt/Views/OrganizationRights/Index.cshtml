@@ -1,0 +1,73 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using prosjekt.Data
+@model OrganizationModel
+
+
+@inject UserManager<ApplicationUser> UserManager;
+@inject ApplicationDbContext ApplicationDbContext;
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    var organizationRelations = await ApplicationDbContext.UserOrganization
+        .Where(uo => uo.User == user && uo.OrganizationId == Model.Id)
+        .Include(uo => uo.AccessRight)
+        .Include(uo => uo.User)
+        .ToListAsync();
+}
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Users With Rights for @Model.Name</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+    </tr>
+    </thead>
+
+    @{
+        var numUsersWithAccess = 0;
+    }
+
+    @foreach (var userOrganization in organizationRelations)
+    {
+        if (userOrganization.AccessRight.HasAnyAccess)
+        {
+            numUsersWithAccess++;
+            <tbody>
+                <tr>
+                    <td>
+                        <p>@userOrganization.User.UserName</p>
+                    </td>
+
+                    <td>
+                        <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id">Manage</a>
+                    </td>
+                </tr>
+            </tbody>
+
+            <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">Back</a>
+        }
+    }
+</table>
+
+
+@* There should be a maximum of 3 users who have access simultaneously *@
+@if (numUsersWithAccess < 3)
+{
+    <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id">Add Another User</a>
+}
+else
+{
+    <span>Max 3 users with userrights at a time</span>
+}
