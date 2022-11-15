@@ -13,11 +13,13 @@
 <h2>Manage rights for @Model.User.UserName at @Model.Organization.Name</h2>
 
 <a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.OrganizationId">Back</a>
+  
+<table class= "table table-bordered table-striped" style="width: 100%">
 
-<table>
-    <thead>
-    <tr>
-        <th>
+>
+    <thead >
+    <tr class="table-dark">
+    <th>
             @Html.DisplayNameFor(model => model.User.UserName)
         </th>
         <th>
@@ -26,7 +28,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr class="table-secondary">
         <td>
             <span>Can Add Users: </span>
         </td>
@@ -34,7 +36,8 @@
             <a>@Model.AccessRight.CanAddUsers</a>
         </td>
     </tr>
-    <tr>
+    
+    <tr class="table-success">
         <td>
             <span>Can Change UserRights: </span>
         </td>
@@ -44,7 +47,7 @@
         </td>
 
     </tr>
-    <tr>
+    <tr class="table-danger">
         <td>
             <span>Can Delete Events: </span>
         </td>
@@ -54,7 +57,7 @@
         </td>
 
     </tr>
-    <tr>
+    <tr class="table-warning">
         <td>
             <span>Can Delete Organization: </span>
         </td>
@@ -64,7 +67,8 @@
         </td>
 
     </tr>
-    <tr>
+    <tr class="table-info">
+       
         <td>
             <span>Can Edit Organization: </span>
         </td>
@@ -73,9 +77,9 @@
             <a>@Model.AccessRight.CanEditOrganization</a>
         </td>
 
-    </tr>
-
-    <tr>
+    </tr>    
+    
+    <tr class="table-light">
         <td>
             <span>Can Create Events: </span>
         </td>
@@ -85,8 +89,7 @@
         </td>
 
     </tr>
-
-    <tr>
+    <tr class="table-primary">
         <td>
             <span>Can Can Edit Events: </span>
         </td>
