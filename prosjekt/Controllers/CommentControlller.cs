@@ -142,12 +142,11 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-            
-                 /*   if (!EventAccess(id ?? 0).CanEditEvents)
+            if (!EventAccess(id ?? 0).CanEditEvents)
             {
                 return NotFound();
             }
-                 */
+            
             var comment = await _context.Comments.FindAsync(id);
 
             if (comment == null)
@@ -164,16 +163,16 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int EventId, Comment comment)
+        public async Task<IActionResult> Edit(int id, int eventId, Comment comment)
         {
-            var events = await _context.OrganizationModels.FindAsync(EventId);
+            var events = await _context.EventModels.FindAsync(eventId);
             if (events == null)
             {
                 return NotFound();
             }
 
             comment.Id = id;
-          //  comment.UserId = events;
+            comment.EventModel = events;
             
 
             ModelState.Clear();
@@ -190,14 +189,15 @@ namespace prosjekt.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EventModelExists(comment.Id))
+                if (!CommentSectionExist(
+                        comment.Id))
                 {
                     return NotFound();
                 }
                 throw;
             }
 
-            return RedirectToAction(nameof(Details), "Organization", new { id= EventId });
+            return RedirectToAction(nameof(Details), "Organization", new { id= eventId });
         }
     
         // GET: comment/Delete/5
@@ -248,10 +248,10 @@ namespace prosjekt.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), "Organization", new { comment?.UserId });
+            return RedirectToAction(nameof(Details), "Event", new { comment?.UserId });
         }
 
-        private bool EventModelExists(int id)
+        private bool CommentSectionExist(int id)
         {
             return _context.Comments.Any(e => e.Id == id);
         }
@@ -261,10 +261,10 @@ namespace prosjekt.Controllers
             return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
         
-        private AccessRight EventAccess(int eventId)
+        private AccessRight EventAccess(int userId)
         {
-            var organizerId = _context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId;
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizerId ?? 0).Result.AccessRight;
+            var eventId = _context.Comments.FirstOrDefault(e => e.Id == userId)?.UserId;
+            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(eventId ?? 0).Result.AccessRight;
         }
     }
 }
