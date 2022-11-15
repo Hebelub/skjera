@@ -1,8 +1,7 @@
-﻿
+﻿@model Comment
 
-@{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
-}
+<h2>Confirm delition of Comment: @Model.Text</h2>
 
-<h2>title</h2>
+<form asp-controller="Comment" asp-action="Delete" asp-route-id="@Model.Id">
+    <input type="submit" value="Delete" class="btn btn-danger" />
+</form>

@@ -22,69 +22,16 @@ namespace prosjekt.Controllers
             _context = context;
             _userManager = userManager;
         }
-
         
-        public IActionResult Index()
-        {
-
-        
-            var comments = _context.Comments.ToList();
-            return View(comments);
-        }
-        
-        //get
-        [Authorize]
-        [HttpGet]
-
-
-        // GET: comment/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments
-                .FirstOrDefaultAsync(m => m.Id == id);
-            
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
-
-        // GET: comment/Create/5
-        [Authorize]
-        public async Task<IActionResult> Create(int id)
-        {
-            var events = await _context.EventModels.FirstOrDefaultAsync(o => o.Id == id);
-
-            if (events == null)
-            {
-                return NotFound();
-            }
-
-          
-
-            // Creating the model with the correct organization as the parent
-            var model = new Comment();
-
-            model.EventModel = events;
-            
-            ViewData["OrganizationId"] = id;
-            return View(model);
+        public IActionResult Details() {
+            return NotFound();
         }
 
         // POST: comment/Create/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create(Comment comment, int id)
+        public async Task<IActionResult> Create([Bind("Text")] Comment comment, int id)
         {
             var ev = await _context.EventModels.FindAsync(id);
 
@@ -94,45 +41,20 @@ namespace prosjekt.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            
-            comment.EventModel = ev;
-            comment.User = user;
 
-            /*if (!OrganizationAccess(id).CanCreateEvents)
-            {
-                return NotFound();
-            }
+            comment.EventModel = ev;
+            comment.PostedBy = user;
 
             ModelState.Clear();
-          
-       
-        
-
-            if (!OrganizationAccess(id).CanCreateEvents)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }  */
-            
-            _context.Add(comment);
-            await _context.SaveChangesAsync();
-            
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Details), "Event", new { id });
         }
-        
-        
-        
-        
-   
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
         // GET: comment/Edit/5
         [Authorize]
@@ -142,90 +64,83 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-            if (!EventAccess(id ?? 0).CanEditEvents)
-            {
-                return NotFound();
-            }
-            
+
             var comment = await _context.Comments.FindAsync(id);
 
             if (comment == null)
             {
                 return NotFound();
             }
-            
+
             return View(comment);
         }
 
         // POST: Event/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int eventId, Comment comment)
+        public async Task<IActionResult> Edit(int id, int eventId, [Bind("Text")] Comment comment)
         {
-            var events = await _context.EventModels.FindAsync(eventId);
-            if (events == null)
+            var ev = await _context.EventModels.FindAsync(eventId);
+
+            if (ev == null)
             {
                 return NotFound();
             }
 
             comment.Id = id;
-            comment.EventModel = events;
-            
+
+            comment.EventModel = ev;
+            comment.EventModelId = eventId;
+            comment.PostedBy = await _userManager.GetUserAsync(User);
 
             ModelState.Clear();
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(comment);
-            }
-
-            try
-            {
-                _context.Comments.Update(comment);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommentSectionExist(
-                        comment.Id))
+                try
                 {
-                    return NotFound();
+                    _context.Comments.Update(comment);
+                    await _context.SaveChangesAsync();
                 }
-                throw;
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CommentSectionExist(comment.Id))
+                    {
+                        return NotFound();
+                    }
+
+                    throw;
+                }
             }
 
-            return RedirectToAction(nameof(Details), "Organization", new { id= eventId });
+            return RedirectToAction(nameof(Details), "Event", new { id = eventId });
         }
-    
-        // GET: comment/Delete/5
+
+
+        // Get: Comment/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
-            if (!EventAccess(id ?? 0).CanDeleteEvents)
+            var comment = await _context.Comments.FindAsync(id);
+
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            var comments = await _context.Comments
-                .FirstOrDefaultAsync(m => m.Id == id);
-            
-            if (comments == null)
+            // If the poster of the comment was the one posting it, they can delete it
+            if (await _userManager.GetUserAsync(User) != comment.PostedBy)
             {
                 return NotFound();
             }
 
-            return View(comments);
+            // Any case, redirect back to the event
+            return View(comment);
         }
 
-        // POST: comment/Delete/5
+
+        // POST: Comment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -233,38 +148,26 @@ namespace prosjekt.Controllers
         {
             var comment = await _context.Comments.FindAsync(id);
 
-            if (!EventAccess(id).CanDeleteEvents)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            if (comment != null)
+            // If the poster of the comment was the one posting it, they can delete it
+            if (await _userManager.GetUserAsync(User) == comment.PostedBy)
             {
-                var eventId = comment.UserId;
                 _context.Comments.Remove(comment);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), "Event", new { id=eventId });
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), "Event", new { comment?.UserId });
+
+            // Any case, redirect back to the event
+            return RedirectToAction(nameof(Details), "Event", new { id = comment.EventModelId });
         }
 
         private bool CommentSectionExist(int id)
         {
             return _context.Comments.Any(e => e.Id == id);
-        }
-        
-        private AccessRight OrganizationAccess(int organizationId)
-        {
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
-        }
-        
-        private AccessRight EventAccess(int userId)
-        {
-            var eventId = _context.Comments.FirstOrDefault(e => e.Id == userId)?.UserId;
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(eventId ?? 0).Result.AccessRight;
         }
     }
 }

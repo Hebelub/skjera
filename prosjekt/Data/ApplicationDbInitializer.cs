@@ -80,26 +80,33 @@ public class ApplicationDbInitializer
         };
 
         db.EventModels.AddRange(events);
-
-        //Barnabas: 
+        
+        // Add access rights to user
         var accessRights = new[]
         {
             new UserOrganization(user, organizations[1], AccessRight.FullAccess)
         };
         db.UserOrganization.AddRange(accessRights);
 
-
+        
+        // Create comments
         var comments = new[]
         {
-            new Comment(events[0], "comment", user),
-            new Comment(events[1], "comment", user),
-            new Comment(events[2], "comment", user),
-            new Comment(events[3], "comment", user),
+            new Comment(events[0], user, "comment 1"),
+            new Comment(events[1], user, "comment 2"),
+            new Comment(events[1], user, "comment 3"),
+            new Comment(events[2], user, "comment 4"),
+            new Comment(events[2], user, "comment 5"),
+            new Comment(events[2], user, "comment 6"),
+            new Comment(events[3], user, "comment 7"),
+            new Comment(events[3], user, "comment 8"),
+            new Comment(events[3], user, "comment 9"),
+            new Comment(events[3], user, "comment 10"),
         };
         db.Comments.AddRange(comments);
-
-
-        // Finally save changes to the database
+        
+        
+        // Save changes to the database
         db.SaveChanges();
     }
 }
