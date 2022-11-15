@@ -30,11 +30,12 @@ public class Comment
     public string Text { get; set; } = string.Empty;
         
     // Foreign key to the Book model. This is configured automatically because of the name: <Model>Id
-    public int EventId { get; set; }
+    public int EventModelId { get; set; }
 
     // Navigation property to the linked book
-    public EventModel EventModel { get; set; } = null!;
+    public EventModel EventModel { get; set; }
         
     //Application property to the user who made this review
-    public ApplicationUser  User { get; set; }
+    public int UserId { get; set; }
+    public ApplicationUser User { get; set; }
 }

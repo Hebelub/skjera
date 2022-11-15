@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+        <None Remove="Views\Shared\_CommentPartial" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +30,10 @@
 
     <ItemGroup>
       <Folder Include="Areas\Identity\Pages\Account" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Views\Comment\Add.cshtml" />
     </ItemGroup>
 
 </Project>

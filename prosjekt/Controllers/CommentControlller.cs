@@ -23,17 +23,21 @@ namespace prosjekt.Controllers
             _userManager = userManager;
         }
 
-        // GET: Event/
-       // public async Task<IActionResult> Index()
-       // {
-         //   ViewData["Title"] = "All Events";
-            
-            //return View(await _context.Comments
-                //.Include(e => e)
-                //.ToListAsync());
-        //}
+        
+        public IActionResult Index()
+        {
 
-        // GET: Event/Details/5
+        
+            var comments = _context.Comments.ToList();
+            return View(comments);
+        }
+        
+        //get
+        [Authorize]
+        [HttpGet]
+
+
+        // GET: comment/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,18 +45,18 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
 
-            var eventModel = await _context.Comments
+            var comment = await _context.Comments
                 .FirstOrDefaultAsync(m => m.Id == id);
             
-            if (eventModel == null)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(eventModel);
+            return View(comment);
         }
 
-        // GET: Event/Create/5
+        // GET: comment/Create/5
         [Authorize]
         public async Task<IActionResult> Create(int id)
         {
@@ -63,10 +67,7 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
 
-            if (!OrganizationAccess(id).CanCreateEvents)
-            {
-                return NotFound();
-            }
+          
 
             // Creating the model with the correct organization as the parent
             var model = new Comment();
@@ -77,20 +78,25 @@ namespace prosjekt.Controllers
             return View(model);
         }
 
-        // POST: Event/Create/5
+        // POST: comment/Create/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create(Comment cmoe, int id)
+        public async Task<IActionResult> Create(Comment comment, int id)
         {
-            var events = await _context.EventModels.FindAsync(id);
+            var ev = await _context.EventModels.FindAsync(id);
 
-            if (events == null)
+            if (ev == null)
             {
                 return NotFound();
             }
+
+            var user = await _userManager.GetUserAsync(User);
+            
+            comment.EventModel = ev;
+            comment.User = user;
 
             /*if (!OrganizationAccess(id).CanCreateEvents)
             {
@@ -107,10 +113,10 @@ namespace prosjekt.Controllers
                 return NotFound();
             }  */
             
-            _context.Add(cmoe);
+            _context.Add(comment);
             await _context.SaveChangesAsync();
             
-            return RedirectToAction(nameof(Details), "Organization", new { id });
+            return RedirectToAction(nameof(Details), "Event", new { id });
         }
         
         
@@ -128,7 +134,7 @@ namespace prosjekt.Controllers
         
         
 
-        // GET: Event/Edit/5
+        // GET: comment/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -137,19 +143,19 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
             
-            if (!EventAccess(id ?? 0).CanEditEvents)
+                 /*   if (!EventAccess(id ?? 0).CanEditEvents)
             {
                 return NotFound();
             }
+                 */
+            var comment = await _context.Comments.FindAsync(id);
 
-            var eventModel = await _context.EventModels.FindAsync(id);
-
-            if (eventModel == null)
+            if (comment == null)
             {
                 return NotFound();
             }
             
-            return View(eventModel);
+            return View(comment);
         }
 
         // POST: Event/Edit/5
@@ -158,48 +164,43 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int EventId, Comment comment)
         {
-            var organizer = await _context.OrganizationModels.FindAsync(organizerId);
-            if (organizer == null)
+            var events = await _context.OrganizationModels.FindAsync(EventId);
+            if (events == null)
             {
                 return NotFound();
             }
 
-            eventModel.Id = id;
-            eventModel.Organizer = organizer;
+            comment.Id = id;
+          //  comment.UserId = events;
             
-            if (eventModel.StartTime != null && eventModel.EndTime != null && DateTime.Compare(eventModel.StartTime!.Value, eventModel.EndTime!.Value) >= 0)
-            {
-                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Select end time to be after start time");
-                return View(eventModel);
-            }
 
             ModelState.Clear();
 
             if (!ModelState.IsValid)
             {
-                return View(eventModel);
+                return View(comment);
             }
 
             try
             {
-                _context.EventModels.Update(eventModel);
+                _context.Comments.Update(comment);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EventModelExists(eventModel.Id))
+                if (!EventModelExists(comment.Id))
                 {
                     return NotFound();
                 }
                 throw;
             }
 
-            return RedirectToAction(nameof(Details), "Organization", new { id=organizerId });
+            return RedirectToAction(nameof(Details), "Organization", new { id= EventId });
         }
     
-        // GET: Event/Delete/5
+        // GET: comment/Delete/5
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -213,46 +214,46 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
 
-            var eventModel = await _context.EventModels
+            var comments = await _context.Comments
                 .FirstOrDefaultAsync(m => m.Id == id);
             
-            if (eventModel == null)
+            if (comments == null)
             {
                 return NotFound();
             }
 
-            return View(eventModel);
+            return View(comments);
         }
 
-        // POST: Event/Delete/5
+        // POST: comment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var eventModel = await _context.EventModels.FindAsync(id);
+            var comment = await _context.Comments.FindAsync(id);
 
             if (!EventAccess(id).CanDeleteEvents)
             {
                 return NotFound();
             }
 
-            if (eventModel != null)
+            if (comment != null)
             {
-                var organizationId = eventModel.OrganizerId;
-                _context.EventModels.Remove(eventModel);
+                var eventId = comment.UserId;
+                _context.Comments.Remove(comment);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), "Organization", new { id=organizationId });
+                return RedirectToAction(nameof(Details), "Event", new { id=eventId });
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), "Organization", new { eventModel?.OrganizerId });
+            return RedirectToAction(nameof(Details), "Organization", new { comment?.UserId });
         }
 
         private bool EventModelExists(int id)
         {
-            return _context.EventModels.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.Id == id);
         }
         
         private AccessRight OrganizationAccess(int organizationId)

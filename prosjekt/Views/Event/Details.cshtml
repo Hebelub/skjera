@@ -63,4 +63,6 @@
         <span>|</span>
     }
     <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId"  class="btn btn-secondary">Back to Organizer</a>
+    <a asp-controller="Comment"  asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary" >add Comment</a>
+  
 </div>
