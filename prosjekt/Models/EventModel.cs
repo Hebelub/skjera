@@ -47,6 +47,7 @@ public class EventModel
     [DisplayName ("Date")]
     public DateTime? Date { get; set; }
     
+    
     [DisplayName ("StartTime")]
     public DateTime? StartTime { get; set; }
         

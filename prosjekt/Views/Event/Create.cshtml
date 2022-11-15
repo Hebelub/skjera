@@ -32,7 +32,7 @@
                     </td>
                     <td>
                         <label asp-for="StartTime" class="control-label"></label>
-                        <input asp-for="StartTime" type="time"  class="form-control"/>
+                        <input asp-for="StartTime" type="time"  class="form-control" required />
                         <span asp-validation-for="StartTime" class="text-danger"></span>
                         @Html.ValidationMessageFor(m => Model.StartTime)
                     </td>
