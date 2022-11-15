@@ -10,11 +10,13 @@ public class EventModel
     {
     }
 
-    public EventModel(OrganizationModel organizer, DateTime timeCreated, DateTime? lastTimeEdited, 
-        string title, string description, string info)
+    public EventModel(OrganizationModel organizer, DateTime startTime, DateTime? endTime, DateTime timeCreated, DateTime? lastTimeEdited, 
+        string title, string info)
     {
         Organizer = organizer;
         TimeCreated = timeCreated;
+        StartTime = startTime;
+        EndTime = endTime;
         LastTimeEdited = lastTimeEdited;
         Title = title;
         Info = info;
