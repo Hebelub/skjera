@@ -87,6 +87,19 @@ public class ApplicationDbInitializer
         };
         db.UserOrganization.AddRange(accessRights);
 
+        
+        
+        var comments = new[]
+        {
+            
+      
+            new Comment(events[0],"comment",user),
+            new Comment(events[1],"comment",user),
+            new Comment(events[2],"comment",user),
+            new Comment(events[3],"comment",user),
+        };
+        db.Comments.AddRange(comments);
+
 
         // Finally save changes to the database
         db.SaveChanges();
