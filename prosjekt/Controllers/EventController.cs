@@ -193,7 +193,7 @@ namespace prosjekt.Controllers
                 throw;
             }
 
-            return RedirectToAction(nameof(Details), "Organization", new { id=organizerId });
+            return RedirectToAction(nameof(Details), "Event", new { id });
         }
     
         // GET: Event/Delete/5
