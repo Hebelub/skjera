@@ -25,11 +25,31 @@ namespace prosjekt.Controllers
         }
 
         // GET: Organization
-        public async Task<IActionResult> Index()
+        //SearchOrganizations
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.OrganizationModels.ToListAsync());
-        }
+            
+            var organization = from m in _context.OrganizationModels
+                select m;
 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                organization = organization.Where(s => s.Name!.Contains(searchString));
+            }
+
+            return View(await organization.ToListAsync());
+        }
+        
+        
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+        
+        
+        
+        
         // GET: Organization/Details/5
         public async Task<IActionResult> Details(int? id)
         {

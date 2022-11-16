@@ -39,6 +39,15 @@
     }
 }
 
+<!--SearchOrganisations-->
+<p1 class="container" style="text-align: left">
+    <form asp-controller="Organization" asp-action="Index" method="get">
+        <input type="text"  placeholder="Organisations!" name="SearchString"/>
+        <button type="submit">Search</button>
+    </form>
+    </p1>
+
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
