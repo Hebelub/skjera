@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<ApplicationUser>
 
 
-<h2>Should be able to seach for users to add here</h2>
+<h2>Seach for user to Add To the Organization</h2>
 
 <!--SearchUsers-->
 <p1 class="container" style="text-align: left">
     <form asp-controller="OrganizationRights" asp-action="Add" method="get" asp-route-id="@ViewData["OrganizationId"]">
-        <input type="text" placeholder="Organisations!" name="SearchString"/>
+        <input type="text" placeholder="Users" name="SearchString"/>
         <button type="submit">Search</button>
     </form>
 </p1>

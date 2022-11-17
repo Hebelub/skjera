@@ -17,14 +17,39 @@ public class ApplicationDbInitializer
         var adminRole = new IdentityRole("Admin");
         rm.CreateAsync(adminRole).Wait();
 
-        // Create Standard User
+        // Create Standard Users
+
         var user = new ApplicationUser
             { UserName = "user@uia.no", Email = "user@uia.no", EmailConfirmed = true };
         um.CreateAsync(user, "Password1.").Wait();
 
+        var gabriel = new ApplicationUser
+            { UserName = "Gabriel Løsnesløkken", Email = "gabriell@uia.no", EmailConfirmed = true };
+        um.CreateAsync(gabriel, "Password1.").Wait();
+
+        var teklit = new ApplicationUser
+            { UserName = "Teklit Amanuel", Email = "teklit@uia.no", EmailConfirmed = true };
+        um.CreateAsync(teklit, "Password1.").Wait();
+
+        var aziz = new ApplicationUser
+            { UserName = "Aziz Azizi", Email = "aziz@uia.no", EmailConfirmed = true };
+        um.CreateAsync(aziz, "Password1.").Wait();
+
+        var barnabas = new ApplicationUser
+            { UserName = "Barnabas", Email = "barnabasb@uia.no", EmailConfirmed = true };
+        um.CreateAsync(barnabas, "Password1.").Wait();
+
+        var amanuel = new ApplicationUser
+            { UserName = "Amanuel", Email = "amanuel@uia.no", EmailConfirmed = true };
+        um.CreateAsync(amanuel, "Password1.").Wait();
+
+        var hovard = new ApplicationUser
+            { UserName = "Hovard Bergsvik", Email = "hovardb@uia.no", EmailConfirmed = true };
+        um.CreateAsync(hovard, "Password1.").Wait();
+
         // Add Admin User
         var admin = new ApplicationUser
-            { UserName = "admin@uia.no", Email = "admin@uia.no", EmailConfirmed = true };
+            { UserName = "Admin-User", Email = "admin@uia.no", EmailConfirmed = true };
         um.CreateAsync(admin, "Password1.").Wait();
         um.AddToRoleAsync(admin, "Admin");
 
@@ -80,7 +105,7 @@ public class ApplicationDbInitializer
         };
 
         db.EventModels.AddRange(events);
-        
+
         // Add access rights to user
         var accessRights = new[]
         {
@@ -88,7 +113,7 @@ public class ApplicationDbInitializer
         };
         db.UserOrganization.AddRange(accessRights);
 
-        
+
         // Create comments
         var comments = new[]
         {
@@ -104,8 +129,8 @@ public class ApplicationDbInitializer
             new Comment(events[3], user, "comment 10"),
         };
         db.Comments.AddRange(comments);
-        
-        
+
+
         // Save changes to the database
         db.SaveChanges();
     }
