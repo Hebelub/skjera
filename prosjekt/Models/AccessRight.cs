@@ -13,8 +13,7 @@ public class AccessRight
             CanCreateEvents = false,
             CanEditEvents = false,
             CanDeleteEvents = false,
-            CanChangeUserRights = false,
-            CanAddUsers = false
+            CanManageUsers = false
         };
     }
     
@@ -27,15 +26,14 @@ public class AccessRight
             CanCreateEvents = true,
             CanEditEvents = true,
             CanDeleteEvents = true,
-            CanChangeUserRights = true,
-            CanAddUsers = true
+            CanManageUsers = true
         };
     }
     
     public bool HasAnyAccess
     {
         get => CanDeleteOrganization || CanEditOrganization || CanCreateEvents || CanEditEvents || CanDeleteEvents ||
-               CanChangeUserRights || CanAddUsers;
+               CanManageUsers;
     }
 
     public bool CanDeleteOrganization { get; set; }
@@ -45,6 +43,5 @@ public class AccessRight
     public bool CanEditEvents { get; set; }
     public bool CanDeleteEvents { get; set; }
     
-    public bool CanChangeUserRights { get; set; }
-    public bool CanAddUsers { get; set; }
+    public bool CanManageUsers { get; set; }
 }

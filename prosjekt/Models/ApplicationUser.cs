@@ -19,9 +19,13 @@ public class ApplicationUser : IdentityUser
         _context = context;
     }
 
-    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId)
+    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true)
     {
-        var organizationRelation = await _context.UserOrganization
+        var userOrganizationWithOrWithoutTracking = withTracking 
+            ? _context.UserOrganization.AsTracking() 
+            : _context.UserOrganization.AsNoTracking();
+        
+        var organizationRelation = await userOrganizationWithOrWithoutTracking
             .Include(o => o.AccessRight)
             .FirstOrDefaultAsync(access => access.User == this && access.OrganizationId == organizationId);
 

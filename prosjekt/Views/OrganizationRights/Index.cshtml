@@ -8,9 +8,10 @@
 @inject ApplicationDbContext ApplicationDbContext;
 @{
     var user = await UserManager.GetUserAsync(User);
-
+    var userRights = (await user.GetRelationToOrganizationAsync(Model.Id)).AccessRight;
+    
     var organizationRelations = await ApplicationDbContext.UserOrganization
-        .Where(uo => uo.User == user && uo.OrganizationId == Model.Id)
+        .Where(uo => uo.OrganizationId == Model.Id)
         .Include(uo => uo.AccessRight)
         .Include(uo => uo.User)
         .ToListAsync();
@@ -23,8 +24,8 @@
 
 <h2>Users With Rights for @Model.Name</h2>
 
-<table class= "table table-bordered table-striped" style="width: 100%">
->
+<table class="table table-bordered table-striped" style="width: 100%">
+
     <thead>
     <tr>
         <th>
@@ -37,6 +38,7 @@
     </thead>
 
     @{
+        var maxUsersWithAccess = 3;
         var numUsersWithAccess = 0;
     }
 
@@ -46,29 +48,38 @@
         {
             numUsersWithAccess++;
             <tbody>
-                <tr>
-                    <td>
-                        <p>@userOrganization.User.UserName</p>
-                    </td>
+            <tr>
+                <td>
+                    <p>@userOrganization.User.UserName</p>
+                </td>
 
-                    <td>
-                        <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id">Manage</a>
-                    </td>
-                </tr>
+                <td>
+                    <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id" class="btn btn-outline-warning">Manage</a>
+                </td>
+            </tr>
             </tbody>
 
-            <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">Back</a>
+            <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">&larr;Back</a>
         }
     }
 </table>
 
 
-@* There should be a maximum of 3 users who have access simultaneously *@
-@if (numUsersWithAccess < 3)
-{
-    <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id">Add Another User</a>
-}
-else
-{
-    <span>Max 3 users with userrights at a time</span>
+
+@if (userRights.CanManageUsers) {
+    var maxUsersReached = numUsersWithAccess >= maxUsersWithAccess;
+    var buttonUserLabel = numUsersWithAccess + 1;
+
+    if (maxUsersReached)
+    {
+        <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-outline-dark disabled" aria-disabled="true">
+            Add User: Maximum Reached
+        </a>
+    }
+    else
+    {
+        <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-success">
+            Add User @buttonUserLabel of @maxUsersWithAccess
+        </a>
+    }
 }

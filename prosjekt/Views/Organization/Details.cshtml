@@ -56,7 +56,7 @@
         <span> | </span>
     }
     
-    @if (userAccessRight.CanDeleteOrganization)
+    @if (userAccessRight.CanManageUsers)
     {
         <a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.Id">Users With Rights</a>
         <span> | </span>
