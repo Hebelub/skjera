@@ -56,25 +56,32 @@
 @if (organizationWithAccessExist)
 {
     <h1>Organizations you have admin rights to</h1>
+    <div class="grid-container">
 
     @foreach (var relation in userOrganizationRelations)
     {
         if (relation.AccessRight.HasAnyAccess || User.IsInRole("Admin"))
         {   
-            <partial name="_OrganizationPartial" model="relation"/>
+            <div class="grid-item ">
+                 <partial name="_OrganizationPartial" model="relation"/>
+                </div>
         }
     }
+      </div>
 }
 
 
 @if (organizationWithoutAccessExist)
 {
     <h1>Student Organizations</h1>
+    <div class="grid-container">
     @foreach (var relation in userOrganizationRelations)
     {
         if (!relation.AccessRight.HasAnyAccess && !User.IsInRole("Admin"))
-        {
-            <partial name="_OrganizationPartial" model="relation"/>
+        {   <div class="grid-item ">
+                <partial name="_OrganizationPartial" model="relation"/>
+               </div>
         }
     }
+    </div>
 }
