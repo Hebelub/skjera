@@ -19,7 +19,7 @@ public class ApplicationUser : IdentityUser
         _context = context;
     }
 
-    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true)
+    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true, bool returnNullIfNotFound=false)
     {
         var userOrganizationWithOrWithoutTracking = withTracking 
             ? _context.UserOrganization.AsTracking() 
@@ -27,11 +27,17 @@ public class ApplicationUser : IdentityUser
         
         var organizationRelation = await userOrganizationWithOrWithoutTracking
             .Include(o => o.AccessRight)
+            .Include(o => o.User)
             .FirstOrDefaultAsync(access => access.User == this && access.OrganizationId == organizationId);
 
         if (organizationRelation != null && organizationRelation.Id != 0)
         {
             return organizationRelation;
+        }
+
+        if (returnNullIfNotFound)
+        {
+            return null;
         }
 
         var organization = await _context.OrganizationModels.FindAsync(organizationId);
@@ -40,8 +46,11 @@ public class ApplicationUser : IdentityUser
         {   
             throw new Exception("Organization not found");
         }
-        
-        return new UserOrganization(this, organization, AccessRight.NoAccess);
+
+        var userOrganization = new UserOrganization(this, organization, AccessRight.NoAccess);
+        userOrganization.UserId = Id;
+        userOrganization.OrganizationId = organizationId;
+        return userOrganization;
     } 
     
     public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()

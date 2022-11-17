@@ -1,5 +1,27 @@
-﻿@* @model IEnumerable<User> *@
+﻿@model IEnumerable<ApplicationUser>
 
 
 <h2>Should be able to seach for users to add here</h2>
+
+<!--SearchUsers-->
+<p1 class="container" style="text-align: left">
+    <form asp-controller="OrganizationRights" asp-action="Add" method="get" asp-route-id="@ViewData["OrganizationId"]">
+        <input type="text" placeholder="Organisations!" name="SearchString"/>
+        <button type="submit">Search</button>
+    </form>
+</p1>
+
+
+@foreach (var user in Model)
+{
+    <div>
+        <p>@user.UserName</p>
+        <p>@user.Email</p>
+        <form asp-controller="OrganizationRights" asp-action="AddUser"
+           asp-route-id="@ViewData["OrganizationId"]" asp-route-userId="@user.Id">
+            <input type="submit" value="Add User To Organization" class="btn btn-info" />
+        </form>
+    </div>
+}
+
 
