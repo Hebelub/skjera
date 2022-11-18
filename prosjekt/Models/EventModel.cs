@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using prosjekt.Data;
 
 namespace prosjekt.Models;
 
@@ -70,16 +72,21 @@ public class EventModel
     
 
     public bool IsEdited { get => LastTimeEdited != null; }
-    
-    
-    
-    public List<ApplicationUser> Attending = new(); 
-    
-    
-    
-    public int NumAttending
+
+
+
+    public async Task<UserEventRelation> GetUserEventRelationAsync(ApplicationDbContext db, ApplicationUser user)
     {
-        get => Attending.Count;
+        return await db.UserEventRelations.FirstOrDefaultAsync(r => r.EventId == Id && r.User == user) 
+               ?? new UserEventRelation(this, user);
     }
 
+    public async Task<List<ApplicationUser>> GetAttendingUsersAsync(ApplicationDbContext db)
+    {
+        return await db.UserEventRelations
+            .Where(r => r.EventId == Id && r.IsAttending)
+            .Select(r => r.User)
+            .ToListAsync();
+    }
+    
 }

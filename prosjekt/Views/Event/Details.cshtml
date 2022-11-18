@@ -14,6 +14,10 @@
     var userAccessRight = User.IsInRole("Admin")
         ? AccessRight.FullAccess
         : userOrganizationRelation.AccessRight;
+
+    var userEventRelation = await Model.GetUserEventRelationAsync(DbContext, user);
+    var attendingUsers = Model.GetAttendingUsersAsync(DbContext).Result;
+
 }
 
 <h1>Details</h1>
@@ -67,6 +71,23 @@
         <span>|</span>
     }
     <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId" class="btn btn-secondary">Back to Organizer</a>
+    
+    @if (userEventRelation.IsAttending)
+    {
+        <a asp-action="Attend" asp-controller="Event" asp-route-id="@Model.Id" asp-route-attending="false" 
+           class="btn btn-primary">
+            Attending
+        </a>
+    }
+    else
+    {
+        <a asp-action="Attend" asp-controller="Event" asp-route-id="@Model.Id" asp-route-attending="true" 
+           class="btn btn-outline-primary">
+            Attend
+        </a>
+    }
+    
+    <span>Attending: @attendingUsers.Count</span>
 </div>
 
 <br/>
