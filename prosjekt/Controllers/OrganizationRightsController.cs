@@ -21,7 +21,7 @@ public class OrganizationRightsController : Controller
 
     // GET: OrganizationRights
     [Authorize]
-    public async Task<IActionResult> Add(int id, string searchString = "")
+    public async Task<IActionResult> Add(int id, string? searchString = "")
     {
         if (!CanUserManageOrganization(id))
         {
@@ -37,10 +37,17 @@ public class OrganizationRightsController : Controller
         ViewData["OrganizationId"] = id;
 
         // Search for Username and Email
-        return View(await _userManager.Users.Where(
-            u => u.NickName.ToLower().Contains(searchString.ToLower())
-                 || u.Email.ToLower().Contains(searchString.ToLower())
-        ).ToListAsync());
+        var users = _userManager.Users;
+
+        if (searchString != null)
+        {
+            users = users.Where(
+                u => u.NickName.ToLower().Contains(searchString.ToLower())
+                     || u.Email.ToLower().Contains(searchString.ToLower())
+            );
+        }
+
+        return View(await users.ToListAsync());
     }
     
 
