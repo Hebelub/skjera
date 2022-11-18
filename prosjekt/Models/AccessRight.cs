@@ -6,7 +6,7 @@ public class AccessRight
     
     public static AccessRight NoAccess
     {
-        get => new AccessRight()
+        get => new()
         {
             CanDeleteOrganization = false,
             CanEditOrganization = false,
@@ -19,7 +19,7 @@ public class AccessRight
     
     public static AccessRight FullAccess
     {
-        get => new AccessRight()
+        get => new()
         {
             CanDeleteOrganization = true,
             CanEditOrganization = true,
@@ -27,6 +27,19 @@ public class AccessRight
             CanEditEvents = true,
             CanDeleteEvents = true,
             CanManageUsers = true
+        };
+    }
+
+    public static AccessRight MinimalAccess
+    {
+        get => new()
+        {
+            CanDeleteOrganization = false,
+            CanEditOrganization = false,
+            CanCreateEvents = true,
+            CanEditEvents = true,
+            CanDeleteEvents = false,
+            CanManageUsers = false
         };
     }
     

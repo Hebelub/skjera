@@ -42,6 +42,8 @@
         var numUsersWithAccess = 0;
     }
 
+    <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">&larr;Back</a>
+    
     @foreach (var userOrganization in organizationRelations)
     {
         if (userOrganization.AccessRight.HasAnyAccess)
@@ -58,8 +60,6 @@
                 </td>
             </tr>
             </tbody>
-
-            <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">&larr;Back</a>
         }
     }
 </table>
@@ -72,7 +72,7 @@
 
     if (maxUsersReached)
     {
-        <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-outline-dark disabled" aria-disabled="true">
+        <a class="btn btn-outline-dark disabled" aria-disabled="true">
             Add User: Maximum Reached
         </a>
     }
