@@ -12,16 +12,38 @@
 </p1>
 
 
-@foreach (var user in Model)
-{
-    <div>
-        <p>@user.NickName</p>
-        <p>@user.Email</p>
-        <form asp-controller="OrganizationRights" asp-action="AddUser"
-           asp-route-id="@ViewData["OrganizationId"]" asp-route-userId="@user.Id">
-            <input type="submit" value="Add User To Organization" class="btn btn-info" />
-        </form>
-    </div>
-}
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nickname</th>
+        <th scope="col">email</th>
+        <th scope="col">phone number</th>
+        <th scope="col">Add to organization</th>
+    </tr>
+    </thead>
+    <tbody>
+    
 
+    @{ var userIteration = 0; }
+    @foreach (var user in Model)
+    {
+        userIteration++;
+        <div>
+            <tr>
+                <th scope="row">@userIteration</th>
+                <td>@user.NickName</td>
+                
+                <td>@user.Email</td>
+                <td>-</td>
+                <td>
+                    <form asp-controller="OrganizationRights" asp-action="AddUser" asp-route-id="@ViewData["OrganizationId"]" asp-route-userId="@user.Id">
+                        <input type="submit" value="Add" class="btn btn-info"/>
+                    </form>
+                </td>
+            </tr>
+        </div>
+    }
 
+    </tbody>
+</table>
