@@ -34,7 +34,7 @@ namespace prosjekt.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                organization = organization.Where(s => s.Name!.Contains(searchString));
+                organization = organization.Where(s => s.Name!.ToLower().Contains(searchString.ToLower()));
             }
 
             return View(await organization.ToListAsync());
