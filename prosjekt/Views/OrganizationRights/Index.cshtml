@@ -29,10 +29,13 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            Email
+        </th>
+        <th>
+            Manage
         </th>
     </tr>
     </thead>
@@ -52,9 +55,13 @@
             <tbody>
             <tr>
                 <td>
-                    <p>@userOrganization.User.UserName</p>
+                    <p>@userOrganization.User.NickName</p>
                 </td>
 
+                <td>
+                    <p>@userOrganization.User.Email</p>
+                </td>
+                
                 <td>
                     <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id" class="btn btn-outline-warning">Manage</a>
                 </td>

@@ -19,6 +19,8 @@ public class ApplicationUser : IdentityUser
         _context = context;
     }
 
+    public string NickName { get; set; }
+
     public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true, bool returnNullIfNotFound=false)
     {
         var userOrganizationWithOrWithoutTracking = withTracking 

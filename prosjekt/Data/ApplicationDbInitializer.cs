@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Identity;
 using prosjekt.Models;
 
 namespace prosjekt.Data;
 
 public class ApplicationDbInitializer
 {
+    private static ApplicationUser AddUser(UserManager<ApplicationUser> um, string name, string email)
+    {
+        var user = new ApplicationUser
+            { NickName = name, UserName = email, Email = email, EmailConfirmed = true };
+        um.CreateAsync(user, "Password1.").Wait();
+        return user;
+    }
+    
     public static void Initialize(ApplicationDbContext db, UserManager<ApplicationUser> um,
         RoleManager<IdentityRole> rm)
     {
@@ -19,38 +28,17 @@ public class ApplicationDbInitializer
 
         // Create Standard Users
 
-        var user = new ApplicationUser
-            { UserName = "user@uia.no", Email = "user@uia.no", EmailConfirmed = true };
-        um.CreateAsync(user, "Password1.").Wait();
-
-        var gabriel = new ApplicationUser
-            { UserName = "Gabriel Løsnesløkken", Email = "gabriell@uia.no", EmailConfirmed = true };
-        um.CreateAsync(gabriel, "Password1.").Wait();
-
-        var teklit = new ApplicationUser
-            { UserName = "Teklit Amanuel", Email = "teklit@uia.no", EmailConfirmed = true };
-        um.CreateAsync(teklit, "Password1.").Wait();
-
-        var aziz = new ApplicationUser
-            { UserName = "Aziz Azizi", Email = "aziz@uia.no", EmailConfirmed = true };
-        um.CreateAsync(aziz, "Password1.").Wait();
-
-        var barnabas = new ApplicationUser
-            { UserName = "Barnabas", Email = "barnabasb@uia.no", EmailConfirmed = true };
-        um.CreateAsync(barnabas, "Password1.").Wait();
-
-        var amanuel = new ApplicationUser
-            { UserName = "Amanuel", Email = "amanuel@uia.no", EmailConfirmed = true };
-        um.CreateAsync(amanuel, "Password1.").Wait();
-
-        var hovard = new ApplicationUser
-            { UserName = "Hovard Bergsvik", Email = "hovardb@uia.no", EmailConfirmed = true };
-        um.CreateAsync(hovard, "Password1.").Wait();
+        var user = AddUser(um, "user", "user@uia.no");
+        AddUser(um, "Gabriel Løsnesløkken", "gabriell@uia.no");
+        AddUser(um, "Teklit Amanuel", "teklit@uia.no");
+        AddUser(um, "Gabriel Løsnesløkken", "gabriell@uia.no");
+        AddUser(um, "Aziz", "aziz@uia.no");
+        AddUser(um, "Amanuel Hayele Tsegay", "aman3hda@gmail.com");
+        AddUser(um, "Barnabas Mulu Boka", "barnabas@gmail.com");
+        AddUser(um, "Håvard Berge", "hovardb@uia.no");
 
         // Add Admin User
-        var admin = new ApplicationUser
-            { UserName = "Admin-User", Email = "admin@uia.no", EmailConfirmed = true };
-        um.CreateAsync(admin, "Password1.").Wait();
+        var admin = AddUser(um, "Admin", "admin@uia.no");
         um.AddToRoleAsync(admin, "Admin");
 
 

@@ -15,7 +15,7 @@
 @foreach (var user in Model)
 {
     <div>
-        <p>@user.UserName</p>
+        <p>@user.NickName</p>
         <p>@user.Email</p>
         <form asp-controller="OrganizationRights" asp-action="AddUser"
            asp-route-id="@ViewData["OrganizationId"]" asp-route-userId="@user.Id">

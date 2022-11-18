@@ -38,7 +38,7 @@ public class OrganizationRightsController : Controller
 
         // Search for Username and Email
         return View(await _userManager.Users.Where(
-            u => u.UserName.ToLower().Contains(searchString.ToLower())
+            u => u.NickName.ToLower().Contains(searchString.ToLower())
                  || u.Email.ToLower().Contains(searchString.ToLower())
         ).ToListAsync());
     }

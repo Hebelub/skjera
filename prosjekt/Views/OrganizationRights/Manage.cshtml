@@ -10,7 +10,7 @@
 }
 
 
-<h2>Manage rights for @Model.User.UserName at @Model.Organization.Name</h2>
+<h2>Manage rights for @Model.User.NickName at @Model.Organization.Name</h2>
 
 <a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.OrganizationId">&larr;Back</a>
 
@@ -20,7 +20,7 @@
         <thead>
         <tr class="table-dark">
             <th>
-                @Html.DisplayNameFor(model => model.User.UserName)
+                @Html.DisplayNameFor(model => model.User.NickName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AccessRight)
