@@ -10,7 +10,7 @@
                 <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
             </h1>
         </div>
-        @if (Model.StartTime.HasValue)
+        @if (Model.StartTime.HasValue && Model.Duration.Ticks != 0)
         {
             <p class="text-center">@Model.StartTime</p>
             @if (Model.EndTime.HasValue)

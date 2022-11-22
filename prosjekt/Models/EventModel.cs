@@ -18,7 +18,10 @@ public class EventModel
         Organizer = organizer;
         TimeCreated = timeCreated;
         StartTime = startTime;
-        Duration = duration;
+        if (duration.HasValue)
+        {
+            Duration = duration.Value;
+        }
         LastTimeEdited = lastTimeEdited;
         Title = title;
         Info = info;
@@ -38,45 +41,49 @@ public class EventModel
     [Required]
     [MaxLength(40)]
     [DisplayName ("Title")]
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; } = string.Empty;
 
 
-
+    [Required]
     [MaxLength(2000)]
     [DisplayName ("Info")]
-    public string Info { get; set; } = string.Empty;
+    public string? Info { get; set; } = string.Empty;
     
     
-    
+    [Required]
     [DisplayName ("StartTime")]
     public DateTime? StartTime { get; set; }
 
     public DateTime? EndTime {
-        get => StartTime == null || Duration == null 
+        get => StartTime == null
             ? null 
             : StartTime + Duration;
     }
 
     
     [DisplayName("Days")]
+    [Range(0, 365, ErrorMessage = "Min {0}, Max {1}")]
     public int Days { get; set; }
+    
+    
     [DisplayName("Hours")]
+    [Range(0, 23, ErrorMessage = "Min {0}, Max {1}")]
     public int Hours { get; set; }
+    
+    
     [DisplayName("Minutes")]
+    [Range(0, 59, ErrorMessage = "Min {0}, Max {1}")]
     public int Minutes { get; set; }
 
+    
     [DisplayName("Duration")]
-    public TimeSpan? Duration {
+    public TimeSpan Duration {
         get => TimeSpan.Parse($@"{Days}.{Hours}:{Minutes}");
         set
         {
-            if (value == null)
-            {
-                return;
-            }
-            Minutes = value.Value.Minutes;
-            Hours = value.Value.Hours;
-            Days = value.Value.Days;
+            Minutes = value.Minutes;
+            Hours = value.Hours;
+            Days = value.Days;
         }
     }
     

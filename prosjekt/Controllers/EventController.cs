@@ -100,12 +100,6 @@ namespace prosjekt.Controllers
             eventModel.Organizer = organization;
             
             ModelState.Clear();
-            
-            // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
-            if (eventModel.Duration != null && eventModel.Duration!.Value.TotalHours <= 0)
-            {
-                ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration must be greater than 0");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -165,12 +159,6 @@ namespace prosjekt.Controllers
 
             eventModel.Id = id;
             eventModel.Organizer = organizer;
-            
-            if (eventModel.Duration != null && eventModel.Duration!.Value.TotalHours <= 0)
-            {
-                ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration must be greater than 0");
-                return View(eventModel);
-            }
 
             ModelState.Clear();
 
