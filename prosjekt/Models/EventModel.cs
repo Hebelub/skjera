@@ -62,7 +62,7 @@ public class EventModel
 
     
     [DisplayName("Days")]
-    [Range(0, 365, ErrorMessage = "Min {0}, Max {1}")]
+    [Range(0, 364, ErrorMessage = "Min {0}, Max {1}")]
     public int Days { get; set; }
     
     
