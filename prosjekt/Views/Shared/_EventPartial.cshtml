@@ -7,15 +7,15 @@
                  <h2 class="text-center"> @Model.Organizer.Name </h2> 
         
                  <h1 class="text-center">
-                     <a asp-controller="Event" asp-action="Details" asp-route-id="@{Model.Id}"> @Model.Title </a> 
+                     <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a> 
                    </h1> 
               </div> 
               @if (Model.StartTime.HasValue) 
                  { 
-                     <p class="text-center"> @{Model.StartTime} </p> 
+                     <p class="text-center"> @Model.StartTime</p> 
                      @if (Model.EndTime.HasValue) 
                      { 
-                         <p class="text-center"> until @{Model.EndTime}</p> 
+                         <p class="text-center"> until @Model.EndTime</p> 
                      } 
                  } 
                  @if (Model.Location != null)
@@ -25,7 +25,7 @@
                  </div>
                  }
                     <div class="text-center">
-                        <a asp-controller="Organization" asp-action="Details" asp-route-id="@{Model.Organizer.Id}">
+                        <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Organizer.Id">
                             <button class="row_top_and_bottom"> Hosted by @Model.Organizer.Name </button>
                         </a>
                         </div>
