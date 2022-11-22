@@ -153,7 +153,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,Duration,LastTimeEdited")] EventModel eventModel)
         {
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)

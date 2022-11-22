@@ -56,6 +56,7 @@ public class EventModel
             ? null 
             : StartTime + Duration;
     }
+    
 
     [DisplayName("Duration")]
     public TimeSpan? Duration { get; set; }
