@@ -28,7 +28,7 @@ using (var services = app.Services.CreateScope())
     var rm = services.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
     // Initialise the database using the initializer from Data/ExampleDbInitializer.cs
-    // ApplicationDbInitializer.Initialize(db, um, rm);
+    ApplicationDbInitializer.Initialize(db, um, rm);
 }
 
 

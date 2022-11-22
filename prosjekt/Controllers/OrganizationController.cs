@@ -32,9 +32,9 @@ namespace prosjekt.Controllers
             var organization = from m in _context.OrganizationModels
                 select m;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                organization = organization.Where(s => s.Name!.ToLower().Contains(searchString.ToLower()));
+                organization = organization.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
             }
 
             return View(await organization.ToListAsync());
@@ -231,6 +231,7 @@ namespace prosjekt.Controllers
             await _context.SaveChangesAsync();
             return View(nameof(Index), await _context.OrganizationModels.ToListAsync());
         }
+        
 
         private bool OrganizationModelExists(int id)
         {

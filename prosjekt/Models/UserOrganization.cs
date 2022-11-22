@@ -32,10 +32,10 @@ public class UserOrganization
 
     public bool IsFollowing { get; set; }
 
-
+    
     public bool IsInterested { get; set; }
 
-
+    
     private AccessRight? _accessRight;
     public int AccessRightId { get; set; }
     public AccessRight AccessRight
@@ -43,5 +43,4 @@ public class UserOrganization
         get => _accessRight ?? AccessRight.NoAccess;
         set => _accessRight = value;
     }
-
 }

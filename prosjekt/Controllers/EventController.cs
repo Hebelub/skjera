@@ -244,13 +244,17 @@ namespace prosjekt.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Details), "Organization", new { eventModel?.OrganizerId });
         }
-
-
+        
         [Authorize]
         public async Task<IActionResult> Attend(int id, bool attending) // id: eventId
         {
             var user = await _userManager.GetUserAsync(User);
             var ev = await _context.EventModels.FindAsync(id);
+
+            if (ev == null)
+            {
+                return NotFound();
+            }
 
             var userEventRelation = await ev.GetUserEventRelationAsync(_context, user);
 
@@ -269,7 +273,6 @@ namespace prosjekt.Controllers
             
             return RedirectToAction(nameof(Details), "Event", new { id });
         }
-        
         
         private bool EventModelExists(int id)
         {
