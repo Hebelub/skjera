@@ -64,17 +64,17 @@ public class ApplicationDbInitializer
         var events = new[]
         {
             new EventModel(organizations.ElementAt(0), DateTime.Parse("01/01/2001 01:01:01"),
-                DateTime.Parse("01/11/2001 11:11:01"), DateTime.Parse("01/01/2001"), DateTime.Parse("01/01/2011"),
+                TimeSpan.Parse("0:01:00"), DateTime.Parse("01/01/2001"), DateTime.Parse("01/01/2011"),
                 "Event 01",
                 "Info 1 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
             new EventModel(organizations.ElementAt(1), DateTime.Parse("01/02/2001 02:02:02"),
-                DateTime.Parse("01/12/2001 12:12:02"), DateTime.Parse("02/02/2002"), DateTime.Parse("01/01/2022"),
+                TimeSpan.Parse("0:02:00"), DateTime.Parse("02/02/2002"), DateTime.Parse("01/01/2022"),
                 "Event 02",
                 "Info 2 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
             new EventModel(organizations.ElementAt(2), DateTime.Parse("01/03/2001 03:03:03"),
-                DateTime.Parse("01/13/2001 13:13:03"), DateTime.Parse("03/03/2003"), DateTime.Parse("01/01/2033"),
+                TimeSpan.Parse("0:03:00"), DateTime.Parse("03/03/2003"), DateTime.Parse("01/01/2033"),
                 "Event 03",
                 "Info 3 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),

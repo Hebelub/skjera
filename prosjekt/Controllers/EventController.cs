@@ -83,7 +83,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,EndTime")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,Duration")] EventModel eventModel, int id)
         {
             var organization = await _context.OrganizationModels.FindAsync(id);
 
@@ -101,19 +101,17 @@ namespace prosjekt.Controllers
             
             ModelState.Clear();
             
-            // Barnabas: Skjera-7 -Checks if Endtime is starttime is greater than endtime.
             // For more details, see https://learn.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-7.0
-            if (eventModel.StartTime != null && eventModel.EndTime != null && DateTime.Compare(eventModel.StartTime!.Value, eventModel.EndTime!.Value) >= 0)
+            if (eventModel.Duration != null && eventModel.Duration!.Value.TotalHours <= 0)
             {
-                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Select end time to be after start time");
+                ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration must be greater than 0");
             }
-            
+
             if (!ModelState.IsValid)
             {
                 return View(eventModel);
             }
             
-
             if (!OrganizationAccess(id).CanCreateEvents)
             {
                 return NotFound();
@@ -166,9 +164,16 @@ namespace prosjekt.Controllers
             eventModel.Id = id;
             eventModel.Organizer = organizer;
             
-            if (eventModel.StartTime != null && eventModel.EndTime != null && DateTime.Compare(eventModel.StartTime!.Value, eventModel.EndTime!.Value) >= 0)
+            if (eventModel.Duration != null && eventModel.Duration!.Value.TotalHours <= 0)
             {
-                ModelState.AddModelError(nameof(eventModel.EndTime), "Error: Select end time to be after start time");
+                if (eventModel.Duration!.Value.TotalHours == 0)
+                {
+                    ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration must be greater than 0");
+                }
+                else
+                {
+                    ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration can't be negative");
+                }
                 return View(eventModel);
             }
 

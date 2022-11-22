@@ -12,13 +12,13 @@ public class EventModel
     {
     }
 
-    public EventModel(OrganizationModel organizer, DateTime startTime, DateTime? endTime, DateTime timeCreated, DateTime? lastTimeEdited, 
+    public EventModel(OrganizationModel organizer, DateTime startTime, TimeSpan? duration, DateTime timeCreated, DateTime? lastTimeEdited, 
         string title, string info)
     {
         Organizer = organizer;
         TimeCreated = timeCreated;
         StartTime = startTime;
-        EndTime = endTime;
+        Duration = duration;
         LastTimeEdited = lastTimeEdited;
         Title = title;
         Info = info;
@@ -47,16 +47,18 @@ public class EventModel
     public string Info { get; set; } = string.Empty;
     
     
-    //[Required(ErrorMessage = "Start time should not be greater than End time.")]
-    [DisplayName ("Date")]
-    public DateTime? Date { get; set; }
-    
     
     [DisplayName ("StartTime")]
     public DateTime? StartTime { get; set; }
-    
-    [DisplayName("EndTime")]
-    public DateTime? EndTime { get; set; }
+
+    public DateTime? EndTime {
+        get => StartTime == null || Duration == null 
+            ? null 
+            : StartTime + Duration;
+    }
+
+    [DisplayName("Duration")]
+    public TimeSpan? Duration { get; set; }
     
     
 

@@ -55,10 +55,10 @@
                 Start: @Model.StartTime
             </div>
         }
-        @if (Model.EndTime.HasValue)
+        @if (Model.Duration.HasValue)
         {
             <div class="row_in_row">
-                Duration: @Model.EndTime
+                Duration: @Model.Duration
             </div>
         }
         @if (Model.Location != null)

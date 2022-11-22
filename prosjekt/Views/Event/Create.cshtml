@@ -25,21 +25,15 @@
             <table>
                 <tr>
                     <td>
-                        <label asp-for="Date" class="control-label"></label>
-                        <input asp-for="Date" type="date" class="form-control"/>
-                        <span asp-validation-for="Date" class="text-danger"></span>
-                        @Html.ValidationMessageFor(m => Model.StartTime)
-                    </td>
-                    <td>
-                        <label asp-for="StartTime" class="control-label"></label>
-                        <input asp-for="StartTime" type="time"  class="form-control" required />
+                        <label asp-for="StartTime" class="control-label">Start Date</label>
+                        <input asp-for="StartTime" class="form-control"/>
                         <span asp-validation-for="StartTime" class="text-danger"></span>
-                        @Html.ValidationMessageFor(m => Model.StartTime)
+                        @* @Html.ValidationMessageFor(m => Model.StartTime) *@
                     </td>
                     <td>
-                        <label asp-for="EndTime" class="control-label"></label>
-                        <input asp-for="EndTime" type="time" class="form-control"/>
-                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                        <label asp-for="Duration" class="control-label"></label>
+                        <input asp-for="Duration" class="form-control"/>
+                        <span asp-validation-for="Duration" class="text-danger"></span>
                     </td>
                 </tr>
             </table>
