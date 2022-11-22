@@ -7,7 +7,7 @@ body {
     font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     font-weight: 100;
     color: rgba(255, 255, 255, 1);
-    margin: dynamic;  /*Nødvendig, er ikke feil -Håvard.*/
+    /* margin: dynamic;  Nødvendig, er ikke feil -Håvard.*/
     padding: 0;
     background: #4A4A4A;
     -webkit-touch-callout: none;
