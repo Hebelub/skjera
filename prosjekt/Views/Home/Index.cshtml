@@ -29,7 +29,7 @@
 @*         </div> *@
 @*     </div> *@
 @* </div> *@
-@* *@
+
 
 @{
     // create a function that returns a list of events
@@ -53,14 +53,37 @@
     }
 }
 
+<div class="FrontPageBody">
 <div id="calendar"></div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
 
-<div id="Events_this_week">
-    @foreach (var item in Model) {q
-           if (item.StartTime > DateTime.Today && item.StartTime < DateTime.Now + TimeSpan.FromDays(7))
-           {
-               <partial name="_EventPartial" model="item"/>
-           }
+ @if (Model != null)
+    {
+        <div class="Events_this_week">
+            @{int events_this_week = 0;}
+            @foreach (var item in Model)
+            {
+                if (item.StartTime > DateTime.Today && item.StartTime < DateTime.Now + TimeSpan.FromDays(7))
+                {
+                    events_this_week++;
+                }
+            }
+            @{
+                if (events_this_week == 0)
+                {
+                    <p>There are no events coming up this week</p>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        if (item.StartTime > DateTime.Today && item.StartTime < DateTime.Now + TimeSpan.FromDays(7))
+                        {
+                            <partial name="_EventPartial" model="item"/>
+                        }
+                    }
+                }
+            }
+        </div>
     }
 </div>

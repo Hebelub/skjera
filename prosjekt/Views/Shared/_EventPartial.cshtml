@@ -1,23 +1,75 @@
 @using Microsoft.CodeAnalysis.VisualBasic.Syntax
 @model EventModel
 
-<div class="Event_card" id="Event">
-     <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmm" class="center" id="profile_pic">
-     <div class="header">
-         <h2 class="text-center"> @Model.Organizer.Name </h2>
-         
-         <h1 class="text-center">
-         <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a>
-         </h1>
-     </div>
-    @if (Model.StartTime.HasValue)
-    {
-        @Model.StartTime
+@* <div class="Event_card" id="Event"> *@
+@*      <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmm" class="center" id="profile_pic"> *@
+@*      <div class="header"> *@
+@*          <h2 class="text-center"> @Model.Organizer.Name </h2> *@
+@* *@
+@*          <h1 class="text-center"> *@
+@*          <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id"> @Model.Title </a> *@
+@*          </h1> *@
+@*      </div> *@
+@*     @if (Model.StartTime.HasValue) *@
+@*     { *@
+@*         <p class="text-center"> @Model.StartTime </p> *@
+@*         @if (Model.EndTime.HasValue) *@
+@*         { *@
+@*             <p class="text-center"> until @Model.EndTime</p> *@
+@*         } *@
+@*     } *@
+@* *@
+@* </div> *@
+
+
+@* <div class="container"> *@
+@*     <div class="row"> *@
+@*         <div class="col-xs-12" style="background-color:aqua;">col-xs-12 inside a row</div> *@
+@*     </div> *@
+@*     <div class="row"> *@
+@*         <div class="col"> *@
+@*             1 of 2 *@
+@*         </div> *@
+@*         <div class="col"> *@
+@*             2 of 2 *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
+
+<div class="text-center" id="Event_ID">
+    <a asp-action="Details" asp-controller="Event" asp-route-id="@Model.Id">
+        
+        <button class="row_top_and_bottom"> @Model.Title </button>
+        
+    </a>
+    <div>
+        <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmmmm" class="column_img">
+        <div class="column_text"> @Model.Info </div>
+    </div>
+    <div class="row">
+
+        @if (Model.StartTime.HasValue)
+        {
+            <div class="row_in_row">
+                Start: @Model.StartTime
+            </div>
+        }
         @if (Model.EndTime.HasValue)
         {
-            <p> until </p>
-            @Model.EndTime
+            <div class="row_in_row">
+                Duration: @Model.EndTime
+            </div>
         }
-    }
-    
+        @if (Model.Location != null)
+        {
+            <div class="row_in_row">
+                location: @Model.Location
+            </div>
+        }
+
+    </div>
+    <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Organizer.Id">
+    <button class="row_top_and_bottom"> Hosted by @Model.Organizer.Name </button>
+     </a>
 </div>

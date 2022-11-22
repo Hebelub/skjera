@@ -1,5 +1,5 @@
 ﻿!function() {
-
+    
     var today = moment();
 
     function Calendar(selector, events) {
@@ -325,7 +325,7 @@
         { eventName: 'Game vs Houston', date: '09', time: '12:00', color: 'green' },
         { eventName: 'Game vs Denver', date: '09', time: '13:00', color: 'orange' },
         { eventName: 'Game vs San Antonio', date: '09', time: '14:00', color: 'yellow' },
-        
+      
         
     ];
 
