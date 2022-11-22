@@ -166,14 +166,7 @@ namespace prosjekt.Controllers
             
             if (eventModel.Duration != null && eventModel.Duration!.Value.TotalHours <= 0)
             {
-                if (eventModel.Duration!.Value.TotalHours == 0)
-                {
-                    ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration must be greater than 0");
-                }
-                else
-                {
-                    ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration can't be negative");
-                }
+                ModelState.AddModelError(nameof(eventModel.Duration), "Error: Duration must be greater than 0");
                 return View(eventModel);
             }
 

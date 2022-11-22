@@ -1,6 +1,5 @@
 
 
-
 .grid-container{
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(400px,1fr));
@@ -14,7 +13,6 @@
 .grid-item{
     box-shadow: 0 0 3px rgba(0,0,0.1);
 }
-
 
 
 .profile_picture{
@@ -51,7 +49,7 @@
     width: 60%;
 }
 
-#Event_ID{
+.Event_ID{
     margin-top: 10px;
     width: 400px;
     height: 300px;
@@ -79,7 +77,7 @@
     background: rgba(170, 170, 170, 0.32);
     overflow: scroll;
 }
-
+/*
 .row{
     margin: 0px;
     padding: 20px;
@@ -101,19 +99,18 @@
     padding: 0px;
     width: 400px;
     height: 50px;
-}
+}*/
 
 .Events_this_week{
     margin-left: 10px;
 }
 
 
-
 /*IF (screen is mobilescreen)
 {Place columns on top of eachother}
-*/
+*//*
 @media screen and (max-width: 600px) {
     .column {
         width: 100%;
     }
-}
+}*/
