@@ -1,10 +1,5 @@
 ﻿@model IEnumerable<EventModel>
 
-@foreach (var item in Model) {
-    <partial name="_EventPartial" model="item"/>
-    <p>   </p>
-}
-
 <div class="grid-container">
     @foreach (var item in Model) {
         <div class="grid-item ">
