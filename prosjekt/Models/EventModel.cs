@@ -56,10 +56,29 @@ public class EventModel
             ? null 
             : StartTime + Duration;
     }
+
     
+    [DisplayName("Days")]
+    public int Days { get; set; }
+    [DisplayName("Hours")]
+    public int Hours { get; set; }
+    [DisplayName("Minutes")]
+    public int Minutes { get; set; }
 
     [DisplayName("Duration")]
-    public TimeSpan? Duration { get; set; }
+    public TimeSpan? Duration {
+        get => TimeSpan.Parse($@"{Days}.{Hours}:{Minutes}");
+        set
+        {
+            if (value == null)
+            {
+                return;
+            }
+            Minutes = value.Value.Minutes;
+            Hours = value.Value.Hours;
+            Days = value.Value.Days;
+        }
+    }
     
     
 

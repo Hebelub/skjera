@@ -9,55 +9,54 @@
 <h4>EventModel</h4>
 <hr/>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" asp-controller="Event" asp-route-id="@Model.Id" asp-route-organizerId="@Model.OrganizerId" class="row">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id"/>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control"/>
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
-                <br/>
-                <div class="form-group">
-                    <label asp-for="StartTime" class="control-label"></label>
-                    <input asp-for="StartTime" class="form-control"/>
-                    <span asp-validation-for="StartTime" class="text-danger"></span>
-                    @* @Html.ValidationMessageFor(m => Model.StartTime) *@
-                </div>
-                <br/>
-                <div class="row form-group">
-                    <label asp-for="Duration" class="control-label"></label>
-                    <div class="form-group col">
-                        <label asp-for="Duration.Value.Days" class="control-label"></label>
-                        <input asp-for="Duration.Value.Days" class="form-control"/>
-                    </div>
-                    <div class="form-group col">
-                        <label asp-for="Duration.Value.Hours" class="control-label"></label>
-                        <input asp-for="Duration.Value.Hours" class="form-control"/>
-                    </div>
-                    <div class="form-group col">
-                        <label asp-for="Duration.Value.Minutes" class="control-label"></label>
-                        <input asp-for="Duration.Value.Minutes" class="form-control"/>
-                    </div>
-                    <span asp-validation-for="Duration" class="text-danger"></span>
-                </div>
-                <br/>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary"/>
-                </div>
+    <form asp-action="Edit" asp-controller="Event" asp-route-id="@Model.Id" asp-route-organizerId="@Model.OrganizerId" class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id"/>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control"/>
+                <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+            <br/>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" class="form-control"/>
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+                @* @Html.ValidationMessageFor(m => Model.StartTime) *@
+            </div>
+            <br/>
+            <div class="row form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <div class="form-group col">
+                    <label asp-for="Days" class="control-label"></label>
+                    <input asp-for="Days" class="form-control"/>
+                    @* <input name="to" value="Mom" /> *@
+                </div>
+                <div class="form-group col">
+                    <label asp-for="Hours" class="control-label"></label>
+                    <input asp-for="Hours" class="form-control"/>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="Minutes" class="control-label"></label>
+                    <input asp-for="Minutes" class="form-control"/>
+                </div>
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </div>
 
-            <div class="col-6">
-                <div class="form-group">
-                    <label asp-for="Info" class="control-label"></label>
-                    <textarea asp-for="Info" class="form-control"></textarea>
-                    <span asp-validation-for="Info" class="text-danger"></span>
-                </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="Info" class="control-label"></label>
+                <textarea asp-for="Info" class="form-control"></textarea>
+                <span asp-validation-for="Info" class="text-danger"></span>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
 <div>
