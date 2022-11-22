@@ -65,7 +65,7 @@ namespace prosjekt.Controllers
 
             if (!OrganizationAccess(id).CanCreateEvents)
             {
-                return NotFound();
+                return Forbid();
             }
 
             // Creating the model with the correct organization as the parent
@@ -83,7 +83,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,StartTime,EndTime")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,EndTime")] EventModel eventModel, int id)
         {
             var organization = await _context.OrganizationModels.FindAsync(id);
 
@@ -155,7 +155,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,EndTime,LastTimeEdited")] EventModel eventModel)
         {
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)
@@ -193,9 +193,9 @@ namespace prosjekt.Controllers
                 throw;
             }
 
-            return RedirectToAction(nameof(Details), "Organization", new { id=organizerId });
+            return RedirectToAction(nameof(Details), "Event", new { id });
         }
-    
+
         // GET: Event/Delete/5
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
@@ -247,6 +247,32 @@ namespace prosjekt.Controllers
             return RedirectToAction(nameof(Details), "Organization", new { eventModel?.OrganizerId });
         }
 
+
+        [Authorize]
+        public async Task<IActionResult> Attend(int id, bool attending) // id: eventId
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var ev = await _context.EventModels.FindAsync(id);
+
+            var userEventRelation = await ev.GetUserEventRelationAsync(_context, user);
+
+            userEventRelation.IsAttending = attending;
+
+            if (userEventRelation.Id == 0)
+            {
+                await _context.AddAsync(userEventRelation);
+            }
+            else
+            {
+                _context.Update(userEventRelation);
+            }
+
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Details), "Event", new { id });
+        }
+        
+        
         private bool EventModelExists(int id)
         {
             return _context.EventModels.Any(e => e.Id == id);
@@ -254,13 +280,16 @@ namespace prosjekt.Controllers
         
         private AccessRight OrganizationAccess(int organizationId)
         {
+            if (User.IsInRole("Admin"))
+            {
+                return AccessRight.FullAccess;
+            }
             return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
         
         private AccessRight EventAccess(int eventId)
         {
-            var organizerId = _context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId;
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizerId ?? 0).Result.AccessRight;
+            return OrganizationAccess(_context.EventModels.FirstOrDefault(e => e.Id == eventId)?.OrganizerId ?? 0);
         }
     }
 }

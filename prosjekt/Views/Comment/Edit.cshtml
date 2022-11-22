@@ -1,0 +1,28 @@
+﻿@model Comment
+
+<h2>Edit Comment: @Model.Text</h2>
+
+<form asp-controller="Comment" asp-action="Edit" asp-route-id="@Model.Id" asp-route-eventId="@Model.EventModelId">
+    <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+        <div class="d-flex flex-start w-100">
+            <img class="rounded-circle shadow-1-strong me-3"
+                 src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+                 height="40"/>
+
+            <div class="form-outline w-100">
+                <textarea asp-for="Text" class="form-control" placeholder="Message" rows="4" style="background: #fff;"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.EventModelId" class="btn btn-primary">Cancel</a>
+        <div>
+            <input type="submit" class="btn btn-success" value="Save">
+        </div>
+
+        <a asp-controller="Comment" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+            Delete
+        </a>
+    </div>
+</form>

@@ -16,6 +16,9 @@
 
     var user = await UserManager.GetUserAsync(User);
     var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.Id).Result ?? new UserOrganization();
+    var userAccessRight = User.IsInRole("Admin") 
+        ? AccessRight.FullAccess 
+        : userOrganizationRelation.AccessRight;
 }
 
 
@@ -36,23 +39,36 @@
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.Raw(Model.Description)
         </dd>
     </dl>
 </div>
 <div>
     
-    @if (userOrganizationRelation.AccessRight.CanEditOrganization)
+    @if (userAccessRight.CanEditOrganization)
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit Organization</a> 
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning" >Edit Organization</a> 
         <span> | </span>
     }
-    @if (userOrganizationRelation.AccessRight.CanDeleteOrganization)
+    @if (userAccessRight.CanDeleteOrganization)
     {
-        <a asp-action="Delete" asp-route-id="@Model.Id">Delete Organization</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Organization</a>
         <span> | </span>
     }
-    <a asp-action="Index">Back To Organizations</a>
+    
+    @if (userAccessRight.CanManageUsers)
+    {
+        <a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-dark">Users With Rights</a>
+        <span> | </span>
+    }
+    
+    @if (userAccessRight.CanCreateEvents)
+    {
+        <a asp-controller="Event"  asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary" >Create New Event</a>
+        <span> | </span>
+        
+    }
+    <a asp-action="Index"  class="btn btn-secondary" >Back To Organizations</a>
 </div>
 <br/>
 <h3>Our events</h3>
@@ -60,7 +76,4 @@
     <partial name="_EventList" model="eventsOfOrganization"/>
 </div>
 
-@if (userOrganizationRelation.AccessRight.CanCreateEvents)
-{
-    <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id">Create New Event</a>
-}
+

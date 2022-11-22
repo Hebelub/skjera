@@ -19,4 +19,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     
     public DbSet<AccessRight> AccessRights { get; set; }
     
+    
+    public DbSet<Comment> Comments { get; set; }
+    
+    
+    public DbSet<UserEventRelation> UserEventRelations { get; set; }
 }

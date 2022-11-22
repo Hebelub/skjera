@@ -25,11 +25,31 @@ namespace prosjekt.Controllers
         }
 
         // GET: Organization
-        public async Task<IActionResult> Index()
+        //SearchOrganizations
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.OrganizationModels.ToListAsync());
-        }
+            
+            var organization = from m in _context.OrganizationModels
+                select m;
 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                organization = organization.Where(s => s.Name!.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return View(await organization.ToListAsync());
+        }
+        
+        
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+        
+        
+        
+        
         // GET: Organization/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -186,7 +206,7 @@ namespace prosjekt.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
+
         // POST: Organization/Edit/5
         public async Task<IActionResult> Follow(int id, bool follow)
         {
@@ -219,7 +239,9 @@ namespace prosjekt.Controllers
 
         private AccessRight OrganizationAccess(int organizationId)
         {
-            return _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
+            return User.IsInRole("Admin") 
+                ? AccessRight.FullAccess
+                : _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
         }
     }
 }

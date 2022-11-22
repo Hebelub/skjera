@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using prosjekt.Data
+@model OrganizationModel
+
+
+@inject UserManager<ApplicationUser> UserManager;
+@inject ApplicationDbContext ApplicationDbContext;
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var userRights = (await user.GetRelationToOrganizationAsync(Model.Id)).AccessRight;
+    
+    var organizationRelations = await ApplicationDbContext.UserOrganization
+        .Where(uo => uo.OrganizationId == Model.Id)
+        .Include(uo => uo.AccessRight)
+        .Include(uo => uo.User)
+        .ToListAsync();
+}
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Users With Rights for @Model.Name</h2>
+
+<table class="table table-bordered table-striped" style="width: 100%">
+
+    <thead>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Manage
+        </th>
+    </tr>
+    </thead>
+
+    @{
+        var maxUsersWithAccess = 3;
+        var numUsersWithAccess = 0;
+    }
+
+    <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Id">&larr;Back</a>
+    
+    @foreach (var userOrganization in organizationRelations)
+    {
+        if (userOrganization.AccessRight.HasAnyAccess)
+        {
+            numUsersWithAccess++;
+            <tbody>
+            <tr>
+                <td>
+                    <p>@userOrganization.User.NickName</p>
+                </td>
+
+                <td>
+                    <p>@userOrganization.User.Email</p>
+                </td>
+                
+                <td>
+                    <a asp-controller="OrganizationRights" asp-action="Manage" asp-route-id="@userOrganization.Id" class="btn btn-outline-warning">Manage</a>
+                </td>
+            </tr>
+            </tbody>
+        }
+    }
+</table>
+
+
+
+@if (userRights.CanManageUsers) {
+    var maxUsersReached = numUsersWithAccess >= maxUsersWithAccess;
+    var buttonUserLabel = numUsersWithAccess + 1;
+
+    if (maxUsersReached)
+    {
+        <a class="btn btn-outline-dark disabled" aria-disabled="true">
+            Add User: Maximum Reached
+        </a>
+    }
+    else
+    {
+        <a asp-controller="OrganizationRights" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-success">
+            Add User @buttonUserLabel of @maxUsersWithAccess
+        </a>
+    }
+}

@@ -1,0 +1,49 @@
+﻿@model Comment
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+
+<div class="small d-flex justify-content-start">
+    <a href="#!" class="d-flex align-items-center me-3">
+        <i class="far fa-thumbs-up me-2"></i>
+        <p class="mb-0">Like</p>
+    </a>
+    <a href="#!" class="d-flex align-items-center me-3">
+        <i class="far fa-comment-dots me-2"></i>
+        <p class="mb-0">Comment</p>
+    </a>
+    <a href="#!" class="d-flex align-items-center me-3">
+        <i class="fas fa-share me-2"></i>
+        <p class="mb-0">Share</p>
+    </a>
+</div>
+      
+
+<form method="post"  model="Model">
+<div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+    <div class="d-flex flex-start w-100">
+        <img class="rounded-circle shadow-1-strong me-3"
+             src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+             height="40" />
+      
+           
+        <div class="row mb-3">
+            <label asp-for="Text" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-3">
+                <input asp-for="Text" id="Content" class="form-control">
+            </div>
+        </div>
+        
+          
+    <div>
+        <input type="submit" id="Submit" class="btn btn-primary" value="Add Post">
+    </div>
+    </div> 
+   
+</div>
+
+</form>

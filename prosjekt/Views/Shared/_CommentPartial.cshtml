@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@model Comment
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    var isYourComment = user == Model.PostedBy;
+}
+
+<div class="card-footer py-3 border-0 mt-2" style="background-color: #f8f9fa;">
+    <div>
+        @if (Model.PostedBy != null)
+        {
+            <header>
+                <img class="rounded-circle shadow-1-strong me-3"
+                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp"
+                     alt="avatar" width="40"
+                     height="40"/>
+                <span rows="4">@Model.PostedBy.NickName</span>
+            </header>
+        }
+        <body class="outline w-100">
+        <label class="form-label" for="textAreaExample">@Model.Text</label>
+        </body>
+
+        <footer class="small">
+            @if (Model.EditTime == null)
+            {
+                <span>Posted: @Model.PostTime</span>
+            }
+            else
+            {
+                <span>Edit: @Model.EditTime</span>
+            }
+            
+            <a class="btn btn-info">
+                Reply
+            </a>
+
+            @if (isYourComment)
+            {
+                <a asp-controller="Comment" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    Edit
+                </a>
+            }
+        </footer>
+    </div>
+</div>

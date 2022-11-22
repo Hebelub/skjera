@@ -23,7 +23,7 @@ public class UserOrganization
 
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; }
     public ApplicationUser User { get; set; }
     
     public int OrganizationId { get; set; }
@@ -33,20 +33,15 @@ public class UserOrganization
     public bool IsFollowing { get; set; }
 
 
+    public bool IsInterested { get; set; }
+
+
     private AccessRight? _accessRight;
     public int AccessRightId { get; set; }
     public AccessRight AccessRight
     {
-        get
-        {
-            Console.WriteLine("Getting AccessRight: " + _accessRight);
-            return _accessRight ?? AccessRight.NoAccess;
-        }
-        set
-        {
-            Console.WriteLine("Setting AccessRight value: " + value);
-            _accessRight = value;
-        }
+        get => _accessRight ?? AccessRight.NoAccess;
+        set => _accessRight = value;
     }
 
 }

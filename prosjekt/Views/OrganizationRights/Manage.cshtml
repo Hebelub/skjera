@@ -1,0 +1,108 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using prosjekt.Data
+@model UserOrganization
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+
+<h2>Manage rights for @Model.User.NickName at @Model.Organization.Name</h2>
+
+<a asp-controller="OrganizationRights" asp-action="Index" asp-route-id="@Model.OrganizationId">&larr;Back</a>
+
+<form asp-action="Manage" asp-controller="OrganizationRights" asp-route-id="@Model.Id" asp-route-organizationId="@Model.OrganizationId" asp-route-userId="@Model.UserId">
+    <table class="table table-bordered table-striped" style="width: 100%">
+
+        <thead>
+        <tr class="table-dark">
+            <th>
+                @Html.DisplayNameFor(model => model.User.NickName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessRight)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr class="table-secondary">
+            <td>
+                <span>Can Manage Users: </span>
+            </td>
+            <td>
+                @* Check because you are not allowed to disable your own can manage user attribute *@
+                @if (user == Model.User)
+                {
+                    @Model.AccessRight.CanManageUsers
+                    <input asp-for="AccessRight.CanManageUsers" disabled/>
+                }
+                else
+                {
+                    @Model.AccessRight.CanManageUsers
+                    <input asp-for="AccessRight.CanManageUsers"/>
+                }
+            </td>
+        </tr>
+        <tr class="table-danger">
+            <td>
+                <span>Can Delete Events: </span>
+            </td>
+
+            <td>
+                @Model.AccessRight.CanDeleteEvents
+                <input asp-for="AccessRight.CanDeleteEvents"/>
+            </td>
+        </tr>
+        <tr class="table-warning">
+            <td>
+                <span>Can Delete Organization: </span>
+            </td>
+
+            <td>
+                @Model.AccessRight.CanDeleteOrganization
+                <input asp-for="AccessRight.CanDeleteOrganization"/>
+            </td>
+        </tr>
+        <tr class="table-info">
+
+            <td>
+                <span>Can Edit Organization: </span>
+            </td>
+
+            <td>
+                @Model.AccessRight.CanEditOrganization
+                <input asp-for="AccessRight.CanEditOrganization"/>
+            </td>
+        </tr>
+
+        <tr class="table-light">
+            <td>
+                <span>Can Create Events: </span>
+            </td>
+
+            <td>
+                @Model.AccessRight.CanCreateEvents
+                <input asp-for="AccessRight.CanCreateEvents" />
+            </td>
+        </tr>
+        <tr class="table-primary">
+            <td>
+                <span>Can Can Edit Events: </span>
+            </td>
+
+            <td>
+                @Model.AccessRight.CanEditEvents
+                <input asp-for="AccessRight.CanEditEvents" />
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <input type="submit" value="Apply Changes" class="btn btn-primary"/>
+    <span>To remove a user, set all rights to false</span>
+</form>

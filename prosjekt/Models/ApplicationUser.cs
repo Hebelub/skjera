@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using prosjekt.Data;
 
@@ -18,15 +19,27 @@ public class ApplicationUser : IdentityUser
         _context = context;
     }
 
-    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId)
+    public string NickName { get; set; }
+
+    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true, bool returnNullIfNotFound=false)
     {
-        var organizationRelation = await _context.UserOrganization
+        var userOrganizationWithOrWithoutTracking = withTracking 
+            ? _context.UserOrganization.AsTracking() 
+            : _context.UserOrganization.AsNoTracking();
+        
+        var organizationRelation = await userOrganizationWithOrWithoutTracking
             .Include(o => o.AccessRight)
+            .Include(o => o.User)
             .FirstOrDefaultAsync(access => access.User == this && access.OrganizationId == organizationId);
 
         if (organizationRelation != null && organizationRelation.Id != 0)
         {
             return organizationRelation;
+        }
+
+        if (returnNullIfNotFound)
+        {
+            return null;
         }
 
         var organization = await _context.OrganizationModels.FindAsync(organizationId);
@@ -36,8 +49,10 @@ public class ApplicationUser : IdentityUser
             throw new Exception("Organization not found");
         }
 
-        var a = new UserOrganization(this, organization, AccessRight.NoAccess);
-        return a;
+        var userOrganization = new UserOrganization(this, organization, AccessRight.NoAccess);
+        userOrganization.UserId = Id;
+        userOrganization.OrganizationId = organizationId;
+        return userOrganization;
     } 
     
     public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()

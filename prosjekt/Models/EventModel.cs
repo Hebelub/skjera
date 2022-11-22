@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using prosjekt.Data;
 
 namespace prosjekt.Models;
 
@@ -10,11 +12,13 @@ public class EventModel
     {
     }
 
-    public EventModel(OrganizationModel organizer, DateTime timeCreated, DateTime? lastTimeEdited, 
-        string title, string description, string info)
+    public EventModel(OrganizationModel organizer, DateTime startTime, DateTime? endTime, DateTime timeCreated, DateTime? lastTimeEdited, 
+        string title, string info)
     {
         Organizer = organizer;
         TimeCreated = timeCreated;
+        StartTime = startTime;
+        EndTime = endTime;
         LastTimeEdited = lastTimeEdited;
         Title = title;
         Info = info;
@@ -44,11 +48,17 @@ public class EventModel
     
     
     //[Required(ErrorMessage = "Start time should not be greater than End time.")]
+    [DisplayName ("Date")]
+    public DateTime? Date { get; set; }
+    
+    
     [DisplayName ("StartTime")]
     public DateTime? StartTime { get; set; }
     
     [DisplayName("EndTime")]
     public DateTime? EndTime { get; set; }
+    
+    
 
     [DisplayName("Location")]
     public string? Location { get; set; }
@@ -64,16 +74,21 @@ public class EventModel
     
 
     public bool IsEdited { get => LastTimeEdited != null; }
-    
-    
-    
-    public List<ApplicationUser> Attending = new(); 
-    
-    
-    
-    public int NumAttending
+
+
+
+    public async Task<UserEventRelation> GetUserEventRelationAsync(ApplicationDbContext db, ApplicationUser user)
     {
-        get => Attending.Count;
+        return await db.UserEventRelations.FirstOrDefaultAsync(r => r.EventId == Id && r.User == user) 
+               ?? new UserEventRelation(this, user);
     }
 
+    public async Task<List<ApplicationUser>> GetAttendingUsersAsync(ApplicationDbContext db)
+    {
+        return await db.UserEventRelations
+            .Where(r => r.EventId == Id && r.IsAttending)
+            .Select(r => r.User)
+            .ToListAsync();
+    }
+    
 }
