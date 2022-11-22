@@ -83,7 +83,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,Duration")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,Duration,Days,Hours,Minutes")] EventModel eventModel, int id)
         {
             var organization = await _context.OrganizationModels.FindAsync(id);
 
