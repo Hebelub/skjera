@@ -28,7 +28,6 @@ namespace prosjekt.Controllers
         //SearchOrganizations
         public async Task<IActionResult> Index(string searchString)
         {
-            
             var organization = from m in _context.OrganizationModels
                 select m;
 
@@ -40,7 +39,7 @@ namespace prosjekt.Controllers
             return View(await organization.ToListAsync());
         }
         
-        
+
         [HttpPost]
         public string Index(string searchString, bool notUsed)
         {
@@ -73,7 +72,8 @@ namespace prosjekt.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            return View();
+            ViewBag.FormType = FormType.Create;
+            return View("_OrganizationForm");
         }
 
         // POST: Organization/Create
@@ -86,7 +86,8 @@ namespace prosjekt.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(organizationModel);
+                ViewBag.FormType = FormType.Create;
+                return View("_OrganizationForm", organizationModel);
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -122,7 +123,8 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
             
-            return View(organizationModel);
+            ViewBag.FormType = FormType.Edit;
+            return View("_OrganizationForm", organizationModel);
         }
 
         // POST: Organization/Edit/5
@@ -143,7 +145,8 @@ namespace prosjekt.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(organizationModel);
+                ViewBag.FormType = FormType.Edit;
+                return View("_OrganizationForm", organizationModel);
             }
             
             try

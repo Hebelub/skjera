@@ -2,22 +2,25 @@
 
 
 @{
+    var title = string.Empty;
     var actionName = string.Empty;
     var submitButtonValue = string.Empty;
 }
 
 @if (ViewBag.FormType == FormType.Create)
 {
-    <h1>Create</h1>
+    title = "Create";
     actionName = "Create";
     submitButtonValue = "Create";
 }
 else if (ViewBag.FormType == FormType.Edit)
 {
-    <h1>Edit</h1>
+    title = "Edit";
     actionName = "Edit";
     submitButtonValue = "Save";
 }
+
+<h1>@title</h1>
 
 <h4>EventModel</h4>
 
