@@ -1,15 +1,28 @@
-@model EventModel
-
-@* @Html.Partial("_EventForm", new EventFormModel(Model, FormType.Create)); *@
+﻿@model EventModel
 
 
-<h1>Create</h1>
+@{
+    var actionName = string.Empty;
+    var submitButtonValue = string.Empty;
+}
+
+@if (ViewBag.FormType == FormType.Create)
+{
+    <h1>Create</h1>
+    actionName = "Create";
+    submitButtonValue = "Create";
+}
+else if (ViewBag.FormType == FormType.Edit)
+{
+    <h1>Edit</h1>
+    actionName = "Edit";
+    submitButtonValue = "Save";
+}
 
 <h4>EventModel</h4>
 
 <div class="row">
-    <form asp-action="Create" asp-controller="Event" asp-route-id="@Model.Id" class="row">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="@actionName" asp-controller="Event" asp-route-id="@Model.Id" asp-route-organizerId="@Model.OrganizerId" class="row">
         <input type="hidden" asp-for="Id"/>
         <div class="col">
             <div class="form-group">
@@ -22,6 +35,7 @@
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control"/>
                 <span asp-validation-for="StartTime" class="text-danger"></span>
+                @* @Html.ValidationMessageFor(m => Model.StartTime) *@
             </div>
             <br/>
             <div class="row form-group">
@@ -29,7 +43,6 @@
                 <div class="form-group col">
                     <label asp-for="Days" class="control-label"></label>
                     <input asp-for="Days" class="form-control"/>
-                    @* <input name="to" value="Mom" /> *@
                 </div>
                 <div class="form-group col">
                     <label asp-for="Hours" class="control-label"></label>
@@ -43,7 +56,7 @@
             </div>
             <br/>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="@submitButtonValue" class="btn btn-primary"/>
             </div>
         </div>
 
@@ -58,7 +71,7 @@
 </div>
 
 <div>
-    <a asp-controller="Organization" asp-action="Details" asp-route-id="@ViewData["OrganizationId"]">Back to Organization</a>
+    <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">Back to Event</a>
 </div>
 
 <script>

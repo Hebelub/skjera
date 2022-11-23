@@ -74,7 +74,8 @@ namespace prosjekt.Controllers
             model.Organizer = organization;
             
             ViewData["OrganizationId"] = id;
-            return View(model);
+            ViewBag.FormType = FormType.Create;
+            return View("_EventForm", model);
         }
 
         // POST: Event/Create/5
@@ -103,7 +104,8 @@ namespace prosjekt.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(eventModel);
+                ViewBag.FormType = FormType.Create;
+                return View("_EventForm", eventModel);
             }
             
             if (!OrganizationAccess(id).CanCreateEvents)
@@ -138,7 +140,8 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
             
-            return View(eventModel);
+            ViewBag.FormType = FormType.Edit;
+            return View("_EventForm", eventModel);
         }
 
         // POST: Event/Edit/5
@@ -150,7 +153,7 @@ namespace prosjekt.Controllers
         public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,Duration,Days,Hours,Minutes")] EventModel eventModel)
         {
             eventModel.LastTimeEdited = DateTime.Now;
-            
+
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)
             {
@@ -164,7 +167,8 @@ namespace prosjekt.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(eventModel);
+                ViewBag.FormType = FormType.Edit;
+                return View("_EventForm", eventModel);
             }
 
             try
