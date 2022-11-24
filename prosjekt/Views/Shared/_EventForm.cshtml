@@ -38,7 +38,12 @@ else if (ViewBag.FormType == FormType.Edit)
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control"/>
                 <span asp-validation-for="StartTime" class="text-danger"></span>
-                @* @Html.ValidationMessageFor(m => Model.StartTime) *@
+            </div>
+            <br/>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control"/>
+                <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <br/>
             <div class="row form-group">

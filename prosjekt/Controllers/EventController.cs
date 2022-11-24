@@ -84,7 +84,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,Duration,Days,Hours,Minutes")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,Duration,Days,Hours,Minutes,Location")] EventModel eventModel, int id)
         {
             var organization = await _context.OrganizationModels.FindAsync(id);
 
@@ -150,7 +150,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,Duration,Days,Hours,Minutes")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,Duration,Days,Hours,Minutes,Location")] EventModel eventModel)
         {
             eventModel.LastTimeEdited = DateTime.Now;
 

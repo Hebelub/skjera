@@ -90,6 +90,7 @@ public class EventModel
     
 
     [DisplayName("Location")]
+    [MaxLength(120)]
     public string? Location { get; set; }
     
 
