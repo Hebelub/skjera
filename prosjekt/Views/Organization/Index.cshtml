@@ -40,29 +40,54 @@
 }
 
 <!--SearchOrganizations-->
-<p1 class="container" style="text-align: left">
-    <form asp-controller="Organization" asp-action="Index" method="get">
-        <input type="text"  placeholder="Organizations!" name="SearchString"/>
-        <button type="submit">Search</button>
-    </form>
-</p1>
 
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+
+
+
+    <div class="wrapper">
+        <div class="one">
+            <div class="OneDouther1">
+                <!--SearchOrganizations-->     
+                <div class="container">
+                    <div class="row height d-flex justify-content-center align-items-center">
+                        <div class="col-md-8">
+                            <div class="search">
+                                <i class="fa fa-search"></i>
+                                <form asp-controller="Organization" asp-action="Index" method="get">
+                                         <input type="text" class="form-control" placeholder="Organizations!" name="SearchString"/>
+                                    <button type="submit">Search</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            
+            <div class="OneDouther2">
+                <p>
+                    <a asp-action="Create" class="btn btn-primary btn-lg">Create New</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+     <br/><br/><br/> 
+
 
 
 @if (organizationWithAccessExist)
-{
+{    
     <h1>Organizations you have admin rights to</h1>
+    <br/><br/><br/> 
     <div class="grid-container">
 
     @foreach (var relation in userOrganizationRelations)
     {
         if (relation.AccessRight.HasAnyAccess || User.IsInRole("Admin"))
         {   
-            <div class="grid-item ">
+            <div class="grid-item1 ">
                  <partial name="_OrganizationPartial" model="relation"/>
                 </div>
         }
@@ -72,13 +97,14 @@
 
 
 @if (organizationWithoutAccessExist)
-{
+{     <br/><br/><br/> 
     <h1>Student Organizations</h1>
+    <br/><br/><br/> 
     <div class="grid-container">
     @foreach (var relation in userOrganizationRelations)
     {
         if (!relation.AccessRight.HasAnyAccess && !User.IsInRole("Admin"))
-        {   <div class="grid-item ">
+        {   <div class="grid-item1">
                 <partial name="_OrganizationPartial" model="relation"/>
                </div>
         }

@@ -1,37 +1,64 @@
 @model UserOrganization
 
-
+ <link rel="stylesheet" href="~/css/OrganizationCard.css"/>
 
 <div class="card">
-    <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmm" class="profile_picture">
-    <div class="header">
-        <h1 class="text-center">@Model.Organization.Name</h1>
-    </div>
+    
+   <div class="imgBox">
+          <img src="img/uialogo.png" alt="Picture" >
+      </div>
 
-    <div class="text-center" id="toscroll">
-        @Html.Raw(Model.Organization.Description)
+   <div class="content">
+          <div class="details">
+              <h2> @Model.Organization.Name</h2>
+                 <div class="data">
+                     <h3>
+                         <span>
+                              <!--  <div class="text-center" id="toscroll">
+                                           Html.Raw(Model.Organization.Description)
+                                       </div> -->
+                              this is for the short discription of the organizatio for details click the details button
+                         </span>
+                  </h3>
+              </div>
+    
+   
+    
+       <div class="actionBtn">
+                      <a asp-action="Details" asp-route-id="@Model.Organization.Id" class="btn-primary">Details</a>
+                      @if (User.Identity.IsAuthenticated)
+                      {
+                          @if (Model.IsFollowing)
+                          {
+                              <a asp-action="Follow" class="btn btn-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="false">Following</a><br/>
+                          }
+                          else
+                          {
+                              <a asp-action="Follow" class="btn btn-outline-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="true">Follow</a><br/>
+                          }
+                      }
+                  </div>
+    
+    
+           </div>
+         </div>
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    
         
-    </div>
-    
-    <a asp-action="Details" asp-route-id="@Model.Organization.Id" class="text-center, btn btn-outline-success">Details</a>
-    
-    <br/>
-    
-    @if (User.Identity.IsAuthenticated)
-    {
-        @if (Model.IsFollowing)
-        {
-            <a asp-action="Follow" class="btn btn-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="false">Following</a><br />
-        }
-        else
-        {
-            <a asp-action="Follow" class="btn btn-outline-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="true"  >Follow</a><br />
-        }
-    }
-    
     @if (Model.AccessRight.HasAnyAccess)
-    {
-        <span>You Have Accessrights here</span>
-    }
+        {
+            <span>You Have Accessrights here</span>
+        }
+        
+
+              
+              
     
-</div>
+    
