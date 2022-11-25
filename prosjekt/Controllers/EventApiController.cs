@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using prosjekt.Data;
 using prosjekt.Models;
 
@@ -27,6 +28,16 @@ namespace prosjekt.Controllers
         {
             return await _context.EventModels.ToListAsync();
         }
+        
+    //    [HttpGet]
+    //    public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels(DateTime fromDate, DateTime toDate)
+    //    {
+    //        return await _context.EventModels
+    //            .Where(e => e.StartTime >= fromDate 
+    //                        && e.StartTime <= toDate)
+    //            // .OrderByDescending( time )
+    //            .ToListAsync();
+    //    }
 
         // GET: api/EventApi/5
         [HttpGet("{id}")]
