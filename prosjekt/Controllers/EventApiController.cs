@@ -29,15 +29,15 @@ namespace prosjekt.Controllers
             return await _context.EventModels.ToListAsync();
         }
         
-    //    [HttpGet]
-    //    public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels(DateTime fromDate, DateTime toDate)
-    //    {
-    //        return await _context.EventModels
-    //            .Where(e => e.StartTime >= fromDate 
-    //                        && e.StartTime <= toDate)
-    //            // .OrderByDescending( time )
-    //            .ToListAsync();
-    //    }
+        [HttpGet("date/{fromDate}/{toDate}")]
+        public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels(DateTime fromDate, DateTime toDate)
+        {
+            return await _context.EventModels
+                .Where(e => e.StartTime >= fromDate 
+                            && e.StartTime <= toDate)
+                // .OrderByDescending( time )
+                .ToListAsync();
+        }
 
         // GET: api/EventApi/5
         [HttpGet("{id}")]

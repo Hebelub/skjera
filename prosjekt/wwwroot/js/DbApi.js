@@ -15,8 +15,7 @@ function getEvents() {
 }
 
 function getEventsBetweenDates(fromDate, toDate) {
-    fetch(uri)
+    return fetch(uri + "date/" + fromDate + "/" + toDate, { method: 'GET' })
         .then(response => response.json())
-        .then(data => console.log(data))
         .catch(error => console.error('Unable to get items.', error));
 }

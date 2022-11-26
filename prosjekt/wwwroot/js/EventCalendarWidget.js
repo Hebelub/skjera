@@ -3,29 +3,33 @@
     let today = moment();
 
     function Calendar(selector) {
+        this.eventColor = 'yellow';
+        this.events = [];
         this.el = document.querySelector(selector);
         this.current = moment().date(1);
         this.draw();
         let current = document.querySelector('.today');
         if (current) {
             let self = this;
-            window.setTimeout(function () {
+            window.setTimeout(() => {
                 self.openDay(current);
             }, 500);
         }
     }
     
     Calendar.prototype.getEventsThisMonth = async function () {
+
+        let fromDate = moment(this.current).startOf('month').format('YYYY-MM-DD');
+        let toDate = moment(this.current).endOf('month').format('YYYY-MM-DD');
         
-        console.log(getEvent(2));
-        console.log(getEvents());
+        const events = await getEventsBetweenDates(fromDate, toDate);
+
+        // Changing fetched events startTime from string to a moment object
+        events.forEach((event) => {
+            event.startTime = moment(event.startTime, 'YYYY-MM-DDTHH:mm:ss');
+        });
         
-        return [
-            {eventName: 'Game vs Portalnd', date: '09', time: '11:00', color: 'blue'},
-            {eventName: 'Game vs Houston', date: '10', time: '12:00', color: 'green'},
-            {eventName: 'Game vs Denver', date: '11', time: '13:00', color: 'orange'},
-            {eventName: 'Game vs San Antonio', date: '12', time: '14:00', color: 'yellow'},
-        ];
+        return events;
     }
 
     Calendar.prototype.draw = async function () {
@@ -73,15 +77,10 @@
     Calendar.prototype.drawMonth = function () {
         let self = this;
 
-        this.events.forEach(function (ev) {
-            ev.date = self.current.clone().date(ev.date);
-        });
-
-
         if (this.month) {
             this.oldMonth = this.month;
             this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
-            this.oldMonth.addEventListener('webkitAnimationEnd', function () {
+            this.oldMonth.addEventListener('webkitAnimationEnd', () => {
                 self.oldMonth.parentNode.removeChild(self.oldMonth);
                 self.month = createElement('div', 'month');
                 self.backFill();
@@ -139,16 +138,18 @@
         }
     }
 
-    Calendar.prototype.getWeek = function (day) {
+    Calendar.prototype.drawWeek = function (day) {
         if (!this.week || day.day() === 0) {
             this.week = createElement('div', 'week');
-            this.month.appendChild(this.week);
+            if (this.month !== undefined) {
+                this.month.appendChild(this.week);
+            }
         }
     }
 
     Calendar.prototype.drawDay = function (day) {
         let self = this;
-        this.getWeek(day);
+        this.drawWeek(day);
 
         //Outer Day
         let outer = createElement('div', this.getDayClass(day));
@@ -165,28 +166,37 @@
 
         //Events
         let events = createElement('div', 'day-events');
-        this.drawEvents(day, events);
+        this.drawEvents(this.getEventsOfDay(day), events);
 
         outer.appendChild(name);
         outer.appendChild(number);
         outer.appendChild(events);
         this.week.appendChild(outer);
     }
+    
+    Calendar.prototype.getEventsOfDay = function (day) {
+        console.log("Events", this.events);
+        console.log("Day", day);
+        
+        if (day.month() !== this.current.month() || this.events === undefined)
+            return [];
+        let eventsOfDay = [];
+        
+        
+        this.events.forEach((event) => {
+            if (event.startTime.isSame(day, "day")) {
+                eventsOfDay.push(event);
+            }
+        });
+        return eventsOfDay;
+    }
 
-    Calendar.prototype.drawEvents = function (day, element) {
-        if (day.month() === this.current.month()) {
-            let todaysEvents = this.events.reduce(function (memo, ev) {
-                if (ev.date.isSame(day, 'day')) {
-                    memo.push(ev);
-                }
-                return memo;
-            }, []);
-
-            todaysEvents.forEach(function (ev) {
-                let evSpan = createElement('span', ev.color);
-                element.appendChild(evSpan);
-            });
-        }
+    Calendar.prototype.drawEvents = function (events, element) {
+        events.forEach(function (ev) {
+            console.log(ev, events, element);
+            let evSpan = createElement('span', 'yellow');
+            element.appendChild(evSpan);
+        });
     }
 
     Calendar.prototype.getDayClass = function (day) {
@@ -200,16 +210,18 @@
     }
 
     Calendar.prototype.openDay = function (el) {
-        let details, arrow;
+        let detailsElement, arrowElement;
         let dayNumber = +el.querySelectorAll('.day-number')[0].innerText || +el.querySelectorAll('.day-number')[0].textContent;
         let day = this.current.clone().date(dayNumber);
 
+        console.log("The day", day);
+        
         let currentOpened = document.querySelector('.details');
 
         //Check to see if there is an open detais box on the current row
         if (currentOpened && currentOpened.parentNode === el.parentNode) {
-            details = currentOpened;
-            arrow = document.querySelector('.arrow');
+            detailsElement = currentOpened;
+            arrowElement = document.querySelector('.arrow');
         } else {
             //Close the open events on differnt week row
             //currentOpened && currentOpened.parentNode.removeChild(currentOpened);
@@ -230,37 +242,33 @@
             }
 
             //Create the Details Container
-            details = createElement('div', 'details in');
+            detailsElement = createElement('div', 'details in');
 
             //Create the arrow
-            arrow = createElement('div', 'arrow');
+            arrowElement = createElement('div', 'arrow');
 
             //Create the event wrapper
-            details.appendChild(arrow);
-            el.parentNode.appendChild(details);
+            detailsElement.appendChild(arrowElement);
+            el.parentNode.appendChild(detailsElement);
         }
+        
+        this.renderEvents(this.getEventsOfDay(day), detailsElement);
 
-        let todaysEvents = this.events.reduce(function (memo, ev) {
-            if (ev.date.isSame(day, 'day')) {
-                memo.push(ev);
-            }
-            return memo;
-        }, []);
-
-        this.renderEvents(todaysEvents, details);
-
-        arrow.style.left = el.offsetLeft - el.parentNode.offsetLeft + 27 + 'px';
+        arrowElement.style.left = el.offsetLeft - el.parentNode.offsetLeft + 27 + 'px';
     }
 
-    Calendar.prototype.renderEvents = function (events, ele) {
+    // Render events in wrapper of the opened day
+    Calendar.prototype.renderEvents = function (events, element) {
+        console.log("Yee", events, element);
+        
         //Remove any events in the current details element
-        let currentWrapper = ele.querySelector('.events');
+        let currentWrapper = element.querySelector('.events');
         let wrapper = createElement('div', 'events in' + (currentWrapper ? ' new' : ''));
 
-        events.forEach(function (ev) {
+        events.forEach((ev) => {
             let div = createElement('div', 'event');
-            let square = createElement('div', 'event-category ' + ev.color);
-            let span = createElement('span', '', ev.eventName);
+            let square = createElement('div', 'event-category ' + this.eventColor);
+            let span = createElement('span', '', ev.title);
 
             div.appendChild(square);
             div.appendChild(span);
@@ -279,29 +287,29 @@
             currentWrapper.className = 'events out';
             currentWrapper.addEventListener('webkitAnimationEnd', function () {
                 currentWrapper.parentNode.removeChild(currentWrapper);
-                ele.appendChild(wrapper);
+                element.appendChild(wrapper);
             });
             currentWrapper.addEventListener('oanimationend', function () {
                 currentWrapper.parentNode.removeChild(currentWrapper);
-                ele.appendChild(wrapper);
+                element.appendChild(wrapper);
             });
             currentWrapper.addEventListener('msAnimationEnd', function () {
                 currentWrapper.parentNode.removeChild(currentWrapper);
-                ele.appendChild(wrapper);
+                element.appendChild(wrapper);
             });
             currentWrapper.addEventListener('animationend', function () {
                 currentWrapper.parentNode.removeChild(currentWrapper);
-                ele.appendChild(wrapper);
+                element.appendChild(wrapper);
             });
         } else {
-            ele.appendChild(wrapper);
+            element.appendChild(wrapper);
         }
     }
 
     Calendar.prototype.drawLegend = function () {
         let legend = createElement('div', 'legend');
         let calendars = this.events.map(function (e) {
-            return e.calendar + '|' + e.color;
+            return e.calendar + '|' + this.eventColor;
         }).reduce(function (memo, e) {
             if (memo.indexOf(e) === -1) {
                 memo.push(e);
@@ -342,17 +350,5 @@
 }();
 
 !function () {
-    let data = [
-        {eventName: 'Game vs Portalnd', date: '09', time: '11:00', color: 'blue'},
-        {eventName: 'Game vs Houston', date: '09', time: '12:00', color: 'green'},
-        {eventName: 'Game vs Denver', date: '09', time: '13:00', color: 'orange'},
-        {eventName: 'Game vs San Antonio', date: '09', time: '14:00', color: 'yellow'},
-    ];
-
-    function addDate(ev) {
-
-    }
-
-    let calendar = new Calendar('#calendar', data);
-
+    let calendar = new Calendar('#calendar');
 }();

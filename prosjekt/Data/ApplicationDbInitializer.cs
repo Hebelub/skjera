@@ -63,30 +63,30 @@ public class ApplicationDbInitializer
         // Create Events
         var events = new[]
         {
-            new EventModel(organizations.ElementAt(0), DateTime.Parse("01/01/2001 01:01:01"),
+            new EventModel(organizations.ElementAt(0), DateTime.Parse("11/04/2022 01:01:01"),
                 TimeSpan.Parse("0:01:00"), DateTime.Parse("01/01/2001"), DateTime.Parse("01/01/2011"),
                 "Event 01",
                 "Info 1 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
-            new EventModel(organizations.ElementAt(1), DateTime.Parse("01/02/2001 02:02:02"),
+            new EventModel(organizations.ElementAt(1), DateTime.Parse("11/09/2022 02:02:02"),
                 TimeSpan.Parse("0:02:00"), DateTime.Parse("02/02/2002"), DateTime.Parse("01/01/2022"),
                 "Event 02",
                 "Info 2 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
-            new EventModel(organizations.ElementAt(2), DateTime.Parse("01/03/2001 03:03:03"),
+            new EventModel(organizations.ElementAt(2), DateTime.Parse("11/01/2022 03:03:03"),
                 TimeSpan.Parse("0:03:00"), DateTime.Parse("03/03/2003"), DateTime.Parse("01/01/2033"),
                 "Event 03",
                 "Info 3 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
-            new EventModel(organizations.ElementAt(2), DateTime.Parse("01/04/2001"), null, DateTime.Parse("04/04/2004"),
+            new EventModel(organizations.ElementAt(2), DateTime.Parse("11/30/2022"), null, DateTime.Parse("04/04/2004"),
                 null, "Event 04",
                 "Info 4 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
-            new EventModel(organizations.ElementAt(1), DateTime.Parse("01/05/2001"), null, DateTime.Parse("05/05/2005"),
+            new EventModel(organizations.ElementAt(1), DateTime.Parse("11/08/2022"), null, DateTime.Parse("05/05/2005"),
                 null, "Event 05",
                 "Info 5 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             ),
-            new EventModel(organizations.ElementAt(0), DateTime.Parse("01/06/2001"), null, DateTime.Parse("06/06/2006"),
+            new EventModel(organizations.ElementAt(0), DateTime.Parse("11/08/2022"), null, DateTime.Parse("06/06/2006"),
                 null, "Event 06",
                 "Info 6 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
             )

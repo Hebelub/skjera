@@ -3,7 +3,6 @@
 @inject ApplicationDbContext DbContext;
 @model IEnumerable<EventModel>
 
-    <link rel="stylesheet" href="~/css/EventCalendarWidget.css" asp-append-version="true"/>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -12,23 +11,6 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 </div>
-
-@* <div class="container"> *@
-@*     <div class="row justify-content-between"> *@
-@*         <div class="col md-6"> *@
-@*             <br/> *@
-@*             <iframe src="https://embed.styledcalendar.com/#mHWjcKdM4AiM8rxOXgFy" title="Styled Calendar" class="styled-calendar-container" style="width: 60%;border: none;" data-cy="calendar-embed-iframe" height="60"></iframe> *@
-@*             <script async type="module" src="https://embed.styledcalendar.com/assets/parent-window.js"></script>        <div class="col md-6"> *@
-@*                 Upcoming Events Week 00 *@
-@*             </div> *@
-@*         </div> *@
-@*         <div class="row mt-4"> *@
-@*             <div class="col md-12"> *@
-@*                 <div class="col">Events you might like</div> *@
-@*             </div> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
 
 
 @{
@@ -46,7 +28,7 @@
 @{
     var events = await DbContext.EventModels.Include((o) => o.Organizer).ToListAsync();
     var jsEvents = new List<string>();
-    
+
     foreach (var e in events)
     {
         jsEvents.Add(EventToJsEvent(e));
@@ -54,13 +36,12 @@
 }
 
 <div class="FrontPageBody">
-<div id="calendar"></div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+    <partial name="_EventCalendarWidget"></partial>
 
- @if (Model != null)
+    @if (Model != null)
     {
         <div class="Events_this_week">
-            @{int events_this_week = 0;}
+            @{ int events_this_week = 0; }
             @foreach (var item in Model)
             {
                 if (item.StartTime > DateTime.Today && item.StartTime < DateTime.Now + TimeSpan.FromDays(7))
