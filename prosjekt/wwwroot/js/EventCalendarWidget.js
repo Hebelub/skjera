@@ -175,9 +175,6 @@
     }
     
     Calendar.prototype.getEventsOfDay = function (day) {
-        console.log("Events", this.events);
-        console.log("Day", day);
-        
         if (day.month() !== this.current.month() || this.events === undefined)
             return [];
         let eventsOfDay = [];
@@ -193,7 +190,6 @@
 
     Calendar.prototype.drawEvents = function (events, element) {
         events.forEach(function (ev) {
-            console.log(ev, events, element);
             let evSpan = createElement('span', 'yellow');
             element.appendChild(evSpan);
         });
@@ -213,8 +209,6 @@
         let detailsElement, arrowElement;
         let dayNumber = +el.querySelectorAll('.day-number')[0].innerText || +el.querySelectorAll('.day-number')[0].textContent;
         let day = this.current.clone().date(dayNumber);
-
-        console.log("The day", day);
         
         let currentOpened = document.querySelector('.details');
 
@@ -259,7 +253,6 @@
 
     // Render events in wrapper of the opened day
     Calendar.prototype.renderEvents = function (events, element) {
-        console.log("Yee", events, element);
         
         //Remove any events in the current details element
         let currentWrapper = element.querySelector('.events');
