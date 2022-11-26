@@ -19,8 +19,8 @@
     
     Calendar.prototype.getEventsThisMonth = async function () {
 
-        let fromDate = moment(this.current).startOf('month').format('YYYY-MM-DD');
-        let toDate = moment(this.current).endOf('month').format('YYYY-MM-DD');
+        let fromDate = moment(this.current).startOf('month').startOf('week').format('YYYY-MM-DD');
+        let toDate = moment(this.current).endOf('month').endOf('week').format('YYYY-MM-DD');
         
         const events = await getEventsBetweenDates(fromDate, toDate);
 
@@ -147,22 +147,26 @@
         }
     }
 
-    Calendar.prototype.drawDay = function (day) {
+    Calendar.prototype.drawDay = function (day) {       
         let self = this;
         this.drawWeek(day);
 
-        //Outer Day
+        // Outer Day
         let outer = createElement('div', this.getDayClass(day));
         outer.addEventListener('click', function () {
             self.openDay(this);
         });
 
-        //Day Name
+        // Day Name
         let name = createElement('div', 'day-name', day.format('ddd'));
 
-        //Day Number
+        // Day Number
         let number = createElement('div', 'day-number', day.format('DD'));
-
+        
+        
+        // Day Month 
+        let monthNumberElement = createElement('div', 'month-number', day.format('MM'));
+        monthNumberElement.style.display = 'none';
 
         //Events
         let events = createElement('div', 'day-events');
@@ -170,12 +174,13 @@
 
         outer.appendChild(name);
         outer.appendChild(number);
+        outer.appendChild(monthNumberElement);
         outer.appendChild(events);
         this.week.appendChild(outer);
     }
     
     Calendar.prototype.getEventsOfDay = function (day) {
-        if (day.month() !== this.current.month() || this.events === undefined)
+        if (/* day.month() !== this.current.month() ||*/ this.events === undefined)
             return [];
         let eventsOfDay = [];
         
@@ -196,7 +201,7 @@
     }
 
     Calendar.prototype.getDayClass = function (day) {
-        classes = ['day'];
+        let classes = ['day'];
         if (day.month() !== this.current.month()) {
             classes.push('other');
         } else if (today.isSame(day, 'day')) {
@@ -208,7 +213,9 @@
     Calendar.prototype.openDay = function (el) {
         let detailsElement, arrowElement;
         let dayNumber = +el.querySelectorAll('.day-number')[0].innerText || +el.querySelectorAll('.day-number')[0].textContent;
-        let day = this.current.clone().date(dayNumber);
+        let monthNumber = (+el.querySelectorAll('.month-number')[0].innerText || +el.querySelectorAll('.month-number')[0].textContent) - 1;
+        
+        let day = this.current.clone().date(dayNumber).month(monthNumber);
         
         let currentOpened = document.querySelector('.details');
 
