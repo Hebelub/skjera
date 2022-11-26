@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
@@ -16,12 +17,14 @@ namespace prosjekt.Controllers
     public class EventApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EventApiController(ApplicationDbContext context)
+        public EventApiController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
+        
         // GET: api/EventApi
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels()
@@ -49,7 +52,7 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-
+            
             return eventModel;
         }
 
