@@ -32,7 +32,7 @@ namespace prosjekt.Controllers
             return await _context.EventModels.ToListAsync();
         }
         
-        [HttpGet("date/{fromDate}/{toDate}")]
+        [HttpGet("date/{fromDate:DateTime}/{toDate:DateTime}")]
         public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels(DateTime fromDate, DateTime toDate)
         {
             return await _context.EventModels
@@ -42,8 +42,24 @@ namespace prosjekt.Controllers
                 .ToListAsync();
         }
 
+        [HttpPost("{id:int}/attend/{attend:bool}")]
+        public async void AttendEvent(int id, bool attend)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            
+            var eventModel = await _context.EventModels.FindAsync(id);
+
+            if (eventModel == null)
+            {
+                return;
+            }
+
+            var relation = await eventModel.GetUserEventRelationAsync(_context, user);
+            relation.IsAttending = attend;
+        }
+
         // GET: api/EventApi/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<EventModel>> GetEventModel(int id)
         {
             var eventModel = await _context.EventModels.FindAsync(id);
