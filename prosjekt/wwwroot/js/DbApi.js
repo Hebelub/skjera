@@ -23,18 +23,22 @@ function getEventsBetweenDates(fromDate, toDate) {
 
 // id: int, follow: bool
 function followOrganization(id, follow) {
-    console.log("Follow", id, follow);
-    console.log("Stringify follow", JSON.stringify(follow));
     fetch(organizationUri + "follow/" + id, { 
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(follow)
     }).then(res => {
-        console.log("Request complete! response:", res);
+        return res;
     });
 }
 
 // id: int, Attend: bool
-function attendEvent(id, attend) {
-    fetch(eventUri + "attend/" + id + "/" + attend, { method: 'POST' })
+    function attendEvent(id, attend) {
+    fetch(eventUri + "attend/" + id, { 
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(attend)
+    }).then(res => {
+        return res;
+    });
 }

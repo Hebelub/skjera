@@ -43,9 +43,14 @@ namespace prosjekt.Controllers
         }
 
         [HttpPut("attend/{id:int}")]
-        public async void AttendEvent(int id, bool attend)
+        public async void AttendEvent(int id, [FromBody]bool attend)
         {
             var user = await _userManager.GetUserAsync(User);
+            
+            if (user == null)
+            {
+                return;
+            }
             
             var eventModel = await _context.EventModels.FindAsync(id);
 
@@ -54,8 +59,19 @@ namespace prosjekt.Controllers
                 return;
             }
 
-            var relation = await eventModel.GetUserEventRelationAsync(_context, user);
-            relation.IsAttending = attend;
+            var userEventRelation = await eventModel.GetUserEventRelationAsync(_context, user);
+            userEventRelation.IsAttending = attend;
+
+            if (_context.UserEventRelations.Any(e => e.EventId == id && e.User == user))
+            {
+                _context.UserEventRelations.Update(userEventRelation);
+            }
+            else
+            {
+                await _context.UserEventRelations.AddAsync(userEventRelation);
+            }
+        
+            await _context.SaveChangesAsync();
         }
 
         // GET: api/EventApi/5
