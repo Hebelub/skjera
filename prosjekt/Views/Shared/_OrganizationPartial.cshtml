@@ -27,16 +27,44 @@
                 <a asp-action="Details" asp-route-id="@Model.Organization.Id" class="btn-primary">Details</a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    @if (Model.IsFollowing)
+                    <script>
+                        function follow(buttonEl, id) {
+                            let following = buttonEl.innerHTML === "Following";
+                            
+                            if (following) {
+                                buttonEl.className = "btn btn-outline-primary";
+                                buttonEl.innerHTML = "Follow";
+                            }
+                            else {
+                                buttonEl.className = "btn btn-primary";
+                                buttonEl.innerHTML = "Following";
+                            }
+                            
+                            console.log("Ye", following);
+                            
+                            followOrganization(id, !following);
+                        }
+                    </script>
+
+                    if (Model.IsFollowing)
                     {
-                        <a asp-action="Follow" class="btn btn-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="false">Following</a>
-                        <br/>
+                        <button
+                            class="btn btn-primary"
+                            onClick="follow(this, @Model.Organization.Id)">
+                            Following
+                        </button>
                     }
                     else
                     {
-                        <a asp-action="Follow" class="btn btn-outline-primary" asp-controller="Organization" asp-route-id="@Model.Organization.Id" asp-route-follow="true">Follow</a>
-                        <br/>
+                        <button
+                            class="btn btn-outline-primary"
+                            onClick="follow(this, @Model.Organization.Id, @Json.Serialize(Model.IsFollowing) === false)">
+                            Follow
+                        </button>
                     }
+
+
+                    <br/>
                 }
             </div>
         </div>

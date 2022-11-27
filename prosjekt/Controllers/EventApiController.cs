@@ -42,7 +42,7 @@ namespace prosjekt.Controllers
                 .ToListAsync();
         }
 
-        [HttpPost("{id:int}/attend/{attend:bool}")]
+        [HttpPut("attend/{id:int}")]
         public async void AttendEvent(int id, bool attend)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -74,7 +74,7 @@ namespace prosjekt.Controllers
 
         // PUT: api/EventApi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> PutEventModel(int id, EventModel eventModel)
         {
             if (id != eventModel.Id)
@@ -94,10 +94,7 @@ namespace prosjekt.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();
@@ -115,7 +112,7 @@ namespace prosjekt.Controllers
         }
 
         // DELETE: api/EventApi/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteEventModel(int id)
         {
             var eventModel = await _context.EventModels.FindAsync(id);
