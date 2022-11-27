@@ -42,7 +42,12 @@ namespace prosjekt.Controllers
                 .ToListAsync();
         }
 
-        [HttpPut("attend/{id:int}")]
+        
+        // Should be -> [HttpPut("{id:int}/attend")]
+        // The path under is a quick fix
+        // Event/Details/api/eventApi/1/attend
+        // We must find out why and change it
+        [HttpPut("/Event/Details/api/eventApi/{id:int}/attend")]
         public async void AttendEvent(int id, [FromBody]bool attend)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -86,66 +91,6 @@ namespace prosjekt.Controllers
             }
             
             return eventModel;
-        }
-
-        // PUT: api/EventApi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutEventModel(int id, EventModel eventModel)
-        {
-            if (id != eventModel.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(eventModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventModelExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/EventApi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<EventModel>> PostEventModel(EventModel eventModel)
-        {
-            _context.EventModels.Add(eventModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEventModel", new { id = eventModel.Id }, eventModel);
-        }
-
-        // DELETE: api/EventApi/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteEventModel(int id)
-        {
-            var eventModel = await _context.EventModels.FindAsync(id);
-            if (eventModel == null)
-            {
-                return NotFound();
-            }
-
-            _context.EventModels.Remove(eventModel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool EventModelExists(int id)
-        {
-            return _context.EventModels.Any(e => e.Id == id);
         }
     }
 }

@@ -27,9 +27,10 @@
                 <a asp-action="Details" asp-route-id="@Model.Organization.Id" class="btn-primary">Details</a>
                 @if (User.Identity.IsAuthenticated)
                 {
+                    @* Start of bad js button code *@
                     <script>
                         function follow(buttonEl, id) {
-                            let following = buttonEl.innerHTML === "Following";
+                            let following = buttonEl.innerHTML.trim() === "Following";
                             
                             if (following) {
                                 buttonEl.className = "btn btn-outline-primary";
@@ -62,7 +63,7 @@
                             Follow
                         </button>
                     }
-
+                    @* End of bad js button code *@
 
                     <br/>
                 }

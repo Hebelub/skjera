@@ -76,26 +76,47 @@
     }
     <a asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId" class="btn btn-secondary">Back to Organizer</a>
 
+    @* Start of bad js button code *@
+    <script>
+        function attend(buttonEl, id) {
+            let attending = buttonEl.innerHTML.trim() === "Attending";
+            
+            if (attending) {
+                buttonEl.className = "btn btn-outline-primary";
+                buttonEl.innerHTML = "Attend";
+            }
+            else {
+                buttonEl.className = "btn btn-primary";
+                buttonEl.innerHTML = "Attending";
+            }                
+            
+            attendEvent(id, !attending);
+        }
+    </script>
+
     @if (userEventRelation.IsAttending)
     {
-        <a asp-action="Attend" asp-controller="Event" asp-route-id="@Model.Id" asp-route-attending="false" 
-           class="btn btn-primary">
+        <button
+            class="btn btn-primary"
+            onClick="attend(this, @Model.Id)" value="Attending">
             Attending
-        </a>
+        </button>
     }
     else
     {
-        <a asp-action="Attend" asp-controller="Event" asp-route-id="@Model.Id" asp-route-attending="true" 
-           class="btn btn-outline-primary">
+        <button
+            class="btn btn-outline-primary"
+            onClick="attend(this, @Model.Id)">
             Attend
-        </a>
+        </button>
     }
-    
+    @* End of bad js button code *@
+
     <span>Attending: @attendingUsers.Count</span>
+
 
     @* There should be horizontal space between here *@
     @* Or the Hide button should be to the right *@
-    
 </div>
 
 <br/>

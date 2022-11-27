@@ -21,23 +21,23 @@ function getEventsBetweenDates(fromDate, toDate) {
         .catch(error => console.error('Unable to get items.', error));
 }
 
-// id: int, follow: bool
-function followOrganization(id, follow) {
-    fetch(organizationUri + "follow/" + id, { 
+// id: int, Attend: bool
+function attendEvent(id, attend) {
+    fetch(eventUri + id + "/attend" , {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(follow)
+        body: JSON.stringify(attend)
     }).then(res => {
         return res;
     });
 }
 
-// id: int, Attend: bool
-    function attendEvent(id, attend) {
-    fetch(eventUri + "attend/" + id, { 
+// id: int, follow: bool
+function followOrganization(id, follow) {
+    fetch(organizationUri + id + "/follow" , {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(attend)
+        body: JSON.stringify(follow)
     }).then(res => {
         return res;
     });

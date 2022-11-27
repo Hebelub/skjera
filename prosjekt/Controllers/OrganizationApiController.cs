@@ -20,7 +20,7 @@ public class OrganizationApiController : ControllerBase
     }
     
     
-    [HttpPut("follow/{id:int}")]
+    [HttpPut("{id:int}/follow")]
     public async void FollowOrganization(int id, [FromBody]bool follow)
     {
         var user = await _userManager.GetUserAsync(User);
