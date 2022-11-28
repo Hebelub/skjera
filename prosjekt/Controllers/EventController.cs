@@ -41,13 +41,17 @@ namespace prosjekt.Controllers
                 return NotFound();
             }
 
-            var eventModel = await _context.EventModels
-                .FirstOrDefaultAsync(m => m.Id == id);
-            
-            if (eventModel == null)
+            var eventModel = await _context.EventModels.FindAsync(id ?? 0);
+            var organizerModel = await _context.OrganizationModels.FindAsync(eventModel.OrganizerId);
+            if (eventModel == null || organizerModel == null)
             {
                 return NotFound();
             }
+            
+            eventModel.Organizer = organizerModel;
+
+            
+            ViewBag.EventIncludeAllData = true;
 
             return View(eventModel);
         }

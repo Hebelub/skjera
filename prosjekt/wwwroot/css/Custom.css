@@ -1,4 +1,20 @@
 
+.customCard:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+
+.a-no-underline {
+    text-decoration: none;
+}
+
+.a-no-underline:hover {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 .grid-container{
     display: grid;
@@ -6,8 +22,6 @@
     gap: 20px;
     font-family: sans-serif;
     margin-bottom: 50px;
-
-
 }
 
 .grid-item{
@@ -15,31 +29,31 @@
 }
 
 
-.profile_picture{
-    border-radius: 10%;
+/*.profile_picture{*/
+/*    border-radius: 10%;*/
 
-    width: 200px;
-    height: 200px;
-    margin-left: auto;
-    margin-right: auto;
-}
+/*    width: 200px;*/
+/*    height: 200px;*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
+/*}*/
 
-.card{
-    width: 400px;
-    height: auto;
-    margin: auto;
+/*.card{*/
+/*    width: 400px;*/
+/*    height: auto;*/
+/*    margin: auto;*/
 
-    background: #e5e6e7;
-}
+/*    background: #e5e6e7;*/
+/*}*/
 
-.Event_card
-{
-    width: 400px;
-    height: auto;
-    margin: auto;
+/*.Event_card*/
+/*{*/
+/*    width: 400px;*/
+/*    height: auto;*/
+/*    margin: auto;*/
 
-    background: #e5e6e7;
-}
+/*    background: #e5e6e7;*/
+/*}*/
 
 .center{
     display: block;
@@ -49,34 +63,36 @@
     width: 60%;
 }
 
-.Event_ID{
-    margin-top: 10px;
-    width: 400px;
-    height: 300px;
+/*.Event_ID{*/
+/*    margin-top: 10px;*/
+/*    width: 400px;*/
+/*    height: 300px;*/
 
-    background: lightgrey
-}
+/*    background: #ffffff*/
+/*}*/
 
-.column_img{
-    float: left;
-    padding: 0px;
-    margin-top: 10px;
-    margin-left: 15px;
-    width: 155px;
-    height: 100px;
-}
+/*.column_img{*/
+/*    float: left;*/
+/*    padding: 0px;*/
+/*    margin-top: 10px;*/
+/*    margin-left: 15px;*/
+/*    width: 155px;*/
+/*    height: 100px;*/
+/*}*/
 
-.column_text{
-    float: left;
-    padding: 0px;
-    margin-top: 10px;
-    margin-left: 10px;
-    width: 205px;
-    height: 100px;
+/*.column_text{*/
+/*    float: left;*/
+/*    padding: 0px;*/
+/*    margin-top: 10px;*/
+/*    margin-left: 10px;*/
+/*    width: 205px;*/
+/*    height: 100px;*/
 
-    background: rgba(170, 170, 170, 0.32);
-    overflow: scroll;
-}
+/*    background: rgba(170, 170, 170, 0.32);*/
+/*    overflow: scroll;*/
+/*}*/
+
+
 /*
 .row{
     margin: 0px;
@@ -101,9 +117,9 @@
     height: 50px;
 }*/
 
-.Events_this_week{
-    margin-left: 10px;
-}
+/*.Events_this_week{*/
+/*    margin-left: 10px;*/
+/*}*/
 
 
 /*IF (screen is mobilescreen)

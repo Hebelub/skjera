@@ -46,14 +46,14 @@ public class ApplicationDbInitializer
         var organizations = new[]
         {
             new OrganizationModel(
-                "Organization 1",
-                "Description 1 - Vivamus commodo eros eget nunc porttitor lacinia. Aenean erat mi, semper at facilisis quis, feugiat quis ligula. Morbi leo magna, semper ut varius eget, accumsan quis dui. In hac habitasse platea dictumst. Cras feugiat aliquet fringilla. Sed nec vestibulum leo. Nullam sit amet metus viverra erat placerat pretium. Quisque fermentum auctor massa a euismod."),
+                "Studentlaget Grimstad",
+                "Vi er en kristen studenorganisasjon som ofte samles i bibel og bønn. I tillegg har vi mange andre gøye aktiviteter, så følg med!"),
             new OrganizationModel(
-                "Organization 2",
+                "Beta",
                 "Description 2 - Vivamus commodo eros eget nunc porttitor lacinia. Aenean erat mi, semper at facilisis quis, feugiat quis ligula. Morbi leo magna, semper ut varius eget, accumsan quis dui. In hac habitasse platea dictumst. Cras feugiat aliquet fringilla. Sed nec vestibulum leo. Nullam sit amet metus viverra erat placerat pretium. Quisque fermentum auctor massa a euismod."
             ),
             new OrganizationModel(
-                "Organization 3",
+                "Bedriftpresentasjoner",
                 "Description 3 - Vivamus commodo eros eget nunc porttitor lacinia. Aenean erat mi, semper at facilisis quis, feugiat quis ligula. Morbi leo magna, semper ut varius eget, accumsan quis dui. In hac habitasse platea dictumst. Cras feugiat aliquet fringilla. Sed nec vestibulum leo. Nullam sit amet metus viverra erat placerat pretium. Quisque fermentum auctor massa a euismod."
             )
         };
@@ -65,30 +65,41 @@ public class ApplicationDbInitializer
         {
             new EventModel(organizations.ElementAt(0), DateTime.Parse("11/04/2022 01:01:01"),
                 TimeSpan.Parse("0:01:00"), DateTime.Parse("01/01/2001"), DateTime.Parse("01/01/2011"),
-                "Event 01",
-                "Info 1 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
+                "Grilling",
+                "Det blir grilling med studentlaget i Grimstad. Kom og bli kjent med oss!",
+                "Dømmesmoen"
             ),
             new EventModel(organizations.ElementAt(1), DateTime.Parse("11/09/2022 02:02:02"),
                 TimeSpan.Parse("0:02:00"), DateTime.Parse("02/02/2002"), DateTime.Parse("01/01/2022"),
-                "Event 02",
-                "Info 2 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
+                "Camping",
+                "Hei vi skal campe, så bli med på dette! Det blir felleskjøring fra UiA grimstad",
+                "Preikestolen"
             ),
             new EventModel(organizations.ElementAt(2), DateTime.Parse("11/01/2022 03:03:03"),
                 TimeSpan.Parse("0:03:00"), DateTime.Parse("03/03/2003"), DateTime.Parse("01/01/2033"),
-                "Event 03",
-                "Info 3 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
+                "Blåtur",
+                "Vi skal på blåtur, så bli med på dette! Det vil si at dere ikke vet hva som skjer før dere kommer!",
+                "Langtvekkistan"
             ),
             new EventModel(organizations.ElementAt(2), DateTime.Parse("11/30/2022"), null, DateTime.Parse("04/04/2004"),
-                null, "Event 04",
-                "Info 4 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
+                null, "Sofagaming",
+                "Bli med å game med oss a. Pizza til guttaboisa!",
+                "Tønnevoldsgate 26"
             ),
             new EventModel(organizations.ElementAt(1), DateTime.Parse("11/08/2022"), null, DateTime.Parse("05/05/2005"),
-                null, "Event 05",
-                "Info 5 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
+                null, "Skihopping",
+                "Hvis du aldrig har prøvd å hoppe i ski. Så bli med nå da vel! :)",
+                "Hoppbakken i Grimstad"
             ),
             new EventModel(organizations.ElementAt(0), DateTime.Parse("11/08/2022"), null, DateTime.Parse("06/06/2006"),
-                null, "Event 06",
-                "Info 6 - Proin rutrum vel velit id consequat. Quisque eu viverra nulla. Sed eu diam sed eros posuere accumsan. Sed dapibus ornare nibh vel volutpat. Nunc sed purus at nisi faucibus porta ut in est. Sed laoreet dui non ex congue tristique. Morbi ullamcorper quis nunc a maximus. Nunc magna tortor, eleifend sed vestibulum vitae, elementum a libero. Nullam faucibus sem eu consectetur congue. Aliquam ante quam, ultricies a semper eget, placerat a risus. Morbi libero nunc, rutrum vitae dui sit amet, mattis iaculis eros. Aenean eget lacinia erat. "
+                null, "Kaiakpadling",
+                "Dette kommer til å bli heftig altså. Gjør deg klar til å bli våt og kald!",
+                "Stranda"
+            ),
+            new EventModel(organizations.ElementAt(0), DateTime.Parse("11/28/2022"), null, DateTime.Parse("06/06/2006"),
+            null, "Snøballkrig",
+            "Vi skal ha snøballkrig! Kom og vær med! Det blir kakao og vafler!",
+            "UiA Grimstad"
             )
         };
 

@@ -13,7 +13,7 @@ public class EventModel
     }
 
     public EventModel(OrganizationModel organizer, DateTime startTime, TimeSpan? duration, DateTime timeCreated, DateTime? lastTimeEdited, 
-        string title, string info)
+        string title, string info, string location)
     {
         Organizer = organizer;
         TimeCreated = timeCreated;
@@ -25,6 +25,7 @@ public class EventModel
         LastTimeEdited = lastTimeEdited;
         Title = title;
         Info = info;
+        Location = location;
     }
 
     
