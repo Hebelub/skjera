@@ -34,7 +34,7 @@
         }
         @if (ViewBag.EventIncludeAllData && Model.Info != null)
         {
-            <p class="card-text mb-auto">@Model.Info</p>
+            <p class="card-text mb-auto">@Html.Raw(Model.Info)</p>
         }
         <a class="btn btn-outline-primary">Atend</a>
     </div>
