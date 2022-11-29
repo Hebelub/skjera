@@ -264,16 +264,19 @@
         //Remove any events in the current details element
         let currentWrapper = element.querySelector('.events');
         let wrapper = createElement('div', 'events in' + (currentWrapper ? ' new' : ''));
-
+        
         events.forEach((ev) => {
             let div = createElement('div', 'event')
             div.classList.add("customCard", "calendarEvent");
             div.onclick = () => { goToEventPage(ev.id); };
             
             let squareEl = createElement('div', 'event-category ' + this.eventColor);
-            let span = createElement('span', '', ev.title);
+            let titleEl = createElement('span', '', ev.title);
+            let timeEl = createElement('span', '', ev.startTime.format('HH:mm'));
+            
             div.appendChild(squareEl);
-            div.appendChild(span);
+            div.appendChild(titleEl);
+            div.appendChild(timeEl);
             wrapper.appendChild(div);
         });
 

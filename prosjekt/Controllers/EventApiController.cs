@@ -38,7 +38,7 @@ namespace prosjekt.Controllers
             return await _context.EventModels
                 .Where(e => e.StartTime >= fromDate 
                             && e.StartTime <= toDate)
-                // .OrderByDescending( time )
+                .OrderBy(e => e.StartTime)
                 .ToListAsync();
         }
 

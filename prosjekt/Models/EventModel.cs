@@ -10,32 +10,16 @@ public class EventModel
 {
     public EventModel()
     {
+        
     }
 
-    public EventModel(OrganizationModel organizer, DateTime startTime, TimeSpan? duration, DateTime timeCreated, DateTime? lastTimeEdited, 
-        string title, string info, string location)
-    {
-        Organizer = organizer;
-        TimeCreated = timeCreated;
-        StartTime = startTime;
-        if (duration.HasValue)
-        {
-            Duration = duration.Value;
-        }
-        LastTimeEdited = lastTimeEdited;
-        Title = title;
-        Info = info;
-        Location = location;
-    }
 
-    
-    
     public int Id { get; set; }
     
     
     
     [DisplayName ("TimeCreated")]
-    public DateTime TimeCreated { get; } = DateTime.Now;
+    public DateTime TimeCreated { get; set; } = DateTime.Now;
 
 
     

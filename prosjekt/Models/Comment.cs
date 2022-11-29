@@ -10,25 +10,17 @@ public class Comment
     {
         
     }
-        
-    
-    public Comment(EventModel eventModel, ApplicationUser user, string text)
-    {
-        EventModel = eventModel;
-        Text = text;
-        PostedBy = user;
-    }
-    
+
 
     public int Id { get; set; }
     
     
     // The comment that it is answering to
     //  public Comment? ParentComment { get; set; } = null;
-    
-    public DateTime PostTime = DateTime.Now;
 
-    public DateTime? EditTime = null;
+    public DateTime PostTime { get; set; } = DateTime.Now;
+
+    public DateTime? EditTime { get; set; } = null;
 
 
     [StringLength(1000)]

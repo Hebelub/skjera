@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using prosjekt.Models;
 
 namespace prosjekt.Data;
 
 public class ApplicationDbInitializer
 {
+    private static Random s_random = new();
+    
     private static ApplicationUser AddUser(UserManager<ApplicationUser> um, string name, string email)
     {
         var user = new ApplicationUser
@@ -13,7 +16,81 @@ public class ApplicationDbInitializer
         um.CreateAsync(user, "Password1.").Wait();
         return user;
     }
-    
+
+    private static string GetRandomWord(bool capitalizeFirst=false)
+    {
+        List<string> wordList = new()
+        {
+            "valley", "position", "welcome", "steam", "charm", "descent", "switch", "us", "cycle", "compromise",
+            "situation", "likely", "variation", "pressure", "vat", "manner", "brilliance", "rifle", "draw", "function",
+            "remember", "grudge", "examination", "age", "discriminate", "salvation", "tin", "pier", "division", "left",
+            "umbrella", "straight", "on", "era", "delete", "pleasant", "grind", "fire", "turkey", "dictionary"
+        };
+
+        var randomWord = wordList[s_random.Next(wordList.Count)];
+        if (capitalizeFirst && !string.IsNullOrEmpty(randomWord))
+        {
+            randomWord = randomWord[0].ToString().ToUpper() + randomWord.Substring(1);
+        }
+
+        return randomWord;
+    }
+
+    private static string GetRandomSentence(int numWords)
+    {
+        if (numWords == 0) 
+            return "";
+        var s = GetRandomWord(true);
+        for (var i = 0; i < numWords; ++i)
+            s += " " + GetRandomWord();
+        s += ".";
+        return s;
+    }
+
+    private static EventModel CreateRandomEvent(List<OrganizationModel> organizations)
+    {
+        // Get Random Organization
+        var randomOrganization = organizations[s_random.Next(organizations.Count)];
+
+        // Start Time
+        var startTime = DateTime.Now.Date + TimeSpan.FromHours((float)s_random.Next(-5000, 5000) / 4);
+        
+        // Complete the Random Event
+        var randomEvent = new EventModel
+        {
+            Title = GetRandomWord(true),
+            Info = GetRandomSentence(s_random.Next(30) + 5),
+            Organizer = randomOrganization,
+            OrganizerId = randomOrganization.Id,
+            StartTime = startTime,
+            Duration = s_random.Next(2) == 0
+                ? TimeSpan.Zero
+                : TimeSpan.FromHours((float)s_random.Next(40) / 4),
+            Location = GetRandomWord(true) + " " + s_random.Next(240),
+            TimeCreated = startTime - TimeSpan.FromMinutes(s_random.Next(60*24*15))
+        };
+        
+        return randomEvent;
+    }
+
+    private static Comment CreateRandomComment(List<EventModel> events, ApplicationUser user)
+    {
+        var randomEvent = events[s_random.Next(events.Count)];
+        
+        // Add comments to random Events
+        var comment = new Comment
+        {
+            PostTime = randomEvent.TimeCreated + TimeSpan.FromMinutes(s_random.Next(60*24*15)),
+            EditTime = null,
+            Text = GetRandomSentence(s_random.Next(1, 50)),
+            EventModelId = randomEvent.Id,
+            EventModel = events[s_random.Next(events.Count)],
+            PostedBy = user
+        };
+
+        return comment;
+    }
+
     public static void Initialize(ApplicationDbContext db, UserManager<ApplicationUser> um,
         RoleManager<IdentityRole> rm)
     {
@@ -40,7 +117,7 @@ public class ApplicationDbInitializer
         // Add Admin User
         var admin = AddUser(um, "Admin", "admin@uia.no");
         um.AddToRoleAsync(admin, "Admin");
-
+        
 
         // Create Organizations
         var organizations = new[]
@@ -59,51 +136,16 @@ public class ApplicationDbInitializer
         };
 
         db.OrganizationModels.AddRange(organizations);
-
+        
         // Create Events
-        var events = new[]
+        var events = new List<EventModel>();
+        
+        for (var i = 0; i < 90; ++i)
         {
-            new EventModel(organizations.ElementAt(0), DateTime.Parse("11/04/2022 01:01:01"),
-                TimeSpan.Parse("0:01:00"), DateTime.Parse("01/01/2001"), DateTime.Parse("01/01/2011"),
-                "Grilling",
-                "Det blir grilling med studentlaget i Grimstad. Kom og bli kjent med oss!",
-                "Dømmesmoen"
-            ),
-            new EventModel(organizations.ElementAt(1), DateTime.Parse("11/09/2022 02:02:02"),
-                TimeSpan.Parse("0:02:00"), DateTime.Parse("02/02/2002"), DateTime.Parse("01/01/2022"),
-                "Camping",
-                "Hei vi skal campe, så bli med på dette! Det blir felleskjøring fra UiA grimstad",
-                "Preikestolen"
-            ),
-            new EventModel(organizations.ElementAt(2), DateTime.Parse("11/01/2022 03:03:03"),
-                TimeSpan.Parse("0:03:00"), DateTime.Parse("03/03/2003"), DateTime.Parse("01/01/2033"),
-                "Blåtur",
-                "Vi skal på blåtur, så bli med på dette! Det vil si at dere ikke vet hva som skjer før dere kommer!",
-                "Langtvekkistan"
-            ),
-            new EventModel(organizations.ElementAt(2), DateTime.Parse("11/30/2022"), null, DateTime.Parse("04/04/2004"),
-                null, "Sofagaming",
-                "Bli med å game med oss a. Pizza til guttaboisa!",
-                "Tønnevoldsgate 26"
-            ),
-            new EventModel(organizations.ElementAt(1), DateTime.Parse("11/08/2022"), null, DateTime.Parse("05/05/2005"),
-                null, "Skihopping",
-                "Hvis du aldrig har prøvd å hoppe i ski. Så bli med nå da vel! :)",
-                "Hoppbakken i Grimstad"
-            ),
-            new EventModel(organizations.ElementAt(0), DateTime.Parse("11/08/2022"), null, DateTime.Parse("06/06/2006"),
-                null, "Kaiakpadling",
-                "Dette kommer til å bli heftig altså. Gjør deg klar til å bli våt og kald!",
-                "Stranda"
-            ),
-            new EventModel(organizations.ElementAt(0), DateTime.Parse("11/28/2022"), null, DateTime.Parse("06/06/2006"),
-            null, "Snøballkrig",
-            "Vi skal ha snøballkrig! Kom og vær med! Det blir kakao og vafler!",
-            "UiA Grimstad"
-            )
-        };
-
-        db.EventModels.AddRange(events);
+            events.Add(CreateRandomEvent(organizations.ToList()));
+        }
+        
+        db.AddRange(events);
 
         // Add access rights to user
         var accessRights = new[]
@@ -111,24 +153,22 @@ public class ApplicationDbInitializer
             new UserOrganization(user, organizations[1], AccessRight.FullAccess)
         };
         db.UserOrganization.AddRange(accessRights);
+        
+        
+        // Create event models
+        var comments = new List<Comment>();
 
-
-        // Create comments
-        var comments = new[]
+        var rnd = new Random();
+        foreach (var u in um.Users.ToList())
         {
-            new Comment(events[0], user, "comment 1"),
-            new Comment(events[1], user, "comment 2"),
-            new Comment(events[1], user, "comment 3"),
-            new Comment(events[2], user, "comment 4"),
-            new Comment(events[2], user, "comment 5"),
-            new Comment(events[2], user, "comment 6"),
-            new Comment(events[3], user, "comment 7"),
-            new Comment(events[3], user, "comment 8"),
-            new Comment(events[3], user, "comment 9"),
-            new Comment(events[3], user, "comment 10"),
-        };
-        db.Comments.AddRange(comments);
+            var numComments = rnd.Next(64);
+            for (var i = 0; i < numComments; ++i)
+            {
+                comments.Add(CreateRandomComment(events, u));
+            }
+        }
 
+        db.Comments.AddRange(comments);
 
         // Save changes to the database
         db.SaveChanges();
