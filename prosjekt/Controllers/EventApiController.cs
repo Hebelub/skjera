@@ -25,12 +25,14 @@ namespace prosjekt.Controllers
             _userManager = userManager;
         }
         
+        
         // GET: api/EventApi
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels()
         {
             return await _context.EventModels.ToListAsync();
         }
+        
         
         [HttpGet("date/{fromDate:DateTime}/{toDate:DateTime}")]
         public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels(DateTime fromDate, DateTime toDate)
@@ -43,11 +45,7 @@ namespace prosjekt.Controllers
         }
 
         
-        // Should be -> [HttpPut("{id:int}/attend")]
-        // The path under is a quick fix
-        // Event/Details/api/eventApi/1/attend
-        // We must find out why and change it
-        [HttpPut("/Event/Details/api/eventApi/{id:int}/attend")]
+        [HttpPut("{id:int}/attend")]
         public async void AttendEvent(int id, [FromBody]bool attend)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -79,6 +77,7 @@ namespace prosjekt.Controllers
             await _context.SaveChangesAsync();
         }
 
+        
         // GET: api/EventApi/5
         [HttpGet("{id:int}")]
         public async Task<ActionResult<EventModel>> GetEventModel(int id)
