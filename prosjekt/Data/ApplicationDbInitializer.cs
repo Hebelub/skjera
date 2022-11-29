@@ -114,8 +114,8 @@ public class ApplicationDbInitializer
             organizations.Add(new OrganizationModel
             {
                 Name = GetRandomWord(true)
-                       + (s_random.Next(3) == 0 ? GetRandomWord(true) + " " : "")
-                       + (s_random.Next(6) == 0 ? "Grimstad" : ""),
+                       + (s_random.Next(3) == 0 ? " " + GetRandomWord(true) : "")
+                       + (s_random.Next(6) == 0 ? " Grimstad" : ""),
                 Description = GetRandomSentence(s_random.Next(300) + 5)
             });
         }
