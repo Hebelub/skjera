@@ -27,16 +27,36 @@
 }
 
 <div class="row FrontPageBody">
-    
+
     <div class="col">
         <partial name="_EventCalendarWidget"></partial>
-    </div>
-    <div class="col">
-        <h3>Events On Selected Day</h3>
-        <partial name="_EventList" model="@Model"/>
+
+        <br/>
+        <span>Show Events: </span>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Attending
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Organizations You Follow
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Other
+            </label>
+        </div>
     </div>
     <div class="col">
         <h3>Uppcomming Events</h3>
         <partial name="_EventList" model="@Model"/>
+    </div>
+    <div class="col">
+        <h3>Selected Event</h3>
     </div>
 </div>
