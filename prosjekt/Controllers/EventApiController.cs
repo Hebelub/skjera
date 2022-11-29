@@ -35,13 +35,43 @@ namespace prosjekt.Controllers
         
         
         [HttpGet("date/{fromDate:DateTime}/{toDate:DateTime}")]
-        public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModels(DateTime fromDate, DateTime toDate)
+        public async Task<ActionResult<IEnumerable<EventDTO>>> GetEventModels(DateTime fromDate, DateTime toDate)
         {
-            return await _context.EventModels
+            var events = await _context.EventModels
                 .Where(e => e.StartTime >= fromDate 
                             && e.StartTime <= toDate)
+                .Include(e => e.Organizer)
                 .OrderBy(e => e.StartTime)
                 .ToListAsync();
+
+            // This way of doing it is probably not the most efficient
+            var eventDTOs = new List<EventDTO>();
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                foreach (var ev in events)
+                {
+                    eventDTOs.Add(new EventDTO(ev, false, false, ev.Organizer.Name));
+                }   
+            }
+            else
+            {
+                foreach (var ev in events)
+                {
+                    var userEventRelation = await ev.GetUserEventRelationAsync(_context, user);
+                    var userOrganizationRelation = await user.GetRelationToOrganizationAsync(ev.OrganizerId);
+                    eventDTOs.Add(new EventDTO(
+                            ev, 
+                            userEventRelation.IsAttending, 
+                            userOrganizationRelation.IsFollowing,
+                            ev.Organizer.Name
+                        )
+                    );
+                }   
+            }
+
+            return eventDTOs;
         }
 
         

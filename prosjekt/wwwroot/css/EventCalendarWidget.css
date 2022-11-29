@@ -168,10 +168,20 @@ body {
     margin: 0 1px;
 }
 
-.blue { background: rgba(156, 202, 235, 1); }
+.blue { background: rgb(53, 170, 252); }
 .orange { background: rgba(247, 167, 0, 1); }
-.green { background: rgba(153, 198, 109, 1); }
+.green { background: rgb(140, 220, 58); }
 .yellow { background: rgba(249, 233, 0, 1); }
+.red { background: rgb(255, 0, 0); }
+.gray { background: rgb(255, 255, 255); }
+
+.entry.blue:after { background: rgb(53, 170, 252); }
+.entry.orange:after { background: rgba(247, 167, 0, 1); }
+.entry.green:after { background: rgb(140, 220, 58); }
+.entry.yellow:after { background: rgba(249, 233, 0, 1); }
+.entry.red:after { background: rgb(255, 0, 0); }
+.entry.gray:after { background: rgb(255, 255, 255); }
+
 
 .details {
     position: relative;
@@ -290,11 +300,6 @@ body {
     top: 12px;
     left: 14px;
 }
-
-.entry.blue:after { background: rgba(156, 202, 235, 1); }
-.entry.orange:after { background: rgba(247, 167, 0, 1); }
-.entry.green:after { background: rgba(153, 198, 109, 1); }
-.entry.yellow:after { background: rgba(249, 233, 0, 1); }
 
 /* Animations are cool!  */
 @-webkit-keyframes moveFromTopFade {

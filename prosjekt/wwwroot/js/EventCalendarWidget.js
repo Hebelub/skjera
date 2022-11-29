@@ -3,7 +3,6 @@
     let today = moment();
 
     function Calendar(selector) {
-        this.eventColor = 'yellow';
         this.events = [];
         this.el = document.querySelector(selector);
         this.current = moment().date(1);
@@ -27,6 +26,31 @@
         // Changing fetched events startTime from string to a moment object
         events.forEach((event) => {
             event.startTime = moment(event.startTime, 'YYYY-MM-DDTHH:mm:ss');
+            event.endTime = moment(event.endTime, 'YYYY-MM-DDTHH:mm:ss');
+            
+            // Set the correct color on the event
+            if (event.endTime.isAfter(moment())) {
+                if (event.startTime.isBefore(moment())) {
+                    event.color = 'red';
+                    event.calendar = 'Active Event';
+                }
+                else if (event.isUserAttending) {
+                    event.color = 'blue';
+                    event.calendar = 'Attending';
+                }
+                else if (event.isUserFollowingOrganizer) {
+                    event.color = 'green';
+                    event.calendar = 'Following';
+                }
+                else {
+                    event.color = 'yellow';
+                    event.calendar = 'Other Events';
+                }
+            }
+            else {
+                event.color = 'gray';
+                event.calendar = 'Ended';
+            }
         });
         
         return events;
@@ -195,7 +219,7 @@
 
     Calendar.prototype.drawEvents = function (events, element) {
         events.forEach(function (ev) {
-            let evSpan = createElement('span', 'yellow');
+            let evSpan = createElement('span', ev.color);
             element.appendChild(evSpan);
         });
     }
@@ -270,7 +294,7 @@
             div.classList.add("customCard", "calendarEvent");
             div.onclick = () => { goToEventPage(ev.id); };
             
-            let squareEl = createElement('div', 'event-category ' + this.eventColor);
+            let squareEl = createElement('div', 'event-category ' + ev.color);
             let titleEl = createElement('span', '', ev.title);
             let timeEl = createElement('span', '', ev.startTime.format('HH:mm'));
             
@@ -314,7 +338,7 @@
     Calendar.prototype.drawLegend = function () {
         let legend = createElement('div', 'legend');
         let calendars = this.events.map(function (e) {
-            return e.calendar + '|' + this.eventColor;
+            return e.calendar + '|' + e.color;
         }).reduce(function (memo, e) {
             if (memo.indexOf(e) === -1) {
                 memo.push(e);
@@ -325,6 +349,7 @@
             let entry = createElement('span', 'entry ' + parts[1], parts[0]);
             legend.appendChild(entry);
         });
+        legend.classList.add("mt-5");
         this.el.appendChild(legend);
     }
 
