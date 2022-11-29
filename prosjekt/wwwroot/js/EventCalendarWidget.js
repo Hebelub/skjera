@@ -266,11 +266,13 @@
         let wrapper = createElement('div', 'events in' + (currentWrapper ? ' new' : ''));
 
         events.forEach((ev) => {
-            let div = createElement('div', 'event');
-            let square = createElement('div', 'event-category ' + this.eventColor);
+            let div = createElement('div', 'event')
+            div.classList.add("customCard", "calendarEvent");
+            div.onclick = () => { goToEventPage(ev.id); };
+            
+            let squareEl = createElement('div', 'event-category ' + this.eventColor);
             let span = createElement('span', '', ev.title);
-
-            div.appendChild(square);
+            div.appendChild(squareEl);
             div.appendChild(span);
             wrapper.appendChild(div);
         });

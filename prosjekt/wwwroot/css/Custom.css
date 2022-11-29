@@ -1,9 +1,25 @@
 
-.customCard:hover{
+.customCard:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 
+.calendarEvent:Hover {
+    background-color: #bbbbbb;
+    /*font-weight: bold;*/
+}
+
+.textPopOnHover{
+    animation: pop 0.25s ease-in-out;
+}
+.textPopOnHover {
+    animation-delay: 1s;
+}
+@keyframes textPopOnHover{
+    50%  {
+        transform: scale(1.25);
+    }
+}
 
 .a-no-underline {
     text-decoration: none;
