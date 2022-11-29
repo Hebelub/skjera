@@ -124,14 +124,26 @@ public class ApplicationDbInitializer
         {
             new OrganizationModel(
                 "Studentlaget Grimstad",
-                "Vi er en kristen studenorganisasjon som ofte samles i bibel og bønn. I tillegg har vi mange andre gøye aktiviteter, så følg med!"),
+                "Norges Kristelige Student- og Skoleungdomslag, forkortet NKSS og ofte bare kalt Laget, er en kristen ungdomsorganisasjon som driver arbeid på skoler og studiesteder i hele Norge. Den ble stiftet 12. mars 1924 av blant andre Carl Fredrik Wisløff og Ole Hallesby. Foranledningen var den lange og pågående kirkestriden."),
             new OrganizationModel(
                 "Beta",
-                "Description 2 - Vivamus commodo eros eget nunc porttitor lacinia. Aenean erat mi, semper at facilisis quis, feugiat quis ligula. Morbi leo magna, semper ut varius eget, accumsan quis dui. In hac habitasse platea dictumst. Cras feugiat aliquet fringilla. Sed nec vestibulum leo. Nullam sit amet metus viverra erat placerat pretium. Quisque fermentum auctor massa a euismod."
+                "Velkommen til BETA! BETA er linjeforeningen for datastudentene ved UiA, og drives av studenter ved disse studiene. BETA's formål er å gi disse studentene veiledning i studiesituasjonen, arrangere kurs som utfyller fagtilbudet ved UiA, fremme kontakten med næringslivet og bidra med sosiale aktiviteter."
+                ),
+            new OrganizationModel(
+                "Tekna",
+                "Har du, eller studerer du til, en master i naturvitenskap eller teknologi, kan du bli medlem i Tekna. Vi er Norges største fagforening for deg med mastergrad, og tilbyr blant annet juridisk bistand, faglige tilbud og nettverk over hele landet, samt en av landets beste bank- og forsikringsavtaler."
             ),
             new OrganizationModel(
-                "Bedriftpresentasjoner",
-                "Description 3 - Vivamus commodo eros eget nunc porttitor lacinia. Aenean erat mi, semper at facilisis quis, feugiat quis ligula. Morbi leo magna, semper ut varius eget, accumsan quis dui. In hac habitasse platea dictumst. Cras feugiat aliquet fringilla. Sed nec vestibulum leo. Nullam sit amet metus viverra erat placerat pretium. Quisque fermentum auctor massa a euismod."
+                "Bluebox Grimstad",
+                "Velkommen til studentenes storstue i Grimstad! Bluebox er drevet av studenter, for studenter. Her arrangeres konserter, standup, live podcaster, fester, sosiale samlinger, quizkvelder og mye mer. Bluebox har et bredt tilbud gjennom semesteret.  arrangerer konserter, stand up, live podcaster, fester, sosiale samlinger, Bluebox Quiz og mye mer. Ofte i samarbeid med linjeforeninger, studentorganisasjoner og studentakiviteter. Huset driftes av studentene som organiserer alle medlemmene komitéer med hver sine ansvarsområder. Her er det lav terskel for å engasjere seg og få venner på tvers av studieretningene i Grimstad. Bluebox åpnet dørene i august 2010, og har i 10 år vært fast stoppested for de største norske artistene på turne. Følg med på programmet for dette semesteret, og ikke minst: Engasjer deg på huset!"
+            ),
+            new OrganizationModel(
+                "Touchpoint",
+                "Touchpoint er et kristent arbeid i regi av Misjonskirken Norge og UNG. Arbeidet retter seg spesielt mot studenter og unge voksne fra 18 år og oppover. Vi startet i Kristiansand høsten 2013, og senere har Touchpoint kommet til Jæren, Tromsø og Aust-Agder. Touchpoint ønsker å være et godt tilbud som menigheter kan bruke for å nå unge voksne. Touchpoint sin visjon er å «nå mennesker som er borte fra Gud og menighet, og gjøre dem til etterfølgere av Jesus."
+            ),
+            new OrganizationModel(
+                "Tørr Å Si Det",
+                "Torsdag 29 september kl.19.00 blir første offisielle samling for menn i regi av «Tør Å Si Det». På programmet står artisten og foredragsholder Jan-Erik Mæland «GinoBless» som opplevde omsorgssvikt og er det man kaller et løvetannbarn. I tillegg til å drive eget plateselskap har Gino en lang fartstid bak seg som artist under navnet GinoBless. Han er mest kjent for låten «Elsket» som gjorde seg sterkt bemerket på Sørlandet i artikkelen «Får hardbarkede kriminelle til å gråte» som var blant topp 5 mest leste saker på Fædrelandsvennen. Gino kan vise til flere gjesteopptredener hos riksdekkende medier som blant annet NRK og God morgen Norge på TV2 for å fronte snakk om mobbing, i regi av Blå Kors. Med sitt engasjement og formidlingsevne ønsker han å spre tro, håp og kjærlighet hvor han deler sin historie om hvordan det var å vokse opp uten en far, en mor som slet og hvilke utfordringer han fikk grunnet oppveksten helt inn i voksen alder. Videre deler Gino sin reise om hvordan summen av alle små valg har ført han dit hvor han er i dag. En ærlig og åpen prat om livets opp og nedturer og hvorfor «Tør Å Si Det» er blitt en hjertesak. Det blir biljard, varm mat og drikke som serveres, samt deilige toner fremført av Norges egen “Ed Sheeran”, artisten Daniel Hillestad. Velkommen til et fellesskap hvor målet er å inspirere oss menn til mer åpenhet om livets utfordringer. Sammen kan vi motivere hverandre til vekst. Vi sees! Sted: Lokalet er i 3 etasje på Fokussenteret som ligger rett ved E18 i Grimstad. "
             )
         };
 
