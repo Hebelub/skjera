@@ -6,6 +6,7 @@ public class UserOrganization
 {
     public UserOrganization()
     {
+        
     }
     
     public UserOrganization(ApplicationUser user, OrganizationModel organization, AccessRight accessRight)
@@ -32,10 +33,7 @@ public class UserOrganization
 
     public bool IsFollowing { get; set; }
 
-    
-    public bool IsInterested { get; set; }
 
-    
     private AccessRight? _accessRight;
     public int AccessRightId { get; set; }
     public AccessRight AccessRight

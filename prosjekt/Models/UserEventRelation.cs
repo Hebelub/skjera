@@ -17,18 +17,7 @@ public class UserEventRelation
     public int Id { get; set; }
 
     public bool IsAttending { get; set; } = false;
-
-    private bool? _isInterested = null;
-    public bool IsInterested
-    {
-        get => _isInterested ?? UserOrganizationRelation.IsInterested;
-        set
-        {
-            _isInterested = value;
-            IsAttending = false;
-        }
-    }
-
+    
     
     public ApplicationUser User { get; set; }
 
