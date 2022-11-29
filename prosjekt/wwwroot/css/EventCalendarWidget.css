@@ -28,7 +28,8 @@ body {
     transform: translate3d(0, 0, 0);
     width: 420px;
     margin: 0 auto;
-    height: 570px;
+    /*height: 570px; <-- Original */
+    height: 610px;
     overflow: hidden;
 }
 
