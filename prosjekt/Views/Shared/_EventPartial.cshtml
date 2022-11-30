@@ -13,15 +13,15 @@
 
 @{ ViewBag.EventIncludeAllData = ViewBag.EventIncludeAllData ?? false; }
 
-<div class="card customCard flex-md-row shadow-sm h-md-250">
+<div class="card customCard flex-md-row shadow-sm h-md-250" onclick="goToEventPage(@Model.Id)">
     <div class="card-body d-flex flex-column align-items-start">
         <a class="d-inline-block mb-2 text-primary a-no-underline"
            asp-controller="Organization" asp-action="Details" asp-route-id="@Model.OrganizerId">
             @Model.Organizer.Name
         </a>
-        <h3 class="mb-0">
-            <a class="text-dark" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
-        </h3>
+        <h2 class="mb-0">
+            <span class="text-dark">@Model.Title</span>
+        </h2>
         @if (Model.StartTime.HasValue)
         {
             if (Model.StartTime.Value.Date == DateTime.Today.Date)
@@ -53,41 +53,48 @@
 
         @* Start of bad js button code *@
         <script>
-                function attend(buttonEl, id) {
-                    let attending = buttonEl.innerHTML.trim() === "Attending";
-                    
-                    if (attending) {
-                        buttonEl.className = "btn btn-outline-primary";
-                        buttonEl.innerHTML = "Attend";
-                    }
-                    else {
-                        buttonEl.className = "btn btn-primary";
-                        buttonEl.innerHTML = "Attending";
-                    }                
-                    
-                    attendEvent(id, !attending);
+            function attend(buttonEl, id) {
+                let textSpan = buttonEl.childNodes[1];
+                let attendingIcon = buttonEl.childNodes[3];
+
+                let attending = textSpan.innerHTML.trim() === "Attending";
+
+                if (attending) {
+                    buttonEl.className = "btn btn-outline-primary";
+                    textSpan.innerHTML = "Attend";
+                    attendingIcon.classList.add("black");
                 }
-            </script>
+                else {
+                    buttonEl.className = "btn btn-primary";
+                    textSpan.innerHTML = "Attending";
+                    attendingIcon.classList.remove("black");
+                }  
+                
+                attendEvent(id, !attending);
+            }
+        </script>
 
-        @if (userEventRelation.IsAttending)
-        {
-            <button
-                class="btn btn-primary"
-                onClick="attend(this, @Model.Id)" value="Attending">
-                Attending
-            </button>
-        }
-        else
-        {
-            <button
-                class="btn btn-outline-primary"
-                onClick="attend(this, @Model.Id)">
-                Attend
-            </button>
-        }
-        @* End of bad js button code *@
-
-        <div class="black">Attending: @attendingUsers.Count</div>
+        <div>
+            <link href="http://code.ionicframework.com/1.3.0/css/ionic.min.css" rel="stylesheet"/>
+            <br/>
+            @if (userEventRelation.IsAttending)
+            {
+                <button class="btn btn-primary"
+                    onClick="event.stopPropagation(); attend(this, @Model.Id)" value="Attending">
+                    <span>Attending</span>
+                    <span>&#50883; @attendingUsers.Count</span>
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-outline-primary"
+                    onClick="event.stopPropagation(); attend(this, @Model.Id)">
+                    <span>Attend</span>
+                    <span class="black">&#50883; @attendingUsers.Count</span>
+                </button>
+            }
+            @* End of bad js button code *@
+        </div>
     </div>
 
     @* IMG: <img src="https://i.eurosport.com/2022/08/11/3430724-69999649-640-480.jpg" alt="hmm" class="center" id="profile_pic"> *@
