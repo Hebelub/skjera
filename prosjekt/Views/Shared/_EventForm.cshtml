@@ -64,7 +64,7 @@ else if (ViewBag.FormType == FormType.Edit)
             </div>
             <br/>
             <div class="form-group">
-                <input type="submit" value="@submitButtonValue" class="btn btn-primary"/>
+                <input type="submit" value="@submitButtonValue" class="btn btn-success"/>
             </div>
         </div>
 
@@ -78,9 +78,7 @@ else if (ViewBag.FormType == FormType.Edit)
     </form>
 </div>
 
-<div>
-    <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">Back to Event</a>
-</div>
+<a class="btn btn-primary" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
 
 <script>
 tinymce.init({

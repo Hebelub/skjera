@@ -134,7 +134,7 @@ namespace prosjekt.Controllers
             
             if (!EventAccess(id ?? 0).CanEditEvents)
             {
-                return NotFound();
+                return Forbid();
             }
 
             var eventModel = await _context.EventModels.FindAsync(id);
@@ -203,7 +203,7 @@ namespace prosjekt.Controllers
             
             if (!EventAccess(id ?? 0).CanDeleteEvents)
             {
-                return NotFound();
+                return Forbid();
             }
 
             var eventModel = await _context.EventModels
@@ -227,7 +227,7 @@ namespace prosjekt.Controllers
 
             if (!EventAccess(id).CanDeleteEvents)
             {
-                return NotFound();
+                return Forbid();
             }
 
             if (eventModel != null)

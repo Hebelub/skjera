@@ -19,20 +19,16 @@
     var attendingUsers = Model.GetAttendingUsersAsync(DbContext).Result;
 }
 
-<h1>Details</h1>
-
 <partial name="_EventPartial" model="Model" />
 
 <div>
     @if (userAccessRight.CanEditEvents)
     {
         <a asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-        <span>|</span>
     }
     @if (userAccessRight.CanDeleteEvents)
     {
         <a asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-        <span>|</span>
     }
     
     @* There should be horizontal space between here *@

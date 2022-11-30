@@ -31,6 +31,15 @@
     cursor: pointer;
 }
 
+.home-event-scroller {
+    height: 1000px;
+    width: 100%;
+    padding: 20px;
+}
+
+.home-page-menu-button {
+    margin-bottom: 12px;
+}
 
 .grid-container{
     display: grid;
