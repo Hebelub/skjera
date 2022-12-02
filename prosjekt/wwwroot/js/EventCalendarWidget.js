@@ -3,10 +3,9 @@
     let today = moment();
 
     function Calendar(selector) {
-        this.events = [];
         this.el = document.querySelector(selector);
         this.current = moment().date(1);
-        this.draw();
+
         let current = document.querySelector('.today');
         if (current) {
             let self = this;
@@ -16,50 +15,15 @@
         }
     }
     
-    Calendar.prototype.getEventsThisMonth = async function () {
-
-        let fromDate = moment(this.current).startOf('month').startOf('week').format('YYYY-MM-DD');
-        let toDate = moment(this.current).endOf('month').endOf('week').format('YYYY-MM-DD');
-        
-        const events = await getEventsBetweenDates(fromDate, toDate);
-
-        // Changing fetched events startTime from string to a moment object
-        events.forEach((event) => {
-            event.startTime = moment(event.startTime, 'YYYY-MM-DDTHH:mm:ss');
-            event.endTime = moment(event.endTime, 'YYYY-MM-DDTHH:mm:ss');
-            
-            // Set the correct color on the event
-            if (event.endTime.isAfter(moment())) {
-                if (event.startTime.isBefore(moment())) {
-                    event.color = 'red';
-                    event.calendar = 'Active Event';
-                }
-                else if (event.isUserAttending) {
-                    event.color = 'blue';
-                    event.calendar = 'Attending';
-                }
-                else if (event.isUserFollowingOrganizer) {
-                    event.color = 'green';
-                    event.calendar = 'Following';
-                }
-                else {
-                    event.color = 'yellow';
-                    event.calendar = 'Other Events';
-                }
-            }
-            else {
-                event.color = 'gray';
-                event.calendar = 'Ended';
-            }
-        });
-        
-        return events;
+    Calendar.prototype.getFirstDateOfCalendar = function() {
+        return moment(this.current).startOf('month').format('YYYY-MM-DD');
     }
 
-    Calendar.prototype.draw = async function () {
-        // Fetch data from API
-        this.events = await this.getEventsThisMonth();
-        
+    Calendar.prototype.getLastDateOfCalendar = function() {
+        return moment(this.current).endOf('month').endOf('week').format('YYYY-MM-DD');
+    }
+
+    Calendar.prototype.draw = function () {        
         //Create Header
         this.drawHeader();
 
@@ -356,13 +320,13 @@
     Calendar.prototype.nextMonth = function () {
         this.current.add('months', 1);
         this.next = true;
-        this.draw();
+        updateHomePage();
     }
 
     Calendar.prototype.prevMonth = function () {
         this.current.subtract('months', 1);
         this.next = false;
-        this.draw();
+        updateHomePage();
     }
 
     window.Calendar = Calendar;
@@ -377,8 +341,4 @@
         }
         return ele;
     }
-}();
-
-!function () {
-    let calendar = new Calendar('#calendar');
 }();
