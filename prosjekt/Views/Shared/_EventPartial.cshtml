@@ -54,20 +54,26 @@
         @* Start of bad js button code *@
         <script>
             function attend(buttonEl, id) {
+                let attendingEl = document.getElementById("num_attending_" + id);
+                console.log("attendingElement", attendingEl)
+                
                 let textSpan = buttonEl.childNodes[1];
 
-                let attending = textSpan.innerHTML.trim() === "Attending";
+                let shouldAttend = textSpan.innerHTML.trim() !== "Attending";
 
-                if (attending) {
-                    buttonEl.className = "btn btn-outline-primary";
-                    textSpan.innerHTML = "Attend";
-                }
-                else {
+                if (shouldAttend) {
+                    attendingEl.innerHTML++;
                     buttonEl.className = "btn btn-primary";
                     textSpan.innerHTML = "Attending";
+                }
+                else {
+                    attendingEl.innerHTML--;
+                     buttonEl.className = "btn btn-outline-primary";
+                     textSpan.innerHTML = "Attend";
                 }  
                 
-                attendEvent(id, !attending);
+                attendEvent(id, shouldAttend);
+                
             }
         </script>
 
@@ -77,7 +83,7 @@
             {
                 @if (userEventRelation.IsAttending)
                 {
-                    <button class="btn btn-priymar"
+                    <button class="btn btn-primary"
                             onClick="event.stopPropagation(); attend(this, @Model.Id)" value="Attending">
                         <span>Attending</span>
                     </button>
@@ -92,12 +98,13 @@
             }
             else
             {
-                <button class="btn btn-outline-primary">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Attend</a>
-                        </button>
+            // ?ReturnUrl=%2FOrganization%2FCreate
+                <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Login">
+                    <span>Attend</span>
+                </a>
             }
             
-            <span class="black">@attendingUsers.Count attending</span>
+            <span class="black"><span id="num_attending_@Model.Id">@attendingUsers.Count</span> attending</span>
             @* End of bad js button code *@
         </div>
     </div>
