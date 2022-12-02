@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,7 @@ namespace prosjekt.Controllers
 
         
         [HttpPut("{id:int}/attend")]
+
         public async void AttendEvent(int id, [FromBody]bool attend)
         {
             var user = await _userManager.GetUserAsync(User);
