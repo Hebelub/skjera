@@ -23,6 +23,7 @@ function getEventsBetweenDates(fromDate, toDate) {
 
 // id: int, Attend: bool
 function attendEvent(id, attend) {
+   
     fetch(eventUri + id + "/attend" , {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},

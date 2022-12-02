@@ -73,20 +73,30 @@
 
         <div>
             <br/>
-            @if (userEventRelation.IsAttending)
+            @if (User.Identity.IsAuthenticated)
             {
-                <button class="btn btn-primary"
-                        onClick="event.stopPropagation(); attend(this, @Model.Id)" value="Attending">
-                    <span>Attending</span>
-                </button>
+                @if (userEventRelation.IsAttending)
+                {
+                    <button class="btn btn-priymar"
+                            onClick="event.stopPropagation(); attend(this, @Model.Id)" value="Attending">
+                        <span>Attending</span>
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-outline-primary"
+                            onClick="event.stopPropagation(); attend(this, @Model.Id)">
+                        <span>Attend</span>
+                    </button>
+                }
             }
             else
             {
-                <button class="btn btn-outline-primary"
-                        onClick="event.stopPropagation(); attend(this, @Model.Id)">
-                    <span>Attend</span>
-                </button>
+                <button class="btn btn-outline-primary">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Attend</a>
+                        </button>
             }
+            
             <span class="black">@attendingUsers.Count attending</span>
             @* End of bad js button code *@
         </div>
