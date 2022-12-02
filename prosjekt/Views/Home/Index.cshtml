@@ -3,6 +3,7 @@
 @inject ApplicationDbContext DbContext;
 @model IEnumerable<EventModel>
 
+<link rel="stylesheet" href="~/css/EventCalendarWidget.css" asp-append-version="true"/>
 
 @{
     // create a function that returns a list of events
@@ -27,33 +28,34 @@
 }
 
 <div class="row FrontPageBody">
-
     <div class="col">
         <h3 class="text-center">Calendar</h3>
-        <partial name="_EventCalendarWidget"></partial>
+        <div id="calendar"></div>
 
         <br/>
-        <span>Show Events: </span>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="">
-            <label class="form-check-label" for="flexCheckDefault">
-                Attending
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="">
-            <label class="form-check-label" for="flexCheckDefault">
-                Organizations You Follow
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="">
-            <label class="form-check-label" for="flexCheckDefault">
-                Other
-            </label>
+        <div>
+            <span>Show Events: </span>
+            <div class="form-check">
+                <input id="homePageCheckboxAttending" class="form-check-input" type="checkbox" value=""/>
+                <label class="form-check-label" for="flexCheckDefault">
+                    Attending
+                </label>
+            </div>
+            <div class="form-check">
+                <input id="homePageCheckboxOrganizationsYouFollow" class="form-check-input" type="checkbox" value=""/>
+                <label class="form-check-label" for="flexCheckDefault">
+                    Organizations You Follow
+                </label>
+            </div>
+            <div class="form-check">
+                <input id="homePageCheckboxOther" class="form-check-input" type="checkbox" value="" onclick="getHomePageCheckboxSelection()"/>
+                <label class="form-check-label" for="flexCheckDefault">
+                    Other
+                </label>
+            </div>
         </div>
     </div>
-    
+
     <div class="col">
         <h3 class="text-center">Uppcomming Events</h3>
         <div class="overflow-scroll home-event-scroller">
@@ -61,3 +63,8 @@
         </div>
     </div>
 </div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+<script src="~/js/homePage.js" asp-append-version="true"></script>
+<script src="~/js/EventCalendarWidget.js" asp-append-version="true"></script>
+<script>getHomePageCheckboxSelection()</script>
