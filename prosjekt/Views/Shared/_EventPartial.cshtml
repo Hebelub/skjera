@@ -22,19 +22,19 @@
         <h2 class="mb-0">
             <span class="text-dark">@Model.Title</span>
         </h2>
-        @if (Model.StartTime.HasValue)
+        @if (Model.StartTime != null)
         {
-            if (Model.StartTime.Value.Date == DateTime.Today.Date)
+            if (Model.StartTime.Date == DateTime.Today.Date)
             {
-                <span class="mb-1 text-muted">Today @Model.StartTime.Value.ToString("HH:mm")</span>
+                <span class="mb-1 text-muted">Today @Model.StartTime.ToString("HH:mm")</span>
             }
-            if (Model.StartTime.Value.Year == DateTime.Today.Year)
+            if (Model.StartTime.Year == DateTime.Today.Year)
             {
-                <span class="mb-1 text-muted">@Model.StartTime.Value.ToString("ddd, dd. MMM | HH:mm")</span>
+                <span class="mb-1 text-muted">@Model.StartTime.ToString("ddd, dd. MMM | HH:mm")</span>
             }
             else
             {
-                <span class="mb-1 text-muted">@Model.StartTime.Value.ToString("ddd, dd. MMM yyyy | HH:mm")</span>
+                <span class="mb-1 text-muted">@Model.StartTime.ToString("ddd, dd. MMM yyyy | HH:mm")</span>
             }
         }
         @if (Model.Duration.Ticks > 0)

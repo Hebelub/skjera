@@ -26,9 +26,9 @@ namespace prosjekt.Controllers
         // GET: Event/
         public async Task<IActionResult> Index()
         {
-            ViewData["Title"] = "All Events";
-            
             return View(await _context.EventModels
+                .Where(e => e.StartTime >= DateTime.Now)
+                .OrderBy(e => e.StartTime)
                 .Include(e => e.Organizer)
                 .ToListAsync());
         }

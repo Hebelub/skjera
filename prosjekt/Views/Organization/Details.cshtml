@@ -4,21 +4,39 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Identity
+@using prosjekt.Controllers
 
 @inject ApplicationDbContext DbContext
 @inject UserManager<ApplicationUser> UserManager;
 
 @{
-    var eventsOfOrganization = await DbContext.EventModels
-        .Where(e => e.OrganizerId == Model.Id)
-        .Include(e => e.Organizer)
-        .ToListAsync();
-
     var user = await UserManager.GetUserAsync(User);
     var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.Id).Result ?? new UserOrganization();
     var userAccessRight = User.IsInRole("Admin")
         ? AccessRight.FullAccess
         : userOrganizationRelation.AccessRight;
+
+
+    List<EventModel> eventsOfOrganization;
+    
+    if (userAccessRight.HasAnyAccess)
+    {
+        eventsOfOrganization = await DbContext.EventModels
+            .Where(e => e.OrganizerId == Model.Id)
+            .OrderBy(e => e.StartTime)
+            .Include(e => e.Organizer)
+            .ToListAsync();
+    }
+    else
+    {
+        eventsOfOrganization = await DbContext.EventModels
+            .Where(e => e.OrganizerId == Model.Id 
+                        &&  e.StartTime >= DateTime.Now)
+            .OrderBy(e => e.StartTime)
+            .Include(e => e.Organizer)
+            .ToListAsync();
+    }
+
 }
 
 

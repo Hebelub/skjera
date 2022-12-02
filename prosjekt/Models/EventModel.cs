@@ -37,12 +37,10 @@ public class EventModel
     
     [Required]
     [DisplayName ("StartTime")]
-    public DateTime? StartTime { get; set; }
+    public DateTime StartTime { get; set; }
 
-    public DateTime? EndTime {
-        get => StartTime == null
-            ? null 
-            : StartTime + Duration;
+    public DateTime EndTime {
+        get => StartTime + Duration;
     }
 
     
