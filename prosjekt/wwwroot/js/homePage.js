@@ -5,7 +5,7 @@ let _fetchedEvents = [];
 function getHomePageCheckboxSelection() {
     return {
         attending: document.getElementById("homePageCheckboxAttending").checked, 
-        organizations: document.getElementById("homePageCheckboxOrganizationsYouFollow").checked, 
+        followOrganizer: document.getElementById("homePageCheckboxOrganizationsYouFollow").checked, 
         pastEvents: document.getElementById("homePageCheckboxPast").checked,
         other: document.getElementById("homePageCheckboxOther").checked
     };
@@ -54,17 +54,53 @@ async function fetchEvents() {
     return events;
 }
 
-function includeOnlyCheckedEvents(events) {
-    getHomePageCheckboxSelection();
+function hasEventEnded(event) {
+    return event.endTime.isBefore(moment());
+}
 
-    // Heisann
+function isEventOngoing() {
     
+}
+
+function isAttendingEvent() {
+    
+}
+
+function isFollowingEventOrganizer() {
+    
+}
+
+/* attending: do
+organizations
+pastEvents: d
+other: docum*/
+
+function includeOnlyCheckedEvents(events) {
+    let filter = getHomePageCheckboxSelection();
+    
+    let filteredEvents = [];
+    
+    events.forEach((event) => {
+        if (!filter.pastEvents && hasEventEnded(event)) {
+            return;
+        }
+        
+        let other = filter.other && !event.isUserFollowingOrganizer && !event.isUserAttending;
+        let followOrganizer = filter.followOrganizer && event.isUserFollowingOrganizer
+        let attending = filter.attending && event.isUserAttending;
+        
+        if (other || followOrganizer || attending) {
+            filteredEvents.push(event);
+        }        
+    })
+    
+    return filteredEvents;
 }
 
 async function updateHomePage() {
     _fetchedEvents = await fetchEvents();
 
-    includeOnlyCheckedEvents(_fetchedEvents);
+    _fetchedEvents = includeOnlyCheckedEvents(_fetchedEvents);
     
     _calendar.events = _fetchedEvents;
     
