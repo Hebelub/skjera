@@ -20,7 +20,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         return View(await _context.EventModels
-            .Where(e => e.StartTime >= DateTime.Now)
+            .Where(e => e.StartTime >= DateTime.Now
+            && e.StartTime <= DateTime.Now.AddDays(7))
             .OrderBy(e => e.StartTime)
             .ToListAsync());
     }

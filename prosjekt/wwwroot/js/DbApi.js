@@ -1,5 +1,6 @@
-﻿const eventUri = 'api/eventApi/';
-const organizationUri = 'api/organizationApi/';
+﻿const host = window.location.protocol + '//' + window.location.host + '/';
+const eventUri = host + 'api/eventApi/';
+const organizationUri = host + 'api/organizationApi/';
 
 function getEvent(id) {
     return fetch(eventUri + id)
@@ -34,7 +35,7 @@ function attendEvent(id, attend) {
 
 // id: int, follow: bool
 function followOrganization(id, follow) {
-    fetch(organizationUri + id + "/follow" , {
+    fetch(organizationUri + id + "/follow", {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(follow)
