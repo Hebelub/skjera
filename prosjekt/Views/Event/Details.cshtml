@@ -52,7 +52,7 @@
     var comments = await DbContext.Comments
         .Where(c => c.EventModelId == Model.Id)
         .Include(c => c.PostedBy)
-        .OrderBy(c => c.PostTime)
+        .OrderByDescending(c => c.PostTime)
         .ToListAsync();
 }
 
