@@ -48,8 +48,6 @@ async function fetchEvents() {
         _calendar.getFirstDateOfCalendar(), 
         _calendar.getLastDateOfCalendar()
     );
-
-    eventToJsEvent(events);
     
     return events;
 }
@@ -97,14 +95,19 @@ function includeOnlyCheckedEvents(events) {
     return filteredEvents;
 }
 
-async function updateHomePage() {
-    _fetchedEvents = await fetchEvents();
-
-    _fetchedEvents = includeOnlyCheckedEvents(_fetchedEvents);
+async function updateHomePage(switchMonth=false) {
+    if (switchMonth)
+        _fetchedEvents = await fetchEvents();
+    _fetchedEvents = eventToJsEvent(_fetchedEvents);
     
-    _calendar.events = _fetchedEvents;
+    _calendar.events = includeOnlyCheckedEvents(_fetchedEvents);
     
     _calendar.draw();
 }
 
-updateHomePage();
+function setAttendEvent(id, attend) {
+    _fetchedEvents.find((event) => event.id === id).isUserAttending = attend;
+    updateHomePage();
+}
+
+updateHomePage(true);

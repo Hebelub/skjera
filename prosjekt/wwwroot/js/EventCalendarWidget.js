@@ -320,13 +320,13 @@
     Calendar.prototype.nextMonth = function () {
         this.current.add('months', 1);
         this.next = true;
-        updateHomePage();
+        updateHomePage(newMonth);
     }
 
     Calendar.prototype.prevMonth = function () {
         this.current.subtract('months', 1);
         this.next = false;
-        updateHomePage();
+        updateHomePage(newMonth);
     }
 
     window.Calendar = Calendar;
