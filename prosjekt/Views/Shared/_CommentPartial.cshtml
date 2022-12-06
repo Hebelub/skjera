@@ -25,18 +25,16 @@
         </body>
 
         <footer class="small">
-            @if (Model.EditTime == null)
+            <span>Posted: @Model.PostTime.ToString("dd. MMM yyyy HH:mm")</span>
+
+            @if (Model.EditTime != null)
             {
-                <span>Posted: @Model.PostTime</span>
-            }
-            else
-            {
-                <span>Edit: @Model.EditTime</span>
+                <span> | Edit: @Model.EditTime.Value.ToString("dd. MMM yyyy HH:mm")</span>
             }
             
-            <a class="btn btn-info">
-                Reply
-            </a>
+            @* <a class="btn btn-info"> *@
+            @*     Reply *@
+            @* </a> *@
 
             @if (isYourComment)
             {

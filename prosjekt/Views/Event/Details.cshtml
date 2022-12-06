@@ -52,8 +52,7 @@
     var comments = await DbContext.Comments
         .Where(c => c.EventModelId == Model.Id)
         .Include(c => c.PostedBy)
-        // It should sort by time, but I didn't find out how without buds
-        .OrderByDescending(c => c.Id)
+        .OrderBy(c => c.PostTime)
         .ToListAsync();
 }
 

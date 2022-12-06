@@ -3,6 +3,8 @@
 <h2>Edit Comment: @Model.Text</h2>
 
 <form asp-controller="Comment" asp-action="Edit" asp-route-id="@Model.Id" asp-route-eventId="@Model.EventModelId">
+    <input type="hidden" name="PostTime" value="@Model.PostTime" />
+    
     <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
         <div class="d-flex flex-start w-100">
             <img class="rounded-circle shadow-1-strong me-3"

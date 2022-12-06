@@ -71,7 +71,7 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(comment);
         }
 
@@ -79,7 +79,7 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int eventId, [Bind("Text")] Comment comment)
+        public async Task<IActionResult> Edit(int id, int eventId, [Bind("Text", "PostTime")] Comment comment)
         {
             var ev = await _context.EventModels.FindAsync(eventId);
 
@@ -98,6 +98,8 @@ namespace prosjekt.Controllers
 
             if (ModelState.IsValid)
             {
+                comment.EditTime = DateTime.Now;
+
                 try
                 {
                     _context.Comments.Update(comment);
