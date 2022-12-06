@@ -23,12 +23,12 @@
         return moment(this.current).endOf('month').endOf('week').format('YYYY-MM-DD');
     }
 
-    Calendar.prototype.draw = function () {        
+    Calendar.prototype.draw = function (animate=true) {        
         //Create Header
         this.drawHeader();
 
         //Draw Month
-        this.drawMonth();
+        this.drawMonth(animate);
 
         this.drawLegend();
     }
@@ -62,12 +62,13 @@
         this.title.innerHTML = this.current.format('MMMM YYYY');
     }
 
-    Calendar.prototype.drawMonth = function () {
+    Calendar.prototype.drawMonth = function (animate=true) {
         let self = this;
 
         if (this.month) {
             this.oldMonth = this.month;
             this.oldMonth.className = 'month out ' + (self.next ? 'next' : 'prev');
+            
             this.oldMonth.addEventListener('webkitAnimationEnd', () => {
                 self.oldMonth.parentNode.removeChild(self.oldMonth);
                 self.month = createElement('div', 'month');
@@ -320,13 +321,13 @@
     Calendar.prototype.nextMonth = function () {
         this.current.add('months', 1);
         this.next = true;
-        updateHomePage(newMonth);
+        updateHomePage(true);
     }
 
     Calendar.prototype.prevMonth = function () {
         this.current.subtract('months', 1);
         this.next = false;
-        updateHomePage(newMonth);
+        updateHomePage(true);
     }
 
     window.Calendar = Calendar;

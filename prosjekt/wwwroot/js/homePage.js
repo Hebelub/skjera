@@ -102,7 +102,7 @@ async function updateHomePage(switchMonth=false) {
     
     _calendar.events = includeOnlyCheckedEvents(_fetchedEvents);
     
-    _calendar.draw();
+    _calendar.draw(switchMonth);
 }
 
 function setAttendEvent(id, attend) {
