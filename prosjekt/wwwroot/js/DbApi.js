@@ -44,6 +44,10 @@ function followOrganization(id, follow) {
     });
 }
 
-function goToEventPage(id) {
+function gotoEventPage(id) {
+    window.location.href = "/Event/Details/" + id;
+}
+
+function gotoOrganizationPage(id) {
     window.location.href = "/Event/Details/" + id;
 }

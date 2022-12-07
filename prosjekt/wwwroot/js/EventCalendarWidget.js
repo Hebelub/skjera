@@ -257,7 +257,7 @@
         events.forEach((ev) => {
             let div = createElement('div', 'event')
             div.classList.add("customCard", "calendarEvent");
-            div.onclick = () => { goToEventPage(ev.id); };
+            div.onclick = () => { gotoEventPage(ev.id); };
             
             let squareEl = createElement('div', 'event-category ' + ev.color);
             let titleEl = createElement('span', '', ev.title);

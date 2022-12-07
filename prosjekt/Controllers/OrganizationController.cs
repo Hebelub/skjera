@@ -38,7 +38,7 @@ namespace prosjekt.Controllers
 
             return View(await organization.ToListAsync());
         }
-        
+
 
         [HttpPost]
         public string Index(string searchString, bool notUsed)
@@ -87,10 +87,10 @@ namespace prosjekt.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            
+
             // The user who created this has all the access-rights
             var userOrganizationAccess = new UserOrganization(user, organizationModel, AccessRight.FullAccess);
-            
+
             _context.Add(organizationModel);
             _context.Add(userOrganizationAccess);
 
@@ -111,14 +111,14 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-            
+
             var organizationModel = await _context.OrganizationModels.FindAsync(id);
-            
+
             if (organizationModel == null)
             {
                 return NotFound();
             }
-            
+
             ViewBag.FormType = FormType.Edit;
             return View("_OrganizationForm", organizationModel);
         }
@@ -130,8 +130,8 @@ namespace prosjekt.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Name,Description")] OrganizationModel organizationModel)
         {
             organizationModel.Id = id;
-            
-            
+
+
             if (!OrganizationAccess(id).CanEditOrganization)
             {
                 return NotFound();
@@ -142,7 +142,7 @@ namespace prosjekt.Controllers
                 ViewBag.FormType = FormType.Edit;
                 return View("_OrganizationForm", organizationModel);
             }
-            
+
             try
             {
                 _context.Update(organizationModel);
@@ -154,6 +154,7 @@ namespace prosjekt.Controllers
                     return NotFound();
                 throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -173,12 +174,12 @@ namespace prosjekt.Controllers
 
             var organizationModel = await _context.OrganizationModels
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (organizationModel == null)
             {
                 return NotFound();
             }
-            
+
             return View(organizationModel);
         }
 
@@ -194,12 +195,12 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-            
+
             if (organizationModel != null)
             {
                 _context.OrganizationModels.Remove(organizationModel);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -211,9 +212,10 @@ namespace prosjekt.Controllers
 
         private AccessRight OrganizationAccess(int organizationId)
         {
-            return User.IsInRole("Admin") 
+            return User.IsInRole("Admin")
                 ? AccessRight.FullAccess
-                : _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result.AccessRight;
+                : _userManager.GetUserAsync(User).Result.GetRelationToOrganizationAsync(organizationId).Result
+                    .AccessRight;
         }
     }
 }

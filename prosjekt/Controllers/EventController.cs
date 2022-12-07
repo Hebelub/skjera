@@ -47,10 +47,7 @@ namespace prosjekt.Controllers
             {
                 return NotFound();
             }
-            
-            eventModel.Organizer = organizerModel;
 
-            
             ViewBag.EventIncludeAllData = true;
 
             return View(eventModel);

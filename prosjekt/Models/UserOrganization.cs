@@ -19,6 +19,7 @@ public class UserOrganization
     public UserOrganization(ApplicationUser user, OrganizationModel organization)
     {
         User = user;
+        OrganizationId = organization.Id;
         Organization = organization;
     }
 
