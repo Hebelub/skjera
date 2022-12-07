@@ -49,5 +49,5 @@ function gotoEventPage(id) {
 }
 
 function gotoOrganizationPage(id) {
-    window.location.href = "/Event/Details/" + id;
+    window.location.href = "/Organization/Details/" + id;
 }
