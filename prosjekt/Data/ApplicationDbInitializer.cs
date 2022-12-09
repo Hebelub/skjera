@@ -199,7 +199,7 @@ public class ApplicationDbInitializer
         // Add access rights to user
         var accessRights = new[]
         {
-            new UserOrganization(user, organizations[1], AccessRight.FullAccess)
+            new UserOrganizationRelation(user, organizations[1], AccessRight.FullAccess)
         };
         db.UserOrganization.AddRange(accessRights);
 
@@ -218,7 +218,7 @@ public class ApplicationDbInitializer
 
         // Add User Relations
         var userEventRelations = new List<UserEventRelation>();
-        var userOrganizationRelations = new List<UserOrganization>();
+        var userOrganizationRelations = new List<UserOrganizationRelation>();
         foreach (var u in um.Users.ToList())
         {
             foreach (var ev in events)
@@ -240,7 +240,7 @@ public class ApplicationDbInitializer
                 if (s_random.Next(4) == 0)
                 {
                     userOrganizationRelations.Add(
-                        new UserOrganization(u, o)
+                        new UserOrganizationRelation(u, o)
                         {
                             UserId = u.Id,
                             OrganizationId = o.Id,

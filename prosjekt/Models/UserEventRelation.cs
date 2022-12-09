@@ -25,7 +25,7 @@ public class UserEventRelation
     public EventModel Event { get; set; }
     
     
-    private UserOrganization UserOrganizationRelation
+    private UserOrganizationRelation UserOrganizationRelation
     {
         get => User.GetRelationToOrganizationAsync(Event.OrganizerId).Result;
     }

@@ -4,11 +4,11 @@
 @model IEnumerable<OrganizationModel>
 @{
     var user = await UserManager.GetUserAsync(User);
-    List<UserOrganization> listUserOrganizationRelations = user == null
-        ? new List<UserOrganization>()
+    List<UserOrganizationRelation> listUserOrganizationRelations = user == null
+        ? new List<UserOrganizationRelation>()
         : user.GetOrganizationRelationsAsync().Result;
 
-    UserOrganization GetUserOrganizationRelation(OrganizationModel organization)
+    UserOrganizationRelation GetUserOrganizationRelation(OrganizationModel organization)
     {
         foreach (var userOrganization in listUserOrganizationRelations)
         {
@@ -17,10 +17,10 @@
                 return userOrganization;
             }
         }
-        return new UserOrganization(null, organization);
+        return new UserOrganizationRelation(null, organization);
     }
 
-    List<UserOrganization> userOrganizationRelations = new();
+    List<UserOrganizationRelation> userOrganizationRelations = new();
     bool organizationWithAccessExist = false;
     bool organizationWithoutAccessExist = false;
 

@@ -89,7 +89,7 @@ namespace prosjekt.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             // The user who created this has all the access-rights
-            var userOrganizationAccess = new UserOrganization(user, organizationModel, AccessRight.FullAccess);
+            var userOrganizationAccess = new UserOrganizationRelation(user, organizationModel, AccessRight.FullAccess);
 
             _context.Add(organizationModel);
             _context.Add(userOrganizationAccess);

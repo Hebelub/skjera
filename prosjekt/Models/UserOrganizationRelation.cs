@@ -2,21 +2,21 @@
 
 namespace prosjekt.Models;
 
-public class UserOrganization
+public class UserOrganizationRelation
 {
-    public UserOrganization()
+    public UserOrganizationRelation()
     {
         
     }
     
-    public UserOrganization(ApplicationUser user, OrganizationModel organization, AccessRight accessRight)
+    public UserOrganizationRelation(ApplicationUser user, OrganizationModel organization, AccessRight accessRight)
     {
         User = user;
         Organization = organization;
         AccessRight = accessRight;
     }
     
-    public UserOrganization(ApplicationUser user, OrganizationModel organization)
+    public UserOrganizationRelation(ApplicationUser user, OrganizationModel organization)
     {
         User = user;
         OrganizationId = organization.Id;

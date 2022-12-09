@@ -77,7 +77,7 @@ public class OrganizationRightsController : Controller
         // We have to create a new relation
         if (relation == null)
         {
-            relation = new UserOrganization();
+            relation = new UserOrganizationRelation();
             relation.Organization = organization;
             relation.User = userToAdd;
             relation.AccessRight = AccessRight.MinimalAccess;
@@ -120,7 +120,7 @@ public class OrganizationRightsController : Controller
     }
 
     // GET: OrganizationRights/Manage/5
-    public async Task<IActionResult> Manage(int id) // Id: UserOrganization
+    public async Task<IActionResult> Manage(int id) // Id: UserOrganizationRelation
     {
         var userOrganizationRelation = await _context.UserOrganization
             .Include(uo => uo.Organization)

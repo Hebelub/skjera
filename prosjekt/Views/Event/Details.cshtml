@@ -10,7 +10,7 @@
 @inject UserManager<ApplicationUser> UserManager;
 @{
     var user = await UserManager.GetUserAsync(User);
-    var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.OrganizerId).Result ?? new UserOrganization();
+    var userOrganizationRelation = user?.GetRelationToOrganizationAsync(Model.OrganizerId).Result ?? new UserOrganizationRelation();
     var userAccessRight = User.IsInRole("Admin")
         ? AccessRight.FullAccess
         : userOrganizationRelation.AccessRight;

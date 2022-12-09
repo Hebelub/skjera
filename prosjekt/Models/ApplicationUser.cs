@@ -21,7 +21,7 @@ public class ApplicationUser : IdentityUser
 
     public string? NickName { get; set; }
 
-    public async Task<UserOrganization> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true, bool returnNullIfNotFound=false)
+    public async Task<UserOrganizationRelation> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true, bool returnNullIfNotFound=false)
     {
         var userOrganizationWithOrWithoutTracking = withTracking 
             ? _context.UserOrganization.AsTracking() 
@@ -49,13 +49,13 @@ public class ApplicationUser : IdentityUser
             throw new Exception("Organization not found");
         }
 
-        var userOrganization = new UserOrganization(this, organization, AccessRight.NoAccess);
+        var userOrganization = new UserOrganizationRelation(this, organization, AccessRight.NoAccess);
         userOrganization.UserId = Id;
         userOrganization.OrganizationId = organizationId;
         return userOrganization;
     } 
     
-    public async Task<List<UserOrganization>> GetOrganizationRelationsAsync()
+    public async Task<List<UserOrganizationRelation>> GetOrganizationRelationsAsync()
     {
         return await _context.UserOrganization
             .Where(relation => relation.User == this)
