@@ -2,6 +2,7 @@
 let _calendar = new Calendar('#calendar');
 let _fetchedEvents = [];
 
+
 function getHomePageCheckboxSelection() {
     return {
         attending: document.getElementById("homePageCheckboxAttending").checked, 
@@ -10,6 +11,7 @@ function getHomePageCheckboxSelection() {
         other: document.getElementById("homePageCheckboxOther").checked
     };
 }
+
 
 function eventToJsEvent(events) {
     events.forEach((event) => {
@@ -43,6 +45,7 @@ function eventToJsEvent(events) {
     return events;
 }
 
+
 async function fetchEvents() {
     let events = await getEventsBetweenDates(
         _calendar.getFirstDateOfCalendar(), 
@@ -52,26 +55,11 @@ async function fetchEvents() {
     return events;
 }
 
+
 function hasEventEnded(event) {
     return event.endTime.isBefore(moment());
 }
 
-function isEventOngoing() {
-    
-}
-
-function isAttendingEvent() {
-    
-}
-
-function isFollowingEventOrganizer() {
-    
-}
-
-/* attending: do
-organizations
-pastEvents: d
-other: docum*/
 
 function includeOnlyCheckedEvents(events) {
     let filter = getHomePageCheckboxSelection();
@@ -95,6 +83,7 @@ function includeOnlyCheckedEvents(events) {
     return filteredEvents;
 }
 
+
 async function updateHomePage(switchMonth=false) {
     if (switchMonth)
         _fetchedEvents = await fetchEvents();
@@ -105,9 +94,11 @@ async function updateHomePage(switchMonth=false) {
     _calendar.draw(switchMonth);
 }
 
+
 function setAttendEvent(id, attend) {
     _fetchedEvents.find((event) => event.id === id).isUserAttending = attend;
     updateHomePage();
 }
+
 
 updateHomePage(true);
