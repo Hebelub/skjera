@@ -34,4 +34,10 @@ public class OrganizationModel
     [DisplayName ("Description")]
     public string Description { get; set; } = string.Empty;
 
+
+    
+    [Required]
+    [DisplayName ("Logo")]
+    public string LogoPath { get; set; } = string.Empty;
+
 }

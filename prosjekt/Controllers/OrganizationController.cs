@@ -78,8 +78,18 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Name,Description")] OrganizationModel organizationModel)
+        public async Task<IActionResult> Create([Bind("Name,Description")] OrganizationModel organizationModel, IFormFile formFile)
         {
+            if (formFile != null)
+            {
+                var filePath = Path.GetTempFileName();
+            
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.FormType = FormType.Create;
