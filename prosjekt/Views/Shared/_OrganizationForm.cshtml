@@ -38,18 +38,16 @@ else if (ViewBag.FormType == FormType.Edit)
             </div>
             <br/>
             @* Logo *@
-            <form enctype="multipart/form-data" method="post">
-                <dl>
-                    <dt>
-                        <label asp-for="@Model.LogoPath"></label>
-                    </dt>
-                    <dd>
-                        <input asp-for="@Model.LogoPath" type="file">
-                        <span asp-validation-for="@Model.LogoPath"></span>
-                    </dd>
-                </dl>
-                <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
-            </form>
+            <dl>
+                <dt>
+                    <label asp-for="@Model.LogoPath"></label>
+                </dt>
+                <dd>
+                    <input asp-for="@Model.LogoPath" type="file">
+                    <span asp-validation-for="@Model.LogoPath"></span>
+                </dd>
+            </dl>
+            <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
             <br/>
             @* Description *@
             <div class="form-group">
