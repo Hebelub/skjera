@@ -195,7 +195,7 @@ public class ApplicationDbInitializer
 
         foreach (var org in organizations)
         {
-            org.LogoUrl = GetRandomUploadsUrl();g
+            org.LogoUrl = GetRandomUploadsUrl();
         }
         
         organizations.AddRange(CreateNOrganizations(8));
