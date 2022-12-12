@@ -192,6 +192,12 @@ public class ApplicationDbInitializer
                 "Torsdag 29 september kl.19.00 blir første offisielle samling for menn i regi av «Tør Å Si Det». På programmet står artisten og foredragsholder Jan-Erik Mæland «GinoBless» som opplevde omsorgssvikt og er det man kaller et løvetannbarn. I tillegg til å drive eget plateselskap har Gino en lang fartstid bak seg som artist under navnet GinoBless. Han er mest kjent for låten «Elsket» som gjorde seg sterkt bemerket på Sørlandet i artikkelen «Får hardbarkede kriminelle til å gråte» som var blant topp 5 mest leste saker på Fædrelandsvennen. Gino kan vise til flere gjesteopptredener hos riksdekkende medier som blant annet NRK og God morgen Norge på TV2 for å fronte snakk om mobbing, i regi av Blå Kors. Med sitt engasjement og formidlingsevne ønsker han å spre tro, håp og kjærlighet hvor han deler sin historie om hvordan det var å vokse opp uten en far, en mor som slet og hvilke utfordringer han fikk grunnet oppveksten helt inn i voksen alder. Videre deler Gino sin reise om hvordan summen av alle små valg har ført han dit hvor han er i dag. En ærlig og åpen prat om livets opp og nedturer og hvorfor «Tør Å Si Det» er blitt en hjertesak. Det blir biljard, varm mat og drikke som serveres, samt deilige toner fremført av Norges egen “Ed Sheeran”, artisten Daniel Hillestad. Velkommen til et fellesskap hvor målet er å inspirere oss menn til mer åpenhet om livets utfordringer. Sammen kan vi motivere hverandre til vekst. Vi sees! Sted: Lokalet er i 3 etasje på Fokussenteret som ligger rett ved E18 i Grimstad. "
             )
         };
+
+        foreach (var org in organizations)
+        {
+            org.LogoUrl = GetRandomUploadsUrl();g
+        }
+        
         organizations.AddRange(CreateNOrganizations(8));
         db.OrganizationModels.AddRange(organizations);
 
