@@ -17,6 +17,15 @@ public class ApplicationDbInitializer
         um.CreateAsync(user, "Password1.").Wait();
         return user;
     }
+
+    private static string GetRandomUploadsUrl()
+    {
+        var rand = new Random();
+        var files = Directory.GetFiles("wwwroot/img/uploads");
+        var dir = files[rand.Next(files.Length)];
+        var name = Path.GetFileName(dir);
+        return name;
+    }
     
     private static List<string> s_wordList = new()
     {
@@ -77,7 +86,8 @@ public class ApplicationDbInitializer
                 ? TimeSpan.Zero
                 : TimeSpan.FromHours((float)s_random.Next(40) / 4),
             Location = GetRandomWord(true) + " " + s_random.Next(240),
-            TimeCreated = startTime - TimeSpan.FromMinutes(s_random.Next(60 * 24 * 15))
+            TimeCreated = startTime - TimeSpan.FromMinutes(s_random.Next(60 * 24 * 15)),
+            ThumbnailUrl = GetRandomUploadsUrl()
         };
 
         return randomEvent;
@@ -116,7 +126,8 @@ public class ApplicationDbInitializer
                 Name = GetRandomWord(true)
                        + (s_random.Next(3) == 0 ? " " + GetRandomWord(true) : "")
                        + (s_random.Next(6) == 0 ? " Grimstad" : ""),
-                Description = GetRandomSentence(s_random.Next(300) + 5)
+                Description = GetRandomSentence(s_random.Next(300) + 5),
+                LogoUrl = GetRandomUploadsUrl()
             });
         }
 
