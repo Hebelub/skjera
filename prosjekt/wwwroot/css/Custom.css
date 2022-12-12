@@ -1,4 +1,7 @@
-
+/*Barnabas: Add color to skjera "logo" in menu */
+#frontpageskjera{
+    color: #0d6efd;
+}
 .customCard:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
