@@ -53,6 +53,18 @@
     box-shadow: 0 0 3px rgba(0,0,0.1);
 }
 
+.imgBoxEvent{
+    left: 50%;
+    width: 220px;
+    height: 220px;
+    /*  background:#ffca2c;*/
+    border-radius: 10px;
+    box-shadow: 0 15px 50px rgba(168, 97, 97, 0.35);
+    
+    overflow: hidden;
+    transition: 0.5s;
+}
+
 
 /*.profile_picture{*/
 /*    border-radius: 10%;*/

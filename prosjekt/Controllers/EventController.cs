@@ -34,7 +34,7 @@ namespace prosjekt.Controllers
             if (file != null)
             {
                 var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/uploads");
-                uniqueFileName = Guid.NewGuid() + "_" + file.FileName;                
+                uniqueFileName = Guid.NewGuid() + "_" + file.FileName;
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
             
                 using (var stream = System.IO.File.Create(filePath))

@@ -99,18 +99,18 @@
             }
             else
             {
-            // ?ReturnUrl=%2FOrganization%2FCreate
+                // ?ReturnUrl=%2FOrganization%2FCreate
                 <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Login">
                     <span>Attend</span>
                 </a>
             }
-            
+
             <span class="black"><span id="num_attending_@Model.Id">@attendingUsers.Count</span> attending</span>
             @* End of bad js button code *@
         </div>
     </div>
 
-    
+
     @if (Model.ThumbnailUrl == string.Empty)
     {
         <svg class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block"
@@ -121,8 +121,8 @@
     }
     else
     {
-        <div class="imgBox">
-            <img src="img/uploads/@Model.ThumbnailUrl" alt="Thumbnail">
+        <div class="imgBoxEvent" focusable="false">
+            <img width="100%" height="100%" src="~/img/uploads/@Model.ThumbnailUrl" alt="Thumbnail">
         </div>
     }
 </div>
