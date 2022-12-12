@@ -2,12 +2,12 @@
 
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject UserManager<ApplicationUser> Usermanager;
+@inject UserManager<ApplicationUser> UserManager;
 
 <h2>Edit Comment: @Model.Text</h2>
 
 @{
-    var user = await Usermanager.GetUserAsync(User);
+    var user = await UserManager.GetUserAsync(User);
 }
 
 <form asp-controller="Comment" asp-action="Edit" asp-route-id="@Model.Id" asp-route-eventId="@Model.EventModelId">
