@@ -71,7 +71,7 @@ public class ApplicationDbInitializer
         var randomOrganization = organizations[s_random.Next(organizations.Count)];
 
         // Start Time
-        var startTime = DateTime.Now.Date + TimeSpan.FromHours((float)s_random.Next(-4000, 4000) / 4);
+        var startTime = DateTime.Now.Date + TimeSpan.FromHours((float)s_random.Next(-12000, 12000) / 4);
 
         // Complete the Random Event
         var randomEvent = new EventModel
@@ -85,7 +85,7 @@ public class ApplicationDbInitializer
                 ? TimeSpan.Zero
                 : TimeSpan.FromHours((float)s_random.Next(40) / 4),
             Location = GetRandomWord(true) + " " + s_random.Next(240),
-            TimeCreated = startTime - TimeSpan.FromMinutes(s_random.Next(60 * 24 * 15)),
+            TimeCreated = DateTime.Now - TimeSpan.FromMinutes(s_random.Next(60 * 24 * 15)),
             ThumbnailUrl = GetRandomUploadsUrl()
         };
 
@@ -95,11 +95,15 @@ public class ApplicationDbInitializer
     private static Comment CreateRandomComment(List<EventModel> events, ApplicationUser user)
     {
         var randomEvent = events[s_random.Next(events.Count)];
-
+        
+        var timeSinceCreation = DateTime.Now - randomEvent.TimeCreated;
+        var randomMinute = s_random.Next(timeSinceCreation.Minutes);
+        var postTime = randomEvent.TimeCreated + TimeSpan.FromMinutes(randomMinute);
+        
         // Add comments to random Events
         var comment = new Comment
         {
-            PostTime = randomEvent.TimeCreated + TimeSpan.FromMinutes(s_random.Next(60 * 24 * 15)),
+            PostTime = postTime,
             EditTime = null,
             Text = GetRandomSentence(s_random.Next(1, 50)),
             EventModelId = randomEvent.Id,
@@ -198,14 +202,14 @@ public class ApplicationDbInitializer
             org.LogoUrl = GetRandomUploadsUrl();
         }
         
-        organizations.AddRange(CreateNOrganizations(8));
+        organizations.AddRange(CreateNOrganizations(14));
         db.OrganizationModels.AddRange(organizations);
 
 
         // Create Events
         var events = new List<EventModel>();
 
-        for (var i = 0; i < 100; ++i)
+        for (var i = 0; i < 500; ++i)
         {
             events.Add(CreateRandomEvent(organizations.ToList()));
         }
@@ -225,7 +229,7 @@ public class ApplicationDbInitializer
 
         foreach (var u in um.Users.ToList())
         {
-            var numComments = s_random.Next(8);
+            var numComments = s_random.Next(80);
             for (var i = 0; i < numComments; ++i)
             {
                 comments.Add(CreateRandomComment(events, u));
