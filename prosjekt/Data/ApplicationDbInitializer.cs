@@ -22,9 +22,8 @@ public class ApplicationDbInitializer
     {
         var rand = new Random();
         var files = Directory.GetFiles("wwwroot/img/uploads");
-        var dir = files[rand.Next(files.Length)];
-        var name = Path.GetFileName(dir);
-        return name;
+        var path = files[rand.Next(files.Length)];
+        return Path.GetFileName(path);
     }
     
     private static List<string> s_wordList = new()
