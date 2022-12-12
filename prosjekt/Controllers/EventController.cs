@@ -65,6 +65,7 @@ namespace prosjekt.Controllers
             }
 
             var eventModel = await _context.EventModels.FindAsync(id ?? 0);
+
             var organizerModel = await _context.OrganizationModels.FindAsync(eventModel.OrganizerId);
             if (eventModel == null || organizerModel == null)
             {

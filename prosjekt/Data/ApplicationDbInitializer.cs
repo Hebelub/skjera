@@ -13,7 +13,13 @@ public class ApplicationDbInitializer
     private static ApplicationUser AddUser(UserManager<ApplicationUser> um, string name, string email)
     {
         var user = new ApplicationUser
-            { NickName = name, UserName = email, Email = email, EmailConfirmed = true };
+        {
+            NickName = name, 
+            UserName = email, 
+            Email = email, 
+            EmailConfirmed = true,
+            ProfilePictureUrl = GetRandomUploadsUrl()
+        };
         um.CreateAsync(user, "Password1.").Wait();
         return user;
     }
@@ -71,7 +77,7 @@ public class ApplicationDbInitializer
         var randomOrganization = organizations[s_random.Next(organizations.Count)];
 
         // Start Time
-        var startTime = DateTime.Now.Date + TimeSpan.FromHours((float)s_random.Next(-12000, 12000) / 4);
+        var startTime = DateTime.Now.Date + TimeSpan.FromHours((float)s_random.Next(-14000, 14000) / 4);
 
         // Complete the Random Event
         var randomEvent = new EventModel
@@ -160,7 +166,7 @@ public class ApplicationDbInitializer
         AddUser(um, "Barnabas Mulu Boka", "barnabas@gmail.com");
         AddUser(um, "Håvard Berge", "hovardb@uia.no");
 
-        for (var i = 0; i < 40; ++i)
+        for (var i = 0; i < 50; ++i)
         {
             AddRandomUser(um);
         }
