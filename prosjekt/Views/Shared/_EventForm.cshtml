@@ -25,9 +25,29 @@ else if (ViewBag.FormType == FormType.Edit)
 <h4>EventModel</h4>
 
 <div class="row">
-    <form asp-action="@actionName" asp-controller="Event" asp-route-id="@Model.Id" asp-route-organizerId="@Model.OrganizerId" class="row">
+    <form enctype="multipart/form-data" asp-action="@actionName" asp-controller="Event" asp-route-id="@Model.Id" asp-route-organizerId="@Model.OrganizerId" class="row">
         <input type="hidden" asp-for="Id"/>
+
+
         <div class="col">
+
+            @* Logo *@
+            <div class="form-group">
+                <dl>
+                    <dt>
+                        <label asp-for="Thumbnail"></label>
+                    </dt>
+                    <dd>
+                        <input asp-for="Thumbnail" class="control-label" type="file" asp-route-formFile="this" form-route
+                               onchange="document.getElementById('ThumbnailPrv').src = window.URL.createObjectURL(this.files[0])">
+                        <span asp-validation-for="Thumbnail"></span>
+                    </dd>
+                </dl>
+                <span asp-validation-for="Thumbnail" chass="text-danger"></span>
+                <img id="ThumbnailPrv" src="" alt="Thumbnail Image" width="150" height="150">
+            </div>
+            <br/>
+
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control"/>

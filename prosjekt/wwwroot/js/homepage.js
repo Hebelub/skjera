@@ -5,15 +5,15 @@ let _fetchedEvents = [];
 
 function getHomePageCheckboxSelection() {
     return {
-        attending: document.getElementById("homePageCheckboxAttending").checked, 
-        followOrganizer: document.getElementById("homePageCheckboxOrganizationsYouFollow").checked, 
-        pastEvents: document.getElementById("homePageCheckboxPast").checked,
-        other: document.getElementById("homePageCheckboxOther").checked
+        attending: document.getElementById("homepageCheckboxAttending").checked, 
+        followOrganizer: document.getElementById("homepageCheckboxOrganizationsYouFollow").checked, 
+        pastEvents: document.getElementById("homepageCheckboxPast").checked,
+        other: document.getElementById("homepageCheckboxOther").checked
     };
 }
 
 
-function eventToJsEvent(events) {
+function eventToJsEvents(events) {
     events.forEach((event) => {
         event.startTime = moment(event.startTime, 'YYYY-MM-DDTHH:mm:ss');
         event.endTime = moment(event.endTime, 'YYYY-MM-DDTHH:mm:ss');
@@ -87,7 +87,7 @@ function includeOnlyCheckedEvents(events) {
 async function updateHomePage(switchMonth=false) {
     if (switchMonth)
         _fetchedEvents = await fetchEvents();
-    _fetchedEvents = eventToJsEvent(_fetchedEvents);
+    _fetchedEvents = eventToJsEvents(_fetchedEvents);
     
     _calendar.events = includeOnlyCheckedEvents(_fetchedEvents);
     

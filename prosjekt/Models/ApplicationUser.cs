@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using prosjekt.Data;
@@ -21,6 +23,14 @@ public class ApplicationUser : IdentityUser
 
     public string? NickName { get; set; }
 
+    
+    public string ProfilePictureUrl { get; set; } = string.Empty;
+    [DataType(DataType.Upload)]
+    [Display(Name = "ProfilePicture")]
+    [NotMapped]
+    public IFormFile ProfilePicture { get; set; }
+    
+    
     public async Task<UserOrganizationRelation> GetRelationToOrganizationAsync(int organizationId, bool withTracking=true, bool returnNullIfNotFound=false)
     {
         var userOrganizationWithOrWithoutTracking = withTracking 

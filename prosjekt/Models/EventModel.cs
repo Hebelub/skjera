@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using prosjekt.Data;
@@ -88,6 +89,13 @@ public class EventModel
 
     public bool IsEdited { get => LastTimeEdited != null; }
 
+    
+    public string ThumbnailUrl { get; set; } = string.Empty;
+    [DataType(DataType.Upload)]
+    [Required(ErrorMessage = "Please choose file to upload.")]
+    [Display(Name = "Upload Thumbnail")]
+    [NotMapped]
+    public IFormFile Thumbnail { get; set; }
 
 
     public async Task<UserEventRelation> GetUserEventRelationAsync(ApplicationDbContext db, ApplicationUser user)

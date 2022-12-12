@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prosjekt.Data;
 using prosjekt.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace prosjekt.Controllers
 {
@@ -16,11 +18,32 @@ namespace prosjekt.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EventController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public EventController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        private string UploadThumbnail(IFormFile file)
+        {
+            string uniqueFileName = string.Empty;
+            
+            if (file != null)
+            {
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/thumbnails");
+                uniqueFileName = Guid.NewGuid() + "_" + file.FileName;                
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+
+            return uniqueFileName;
         }
 
         // GET: Event/
@@ -85,8 +108,10 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Title,Info,Date,StartTime,Duration,Days,Hours,Minutes,Location")] EventModel eventModel, int id)
+        public async Task<IActionResult> Create([FromForm][Bind("Title,Info,Date,StartTime,Duration,Days,Hours,Minutes,Location,Thumbnail")] EventModel eventModel, int id)
         {
+            eventModel.ThumbnailUrl = UploadThumbnail(eventModel.Thumbnail);
+
             var organization = await _context.OrganizationModels.FindAsync(id);
 
             if (organization == null)
@@ -151,9 +176,11 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,Duration,Days,Hours,Minutes,Location")] EventModel eventModel)
+        public async Task<IActionResult> Edit(int id, int organizerId, [Bind("Title,Description,Date,Info,StartTime,Duration,Days,Hours,Minutes,Location,Thumbnail,ThumbnailUrl")] EventModel eventModel)
         {
             eventModel.LastTimeEdited = DateTime.Now;
+
+            eventModel.ThumbnailUrl = UploadThumbnail(eventModel.Thumbnail);
 
             var organizer = await _context.OrganizationModels.FindAsync(organizerId);
             if (organizer == null)

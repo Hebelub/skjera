@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 using prosjekt.Data;
 using prosjekt.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace prosjekt.Controllers
 {
@@ -18,10 +21,13 @@ namespace prosjekt.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public OrganizationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public OrganizationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Organization
@@ -74,34 +80,46 @@ namespace prosjekt.Controllers
             return View("_OrganizationForm");
         }
 
+        private string UploadLogo(IFormFile file)
+        {
+            string uniqueFileName = string.Empty;
+            
+            if (file != null)
+            {
+                var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/logos");
+                uniqueFileName = Guid.NewGuid() + "_" + file.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+
+            return uniqueFileName;
+        }
+        
+
         // POST: Organization/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Name,Description")] OrganizationModel organizationModel, IFormFile formFile)
+        public async Task<IActionResult> Create([FromForm][Bind("Name,Description,Logo")] OrganizationModel organization)
         {
-            if (formFile != null)
-            {
-                var filePath = Path.GetTempFileName();
+            organization.LogoUrl = UploadLogo(organization.Logo);
             
-                using (var stream = System.IO.File.Create(filePath))
-                {
-                    await formFile.CopyToAsync(stream);
-                }
-            }
-
             if (!ModelState.IsValid)
             {
                 ViewBag.FormType = FormType.Create;
-                return View("_OrganizationForm", organizationModel);
+                return View("_OrganizationForm", organization);
             }
 
             var user = await _userManager.GetUserAsync(User);
 
             // The user who created this has all the access-rights
-            var userOrganizationAccess = new UserOrganizationRelation(user, organizationModel, AccessRight.FullAccess);
+            var userOrganizationAccess = new UserOrganizationRelation(user, organization, AccessRight.FullAccess);
 
-            _context.Add(organizationModel);
+            _context.Add(organization);
             _context.Add(userOrganizationAccess);
 
             await _context.SaveChangesAsync();
@@ -137,10 +155,11 @@ namespace prosjekt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Description")] OrganizationModel organizationModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Description,Logo,LogoUrl")] OrganizationModel organizationModel)
         {
             organizationModel.Id = id;
 
+            organizationModel.LogoUrl = UploadLogo(organizationModel.Logo);
 
             if (!OrganizationAccess(id).CanEditOrganization)
             {

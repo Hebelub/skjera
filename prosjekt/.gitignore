@@ -8,3 +8,6 @@ venv
 *.swp
 app.db-shm
 app.db-wal
+wwwroot/img/logos/*
+wwwroot/img/profilePictures/*
+wwwroot/img/thumbnails/*

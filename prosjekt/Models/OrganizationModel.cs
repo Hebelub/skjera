@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,9 +36,10 @@ public class OrganizationModel
     public string Description { get; set; } = string.Empty;
 
 
-    
-    [Required]
-    [DisplayName ("Logo")]
-    public string LogoPath { get; set; } = string.Empty;
-
+    public string LogoUrl { get; set; } = string.Empty;
+    [DataType(DataType.Upload)]
+    [Required(ErrorMessage = "Please choose file to upload.")]
+    [Display(Name = "Upload Logo")]
+    [NotMapped]
+    public IFormFile Logo { get; set; }
 }

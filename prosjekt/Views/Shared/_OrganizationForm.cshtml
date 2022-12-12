@@ -28,7 +28,7 @@ else if (ViewBag.FormType == FormType.Edit)
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="@actionName" asp-controller="Organization" asp-route-id="@Model?.Id">
+        <form enctype="multipart/form-data" asp-action="@actionName" asp-controller="Organization" asp-route-id="@Model?.Id">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @* Name *@
             <div class="form-group">
@@ -40,14 +40,16 @@ else if (ViewBag.FormType == FormType.Edit)
             @* Logo *@
             <dl>
                 <dt>
-                    <label asp-for="@Model.LogoPath"></label>
+                    <label asp-for="Logo"></label>
                 </dt>
                 <dd>
-                    <input asp-for="@Model.LogoPath" type="file">
-                    <span asp-validation-for="@Model.LogoPath"></span>
+                    <input asp-for="Logo" class="control-label" type="file" asp-route-formFile="this" form-route
+                           onchange="document.getElementById('LogoPrv').src = window.URL.createObjectURL(this.files[0])">
+                    <span asp-validation-for="Logo"></span>
                 </dd>
             </dl>
-            <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
+            <span asp-validation-for="Logo" chass="text-danger"></span>
+            <img id="LogoPrv" src="" alt="Logo Image" width="150" height="150">
             <br/>
             @* Description *@
             <div class="form-group">
@@ -55,6 +57,7 @@ else if (ViewBag.FormType == FormType.Edit)
                 <textarea class=".col-9" asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            
             <br/>
             <div class="form-group">
                 <input type="submit" value="@submitButtonValue" class="btn btn-primary" />
