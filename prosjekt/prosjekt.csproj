@@ -30,8 +30,6 @@
 
     <ItemGroup>
       <Folder Include="Areas\Identity\Pages\Account" />
-      <Folder Include="wwwroot\img\profilePictures" />
-      <Folder Include="wwwroot\img\thumbnails" />
     </ItemGroup>
 
     <ItemGroup>
