@@ -13,11 +13,6 @@
 
 @{ ViewBag.EventIncludeAllData = ViewBag.EventIncludeAllData ?? false; }
 
-@Model.ThumbnailUrl
-<div class="imgBox">
-    <img src="img/thumbnails/@Model.ThumbnailUrl" alt="Thumbnail">
-</div>
-
 <div class="card customCard flex-md-row shadow-sm h-md-250" onclick="gotoEventPage(@Model.Id)">
     <div class="card-body d-flex flex-column align-items-start">
         <a class="d-inline-block mb-2 text-primary a-no-underline"
