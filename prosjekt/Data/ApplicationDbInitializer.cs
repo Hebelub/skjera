@@ -160,7 +160,7 @@ public class ApplicationDbInitializer
         AddUser(um, "Barnabas Mulu Boka", "barnabas@gmail.com");
         AddUser(um, "Håvard Berge", "hovardb@uia.no");
 
-        for (var i = 0; i < 24; ++i)
+        for (var i = 0; i < 40; ++i)
         {
             AddRandomUser(um);
         }
