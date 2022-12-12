@@ -8,3 +8,4 @@ venv
 *.swp
 app.db-shm
 app.db-wal
+wwwroot/img/uploads/*
