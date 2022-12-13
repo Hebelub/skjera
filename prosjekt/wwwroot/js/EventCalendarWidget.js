@@ -16,7 +16,7 @@
     }
     
     Calendar.prototype.getFirstDateOfCalendar = function() {
-        return moment(this.current).startOf('month').format('YYYY-MM-DD');
+        return moment(this.current).startOf('month').startOf('week').format('YYYY-MM-DD');
     }
 
     Calendar.prototype.getLastDateOfCalendar = function() {

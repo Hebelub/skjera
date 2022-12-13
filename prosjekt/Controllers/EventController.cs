@@ -111,8 +111,6 @@ namespace prosjekt.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromForm][Bind("Title,Info,Date,StartTime,Duration,Days,Hours,Minutes,Location,Thumbnail")] EventModel eventModel, int id)
         {
-            eventModel.ThumbnailUrl = UploadThumbnail(eventModel.Thumbnail);
-
             var organization = await _context.OrganizationModels.FindAsync(id);
 
             if (organization == null)
@@ -126,6 +124,8 @@ namespace prosjekt.Controllers
             }
 
             eventModel.Organizer = organization;
+
+            eventModel.ThumbnailUrl = UploadThumbnail(eventModel.Thumbnail);
             
             ModelState.Clear();
 

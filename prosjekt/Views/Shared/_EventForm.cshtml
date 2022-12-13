@@ -98,7 +98,15 @@ else if (ViewBag.FormType == FormType.Edit)
     </form>
 </div>
 
-<a class="btn btn-primary" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+@if (ViewBag.FormType == FormType.Edit)
+{
+    <a class="btn btn-primary" asp-controller="Event" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+}
+else if (ViewBag.FormType == FormType.Create)
+{
+    <a class="btn btn-primary" asp-controller="Organization" asp-action="Details" asp-route-id="@Model.Organizer.Id">Cancel</a>
+}
+
 
 <script>
 tinymce.init({
