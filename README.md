@@ -4,6 +4,10 @@
 
 This project is a collaborative effort to create a comprehensive CRUD (Create, Read, Update, Delete) application. Our application serves as a dynamic platform for organizations to manage and promote events. It is designed to cater to both organizations and individual users, facilitating an interactive and user-friendly environment for event management and participation.
 
+![EventPage](images/EventPage.png)
+![HomePage](images/HomePage.png)
+![OranizationPage](images/OranizationPage.png)
+
 ## Features
 
 - **Organization Management**: Users can create organizations. Each organization has the ability to create, manage, and promote their events.
